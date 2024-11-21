@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vn.udn.dut.algoarena.port.mapper.TestcaseMapper">
+	<resultMap type="vn.udn.dut.algoarena.port.domain.vo.TestcaseVo" id="TestcaseResult">
+        <id property="id" column="id"/>
+    </resultMap>
+    
+    <sql id="selectTestcaseVo">
+    	select t.id,
+			  t.tenant_id,
+			  t.problem_id,
+			  t.input_data,
+			  t.expected_output,
+			  t.illustration,
+			  t.explanation,
+		      t.is_hidden,
+		      t.create_dept,
+		      t.create_by,
+		      t.create_time,
+		      t.update_by,
+		      t.update_time,
+		      t.remark
+		from testcase t left join problem p on t.problem_id = p.id
+    </sql>
+    
+    
+    <select id="selectPageTestcaseList" resultMap="TestcaseResult">
+    	select * from (
+    		<include refid="selectTestcaseVo"/>
+    		${ew.getCustomSqlSegment}
+    	) a
+    </select>
+    
+    <select id="selectTestcaseList" resultMap="TestcaseResult">
+    	select * from (
+    		<include refid="selectTestcaseVo"/>
+    		${ew.getCustomSqlSegment}
+    	) a
+    </select>
+</mapper>

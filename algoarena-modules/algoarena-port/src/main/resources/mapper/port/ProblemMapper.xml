@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vn.udn.dut.algoarena.port.mapper.ProblemMapper">
+	<resultMap type="vn.udn.dut.algoarena.port.domain.vo.ProblemVo" id="ProblemResult">
+        <id property="id" column="id"/>
+    </resultMap>
+    
+    <sql id="selectProblemVo">
+    	select p.id,
+			  p.tenant_id,
+			  p.title,
+			  p.description,
+			  p.difficulty,
+			  p.create_dept,
+			  p.create_by,
+			  p.create_time,
+			  p.update_by,
+			  p.update_time,
+			  p.remark
+		from problem p
+    </sql>
+    
+    
+    <select id="selectPageProblemList" resultMap="ProblemResult">
+    	select * from (
+    		<include refid="selectProblemVo"/>
+    		${ew.getCustomSqlSegment}
+    	) a
+    </select>
+    
+    <select id="selectProblemList" resultMap="ProblemResult">
+    	select * from (
+    		<include refid="selectProblemVo"/>
+    		${ew.getCustomSqlSegment}
+    	) a
+    </select>
+</mapper>

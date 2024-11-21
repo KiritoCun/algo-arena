@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>algoarena</artifactId>
+        <groupId>vn.udn.dut.algoarena</groupId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <modules>
+        <module>algoarena-common-bom</module>
+        <module>algoarena-common-core</module>
+        <module>algoarena-common-doc</module>
+        <module>algoarena-common-excel</module>
+        <module>algoarena-common-idempotent</module>
+        <module>algoarena-common-job</module>
+        <module>algoarena-common-log</module>
+        <module>algoarena-common-mail</module>
+        <module>algoarena-common-mybatis</module>
+        <module>algoarena-common-oss</module>
+        <module>algoarena-common-ratelimiter</module>
+        <module>algoarena-common-redis</module>
+        <module>algoarena-common-satoken</module>
+        <module>algoarena-common-security</module>
+        <module>algoarena-common-sms</module>
+        <module>algoarena-common-web</module>
+        <module>algoarena-common-translation</module>
+        <module>algoarena-common-sensitive</module>
+        <module>algoarena-common-json</module>
+        <module>algoarena-common-encrypt</module>
+        <module>algoarena-common-tenant</module>
+        <module>algoarena-common-websocket</module>
+    </modules>
+
+    <artifactId>algoarena-common</artifactId>
+    <packaging>pom</packaging>
+
+    <description>
+        common module
+    </description>
+
+</project>

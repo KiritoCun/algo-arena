@@ -1,0 +1,5 @@
+vn.udn.dut.algoarena.common.web.config.CaptchaConfig
+vn.udn.dut.algoarena.common.web.config.FilterConfig
+vn.udn.dut.algoarena.common.web.config.I18nConfig
+vn.udn.dut.algoarena.common.web.config.ResourcesConfig
+vn.udn.dut.algoarena.common.web.config.UndertowConfig
