@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vn.udn.dut.algoarena.port.mapper.SubmissionMapper">
+	<resultMap type="vn.udn.dut.algoarena.port.domain.vo.SubmissionVo" id="SubmissionResult">
+        <id property="id" column="id"/>
+    </resultMap>
+    
+    <sql id="selectSubmissionVo">
+    	select s.id,
+			  s.tenant_id,
+			  s.exam_id,
+			  s.problem_id,
+			  s.user_id,
+		      s.code,
+		      s.status,
+		      s.score,
+			  s.create_dept,
+			  s.create_by,
+			  s.create_time,
+			  s.update_by,
+			  s.update_time,
+			  s.remark
+		from submission s
+    </sql>
+    
+    
+    <select id="selectPageSubmissionList" resultMap="SubmissionResult">
+    	select * from (
+    		<include refid="selectSubmissionVo"/>
+    		${ew.getCustomSqlSegment}
+    	) a
+    </select>
+    
+    <select id="selectSubmissionList" resultMap="SubmissionResult">
+    	select * from (
+    		<include refid="selectSubmissionVo"/>
+    		${ew.getCustomSqlSegment}
+    	) a
+    </select>
+</mapper>

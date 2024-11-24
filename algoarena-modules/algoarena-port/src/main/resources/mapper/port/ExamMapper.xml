@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vn.udn.dut.algoarena.port.mapper.ExamMapper">
+	<resultMap type="vn.udn.dut.algoarena.port.domain.vo.ExamVo" id="ExamResult">
+        <id property="id" column="id"/>
+    </resultMap>
+    
+    <sql id="selectExamVo">
+    	select e.id,
+			  e.tenant_id,
+			  e.title,
+			  e.description,
+			  e.start_time,
+		      e.end_time,
+			  e.create_dept,
+			  e.create_by,
+			  e.create_time,
+			  e.update_by,
+			  e.update_time,
+			  e.remark
+		from exam e
+    </sql>
+    
+    
+    <select id="selectPageExamList" resultMap="ExamResult">
+    	select * from (
+    		<include refid="selectExamVo"/>
+    		${ew.getCustomSqlSegment}
+    	) a
+    </select>
+    
+    <select id="selectExamList" resultMap="ExamResult">
+    	select * from (
+    		<include refid="selectExamVo"/>
+    		${ew.getCustomSqlSegment}
+    	) a
+    </select>
+</mapper>
