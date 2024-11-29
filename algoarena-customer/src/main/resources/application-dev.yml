@@ -82,11 +82,11 @@ spring:
 spring.data:
   redis:
     # address
-    host: redis-16118.c238.us-central1-2.gce.redns.redis-cloud.com
+    host: localhost
     # Port, the default is 6379
-    port: 16118
+    port: 6379
     # Password (please comment out if there is no password)
-    password: O7utTCj0b0DKqwD6BsKczmgTdv1E8iuJ
+    #password: O7utTCj0b0DKqwD6BsKczmgTdv1E8iuJ
 
 redisson:
   # redis key prefix

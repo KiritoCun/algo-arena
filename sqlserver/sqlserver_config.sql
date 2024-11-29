@@ -24,3 +24,7 @@ GO
 
 INSERT sys_config VALUES (1, N'000000', N'User Management-Account Initial Password', N'sys.user.initPassword', N'123456', N'Y', 103, 1, getdate(), NULL, NULL, N'Initialization password 123456')
 GO
+INSERT sys_config VALUES (2, N'000000', N'Config firebase secret key', N'sys.firebase.secret', N'AIzaSyAv2KXZJl4q7N-uGWFCCD01v8MSHALlZhI', N'Y', 103, 1, getdate(), NULL, NULL, N'Config firebase secret key')
+GO
+INSERT sys_config VALUES (3, N'000000', N'Config firebase database', N'sys.firebase.db', N'algo-arena-50656.firebaseapp.com', N'Y', 103, 1, getdate(), NULL, NULL, N'Config firebase database')
+GO

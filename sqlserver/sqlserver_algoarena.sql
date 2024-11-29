@@ -395,9 +395,11 @@ CREATE TABLE problem
 (
   id                  bigint                              NOT NULL,
   tenant_id           nvarchar(20)    DEFAULT ('000000')  NULL,
+  exam_id             bigint                              NULL,
   title               nvarchar(255)                       NOT NULL,
   description         ntext                               NOT NULL,
   difficulty          tinyint                             NOT NULL,
+  max_score           tinyint                             NULL,
   create_dept         bigint                              NULL,
   create_by           bigint                              NULL,
   create_time         datetime2(7)                        NULL,
@@ -455,23 +457,6 @@ CREATE TABLE exam
   update_time         datetime2(7)                        NULL,
   remark              nvarchar(255)                       NULL,
   CONSTRAINT PK__exam__3E82A5DB0EC94801 PRIMARY KEY CLUSTERED (id)
-      WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
-      ON [PRIMARY]
-)
-ON [PRIMARY]
-GO
-
-IF OBJECT_ID('exam_problem', 'U') IS NOT NULL
-  DROP TABLE exam_problem;
-GO
-CREATE TABLE exam_problem
-(
-  id                  bigint                              NOT NULL,
-  tenant_id           nvarchar(20)    DEFAULT ('000000')  NULL,
-  exam_id             bigint                              NOT NULL,
-  problem_id          bigint                              NOT NULL,
-  max_score           tinyint                             NULL,
-  CONSTRAINT PK__exam_problem__3E82A5DB0EC94801 PRIMARY KEY CLUSTERED (id)
       WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
       ON [PRIMARY]
 )
@@ -1040,3 +1025,27 @@ VALUES
 '[1,2,3,4,5]', NULL, 'Since k is 1, no nodes are reversed, and the list remains the same.', 0, SYSDATETIME()),
 (105, 21, '[1,2,3,4,5,6], 4',
 '[4,3,2,1,5,6]', NULL, 'The first four nodes (1, 2, 3, 4) are reversed, and the remaining nodes (5, 6) are left unchanged.', 0, SYSDATETIME());
+
+INSERT INTO exam(id, title, description, start_time, end_time)
+VALUES
+(1,
+'Midterm exam for general computer science',
+'The test has a score coefficient of 0.2.',
+'2024-11-29 10:00:00',
+'2024-11-29 11:00:00');
+
+INSERT INTO exam(id, title, description, start_time, end_time)
+VALUES
+(2,
+'Final exam for data structures and algorithms',
+'The test has a score coefficient of 0.6.',
+'2024-12-10 09:00:00',
+'2024-12-10 10:00:00');
+
+INSERT INTO exam(id, title, description, start_time, end_time)
+VALUES
+(3,
+'Periodic exam for c++ programming',
+'The test has a score coefficient of 0.1.',
+'2024-12-11 07:00:00',
+'2024-12-11 08:00:00');
