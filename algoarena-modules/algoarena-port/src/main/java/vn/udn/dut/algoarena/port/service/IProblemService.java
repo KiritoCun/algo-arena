@@ -24,6 +24,11 @@ public interface IProblemService {
 	/**
 	 * Query Problem list
 	 */
+	TableDataInfo<ProblemVo> queryPagePublicList(ProblemBo bo, PageQuery pageQuery);
+
+	/**
+	 * Query Problem list
+	 */
 	TableDataInfo<ProblemVo> queryPageList(ProblemBo bo, PageQuery pageQuery);
 
 	/**

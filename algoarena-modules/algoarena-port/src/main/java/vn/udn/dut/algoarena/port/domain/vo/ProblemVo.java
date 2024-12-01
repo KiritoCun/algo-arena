@@ -28,11 +28,15 @@ public class ProblemVo implements Serializable {
 
 	private Long id;
 
+	private Long examId;
+
 	private String title;
 
 	private String description;
 
 	private Integer difficulty;
+
+	private Integer maxScore;
 
 	private String remark;
 

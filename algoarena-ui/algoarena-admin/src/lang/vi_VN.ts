@@ -1530,6 +1530,44 @@ export default {
       deleteCf: 'Xác nhận xoá phòng?'
     }
   },
+  // Exam menu internationalization
+  examManagement: {
+    searchInput: {
+      titleLb: 'Tên bài thi',
+      titlePh: 'Nhập',
+    },
+    headerButton: {
+      addTt: 'Thêm',
+      editTt: 'Sửa',
+      deleteTt: 'Xoá'
+    },
+    columns: {
+      titleLb: 'Tên bài thi',
+      descriptionLb: 'Mô tả bài thi',
+      startTimeLb: 'Thời gian bắt đầu',
+      endTimeLb: 'Thời gian kết thúc',
+      createTimeLb: 'Ngày tạo',
+      remarkLb: 'Ghi chú',
+      operateLb: 'Thao tác',
+      editLb: 'Sửa',
+      deleteLb: 'Xoá'
+    },
+    problemColumns: {
+      titleLb: 'Tên bài toán',
+      descriptionLb: 'Mô tả bài toán',
+      difficultyLb: 'Độ khó',
+      maxScoreLb: 'Số điểm tối đa',
+      remarkLb: 'Ghi chú',
+      operateLb: 'Thao tác',
+      editLb: 'Sửa',
+      deleteLb: 'Xoá'
+    },
+    operationMsg: {
+      submitSuccess: 'Lưu thành công',
+      deleteSuccess: 'Xoá thành công',
+      deleteCf: 'Xác nhận xoá bài thi?'
+    }
+  },
   // Problem menu internationalization
   problemManagement: {
     searchInput: {
@@ -1566,6 +1604,79 @@ export default {
       submitSuccess: 'Lưu thành công',
       deleteSuccess: 'Xoá thành công',
       deleteCf: 'Xác nhận xoá bài toán?'
+    }
+  },
+  // Submission menu internationalization
+  submissionManagement: {
+    searchInput: {
+      titleLb: 'Tên bài toán',
+      titlePh: 'Nhập',
+    },
+    headerButton: {
+      addTt: 'Thêm',
+      editTt: 'Sửa',
+      deleteTt: 'Xoá'
+    },
+    columns: {
+      examNameLb: 'Tên bài thi',
+      problemNameLb: 'Tên bài toán',
+      userNameLb: 'Người nộp bài',
+      codeLb: 'Bài làm',
+      statusLb: 'Trạng thái',
+      scoreLb: 'Điểm số',
+      createdTimeLb: 'Thời gian nộp bài',
+      operateLb: 'Thao tác',
+      editLb: 'Sửa',
+      deleteLb: 'Xoá'
+    },
+    submissionTestcaseColumns: {
+      inputDataLb: 'Tham số đầu vào',
+      expectedOutputLb: 'Giá trị mong đợi',
+      actualOutputLb: 'Giá trị thực tế',
+      isCorrectLb: 'Chính xác',
+      executedTimeLb: 'Thời gian thực hiện',
+      operateLb: 'Thao tác',
+      editLb: 'Sửa',
+      deleteLb: 'Xoá'
+    },
+    operationMsg: {
+      submitSuccess: 'Lưu thành công',
+      deleteSuccess: 'Xoá thành công',
+      deleteCf: 'Xác nhận xoá bài làm?'
+    }
+  },
+  // ExamResult menu internationalization
+  examResultManagement: {
+    searchInput: {
+      titleLb: 'Tên bài toán',
+      titlePh: 'Nhập',
+    },
+    headerButton: {
+      addTt: 'Thêm',
+      editTt: 'Sửa',
+      deleteTt: 'Xoá'
+    },
+    columns: {
+      examNameLb: 'Tên bài thi',
+      userNameLb: 'Người nộp bài',
+      totalScoreLb: 'Tổng điểm',
+      completedTimeLb: 'Thời gian nộp bài',
+      operateLb: 'Thao tác',
+      editLb: 'Sửa',
+      deleteLb: 'Xoá'
+    },
+    examResultDetailColumns: {
+      problemNameLb: 'Tên bài toán',
+      scoreLb: 'Điểm số',
+      completedTimeLb: 'Thời gian hoàn thành',
+      operateLb: 'Thao tác',
+      editLb: 'Sửa',
+      deleteLb: 'Xoá'
+    },
+    operationMsg: {
+      submitSuccess: 'Lưu thành công',
+      deleteSuccess: 'Xoá thành công',
+      deleteCf: 'Xác nhận xoá kết quả bài làm?'
     }
   },
   // Showtime menu internationalization

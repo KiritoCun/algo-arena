@@ -6,22 +6,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<resultMap type="vn.udn.dut.algoarena.port.domain.vo.ProblemVo" id="ProblemResult">
         <id property="id" column="id"/>
     </resultMap>
+
+	<sql id="selectPublicProblemVo">
+		select p.id,
+		p.tenant_id,
+		p.title,
+		p.description,
+		p.difficulty,
+		p.create_dept,
+		p.create_by,
+		p.create_time,
+		p.update_by,
+		p.update_time,
+		p.remark
+		from problem p
+		where exam_id is NULL
+	</sql>
     
     <sql id="selectProblemVo">
     	select p.id,
 			  p.tenant_id,
+		      p.exam_id,
 			  p.title,
 			  p.description,
 			  p.difficulty,
+		      p.max_score,
 			  p.create_dept,
 			  p.create_by,
 			  p.create_time,
 			  p.update_by,
 			  p.update_time,
 			  p.remark
-		from problem p
+		from problem p join exam e on p.exam_id = e.id
     </sql>
-    
+
+	<select id="selectPagePublicProblemList" resultMap="ProblemResult">
+		select * from (
+		<include refid="selectPublicProblemVo"/>
+		${ew.getCustomSqlSegment}
+		) a
+	</select>
     
     <select id="selectPageProblemList" resultMap="ProblemResult">
     	select * from (

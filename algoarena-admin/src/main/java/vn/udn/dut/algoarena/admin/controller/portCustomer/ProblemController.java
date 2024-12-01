@@ -26,6 +26,12 @@ import java.util.List;
 @RequestMapping("portCustomer/problem")
 public class ProblemController extends BaseController{
 	private final IProblemService problemService;
+
+	@SaCheckPermission("portCustomer:problem:list")
+	@GetMapping("/public-list")
+	public TableDataInfo<ProblemVo> publicList(ProblemBo bo, PageQuery pageQuery) {
+		return problemService.queryPagePublicList(bo, pageQuery);
+	}
 	
 	@SaCheckPermission("portCustomer:problem:list")
 	@GetMapping("/list")

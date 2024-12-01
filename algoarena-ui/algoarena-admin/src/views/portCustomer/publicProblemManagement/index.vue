@@ -111,9 +111,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 // IMPORT COMPONENT
 // IMPORT API
-import { listProblem, getProblem, delProblem, addProblem, updateProblem, listTestcase, updateTestcases } from '@/api/portCustomer/problemManagement';
+import { listProblem, getProblem, delProblem, addProblem, updateProblem, listTestcase, updateTestcases } from '@/api/portCustomer/publicProblemManagement';
 // IMPORT TYPE
-import { ProblemVO, ProblemQuery, TestcaseQuery, ProblemForm } from '@/api/portCustomer/problemManagement/types';
+import { ProblemVO, ProblemQuery, TestcaseQuery, ProblemForm } from '@/api/portCustomer/publicProblemManagement/types';
 import { ElForm, FormRules } from 'element-plus';
 // IMPORT GLOBAL TOOL (PROXY)
 import { ComponentInternalInstance, reactive } from "vue";
@@ -262,6 +262,7 @@ const handleProblemAdd = () => {
   problemDialog.title = 'Tạo phòng chiếu';
   nextTick(() => {
     resetProblemForm();
+    fetchCinema1();
   })
 }
 /** Edit button action */

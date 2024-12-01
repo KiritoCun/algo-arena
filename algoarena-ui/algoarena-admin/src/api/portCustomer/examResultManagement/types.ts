@@ -1,6 +1,6 @@
-export interface ExamVO {
+export interface ExamResultVO {
   /**
-   * Exam id
+   * ExamResult id
    */
   id: string | number;
 
@@ -17,7 +17,7 @@ export interface ExamVO {
   /**
    *
    */
-  examName: string;
+  examResultName: string;
 
   /**
    *
@@ -35,9 +35,9 @@ export interface ExamVO {
   remark: string;
 }
 
-export interface ExamForm extends BaseEntity {
+export interface ExamResultForm extends BaseEntity {
   /**
-   * Exam id
+   * ExamResult id
    */
   id?: string | number;
 
@@ -54,12 +54,7 @@ export interface ExamForm extends BaseEntity {
   /**
    *
    */
-  startTime?: string | number;
-
-  /**
-   *
-   */
-  endTime?: string | number;
+  difficulty?: string | number;
 
   /**
    * Remark
@@ -67,7 +62,7 @@ export interface ExamForm extends BaseEntity {
   remark?: string;
 }
 
-export interface ExamQuery extends PageQuery {
+export interface ExamResultQuery extends PageQuery {
   
   /**
    *
@@ -82,12 +77,7 @@ export interface ExamQuery extends PageQuery {
   /**
    *
    */
-  startTime: string;
-
-  /**
-   *
-   */
-  endTime: string;
+  difficulty: string;
 
   /**
    *
@@ -95,11 +85,11 @@ export interface ExamQuery extends PageQuery {
   remark: string;
 }
 
-export interface ProblemVO {
+export interface ExamResultDetailVO {
   /**
-   * Exam id
+   * ExamResult id
    */
-  examId: string | number;
+  examResultId: string | number;
 
   /**
    * Seat type id
@@ -127,16 +117,16 @@ export interface ProblemVO {
   createTime: string;
 }
 
-export interface ProblemForm extends BaseEntity {
+export interface ExamResultDetailForm extends BaseEntity {
   /**
-   * Exam id
+   * ExamResult id
    */
   id?: string | number;
 
   /**
    * Cinema id
    */
-  examId?: string | number;
+  examResultId?: string | number;
 
   /**
    * Seat type id
@@ -154,10 +144,10 @@ export interface ProblemForm extends BaseEntity {
   rowSeatNumber?: string;
 }
 
-export interface ProblemQuery {
+export interface ExamResultDetailQuery {
   
   /**
    *
    */
-  examId?: string | number;
+  examResultId?: string | number;
 }

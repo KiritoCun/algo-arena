@@ -83,14 +83,17 @@
             class="common-form"
             v-loading="layoutExamFormLoading"
           >
-            <el-form-item label="Tên bài toán" prop="title" class="form-item-row">
+            <el-form-item label="Tên bài thi" prop="title" class="form-item-row">
               <el-input v-model="examForm.title" placeholder="Nhập" />
             </el-form-item>
             <el-form-item label="Mô tả" prop="description" class="form-item-row">
               <el-input v-model="examForm.description" placeholder="Nhập" />
             </el-form-item>
-            <el-form-item label="Độ khó" prop="difficulty" class="form-item-row">
-              <el-input v-model="examForm.difficulty" placeholder="Nhập" />
+            <el-form-item label="Thời gian bắt đầu" prop="startTime" class="form-item-row">
+              <el-input v-model="examForm.startTime" placeholder="Nhập" />
+            </el-form-item>
+            <el-form-item label="Thời gian kết thúc" prop="endTime" class="form-item-row">
+              <el-input v-model="examForm.endTime" placeholder="Nhập" />
             </el-form-item>
             <el-form-item label="Ghi chú" prop="remark" class="form-item-row">
               <el-input v-model="examForm.remark" type="textarea" placeholder="Nhập" />
@@ -111,10 +114,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 // IMPORT COMPONENT
 // IMPORT API
-import { getCinemas } from "@/api/system/user"
 import { listExam, getExam, delExam, addExam, updateExam, listProblem, updateProblems } from '@/api/portCustomer/examManagement';
 // IMPORT TYPE
-import { CinemaVO } from "@/api/portCustomer/cinemaManagement/types";
 import { ExamVO, ProblemVO, ExamQuery, ProblemQuery, ExamForm } from '@/api/portCustomer/examManagement/types';
 import { ElForm, FormRules } from 'element-plus';
 // IMPORT GLOBAL TOOL (PROXY)
@@ -134,11 +135,11 @@ const examIds = ref(<any>[]);
 const examLoading = ref(true);
 const examTotal = ref(0);
 const examRowKey = ref("id");
-const cinemaOptions = ref<CinemaVO[]>([]);
 const examColumns = ref<GridColumn[]>([
   { prop: "title", name: 'examManagement.columns.titleLb', size: 220, readonly: true, align: 'left' },
   { prop: "description", name: 'examManagement.columns.descriptionLb', sortable: true, size: 280, readonly: true, align: 'left' },
-  { prop: "difficulty", name: 'examManagement.columns.difficultyLb', sortable: true, size: 70, readonly: true, align: 'center'  },
+  { prop: "startTime", name: 'examManagement.columns.startTimeLb', sortable: true, size: 160, readonly: true, align: 'center'  },
+  { prop: "endTime", name: 'examManagement.columns.endTimeLb', sortable: true, size: 160, readonly: true, align: 'center'  },
   { prop: "createTime", name: 'examManagement.columns.createTimeLb', sortable: true, size: 160, readonly: true, formatter: 'datetime' },
   { prop: "remark", name: 'examManagement.columns.remarkLb', sortable: true, size: 120, readonly: true, align: 'left' },
 ]);
@@ -147,19 +148,19 @@ const problemList = ref<any[]>([]);
 const problemLoading = ref(false);
 const problemRowKey = ref("id");
 const problemColumns = ref<GridColumn[]>([
-  { prop: "inputData", name: 'examManagement.problemColumns.inputDataLb', sortable: true, size: 130, align: 'center' },
-  { prop: "expectedOutput", name: 'examManagement.problemColumns.expectedOutputLb', sortable: true, size: 150, align: 'left' },
-  { prop: "illustration", name: 'examManagement.problemColumns.illustrationLb', sortable: true, size: 140, align: 'left' },
-  { prop: "explanation", name: 'examManagement.problemColumns.explanationLb', sortable: true, size: 180, align: 'left' },
-  { prop: "isHidden", name: 'examManagement.problemColumns.isHiddenLb', sortable: true, size: 50, align: 'center' },
-  { prop: "remark", name: 'examManagement.problemColumns.remarkLb', size: 150, align: 'left' }
+  { prop: "title", name: 'examManagement.problemColumns.titleLb', sortable: true, size: 220, align: 'left' },
+  { prop: "description", name: 'examManagement.problemColumns.descriptionLb', sortable: true, size: 280, align: 'left' },
+  { prop: "difficulty", name: 'examManagement.problemColumns.difficultyLb', sortable: true, size: 70, align: 'left' },
+  { prop: "maxScore", name: 'examManagement.problemColumns.maxScoreLb', sortable: true, size: 140, align: 'left' },
+  { prop: "remark", name: 'examManagement.problemColumns.remarkLb', size: 120, align: 'left' }
 ]);
 const examQueryParams = reactive<ExamQuery>({
   pageNum: 1,
   pageSize: 20,
   title: '',
   description: '',
-  difficulty: '',
+  startTime: '',
+  endTime: '',
   remark: '',
   orderByColumn: 'createTime',
   isAsc: 'descending',
@@ -265,17 +266,7 @@ const handleExamAdd = () => {
   examDialog.title = 'Tạo phòng chiếu';
   nextTick(() => {
     resetExamForm();
-    fetchCinema1();
   })
-}
-const fetchCinema1 = async () => {
-  const { data } = await getCinemas();
-  cinemaOptions.value = data;
-}
-
-const fetchCinema2 = async (cinemaId: string | number) => {
-  const { data } = await getCinemas(cinemaId);
-  cinemaOptions.value = data;
 }
 /** Edit button action */
 const handleExamUpdate = (row?: ExamForm | ExamVO) => {

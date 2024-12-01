@@ -123,7 +123,7 @@ GO
 
 INSERT sys_notice VALUES (1, N'000000', N'Reminder: 2023-11-20 A new version has been released', N'4', N'New version content', N'0', 103, 1, getdate(), NULL, NULL, N'administrator')
 GO
-INSERT sys_notice VALUES (2, N'000000', N'Maintenance notice: 2023-11-01 Star algoarena system maintenance in the early morning', N'4', N'Maintenance content', N'0', 103, 1, getdate(), NULL, NULL, N'administrator')
+INSERT sys_notice VALUES (2, N'000000', N'Maintenance notice: 2023-11-01 Algorithm Arena system maintenance in the early morning', N'4', N'Maintenance content', N'0', 103, 1, getdate(), NULL, NULL, N'administrator')
 GO
 
 IF OBJECT_ID('sys_post', 'U') IS NOT NULL
@@ -529,7 +529,7 @@ CREATE TABLE submission_testcase
   testcase_id         bigint                              NOT NULL,
   actual_output       nvarchar(255)                       NOT NULL,
   is_correct          bit                                 NOT NULL,
-  executed_at         datetime2(7)                        NOT NULL,
+  executed_time       datetime2(7)                        NOT NULL,
   create_dept         bigint                              NULL,
   create_by           bigint                              NULL,
   create_time         datetime2(7)                        NULL,
@@ -553,7 +553,7 @@ CREATE TABLE exam_result
   exam_id             bigint                              NOT NULL,
   user_id             bigint                              NOT NULL,
   total_score         tinyint                             NOT NULL,
-  completed_at        datetime2(7)                        NOT NULL,
+  completed_time      datetime2(7)                        NOT NULL,
   create_dept         bigint                              NULL,
   create_by           bigint                              NULL,
   create_time         datetime2(7)                        NULL,
@@ -1026,26 +1026,29 @@ VALUES
 (105, 21, '[1,2,3,4,5,6], 4',
 '[4,3,2,1,5,6]', NULL, 'The first four nodes (1, 2, 3, 4) are reversed, and the remaining nodes (5, 6) are left unchanged.', 0, SYSDATETIME());
 
-INSERT INTO exam(id, title, description, start_time, end_time)
+INSERT INTO exam(id, title, description, start_time, end_time, create_time)
 VALUES
 (1,
 'Midterm exam for general computer science',
 'The test has a score coefficient of 0.2.',
 '2024-11-29 10:00:00',
-'2024-11-29 11:00:00');
+'2024-11-29 11:00:00',
+SYSDATETIME());
 
-INSERT INTO exam(id, title, description, start_time, end_time)
+INSERT INTO exam(id, title, description, start_time, end_time, create_time)
 VALUES
 (2,
 'Final exam for data structures and algorithms',
 'The test has a score coefficient of 0.6.',
 '2024-12-10 09:00:00',
-'2024-12-10 10:00:00');
+'2024-12-10 10:00:00',
+SYSDATETIME());
 
-INSERT INTO exam(id, title, description, start_time, end_time)
+INSERT INTO exam(id, title, description, start_time, end_time, create_time)
 VALUES
 (3,
 'Periodic exam for c++ programming',
 'The test has a score coefficient of 0.1.',
 '2024-12-11 07:00:00',
-'2024-12-11 08:00:00');
+'2024-12-11 08:00:00',
+SYSDATETIME());

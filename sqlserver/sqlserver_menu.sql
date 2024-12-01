@@ -166,9 +166,11 @@ INSERT sys_menu VALUES (110, N'{"vi_VN":"Quản lý phòng thi","en_US":"Managem
 GO
 INSERT sys_menu VALUES (111, N'{"vi_VN":"Quản lý bài toán","en_US":"Management problem"}', 2, 2, N'problem', N'portCustomer/problemManagement/index', N'', 1, 0, N'C', N'0', N'0', N'portCustomer:problem:list', N'problem', 103, 1, getdate(), NULL, NULL, N'Management problem menu', N'system')
 GO
-INSERT sys_menu VALUES (112, N'{"vi_VN":"Quản lý bài làm","en_US":"Management submission"}', 2, 3, N'hall', N'portCustomer/submissionManagement/index', N'', 1, 0, N'C', N'0', N'0', N'portCustomer:submission:list', N'submission', 103, 1, getdate(), NULL, NULL, N'Management submission menu', N'system')
+INSERT sys_menu VALUES (112, N'{"vi_VN":"Quản lý bài làm","en_US":"Management submission"}', 2, 3, N'submission', N'portCustomer/submissionManagement/index', N'', 1, 0, N'C', N'0', N'0', N'portCustomer:submission:list', N'submission', 103, 1, getdate(), NULL, NULL, N'Management submission menu', N'system')
 GO
-INSERT sys_menu VALUES (113, N'{"vi_VN":"Quản lý slide","en_US":"Management slide"}', 2, 4, N'slide', N'portCustomer/slideManagement/index', N'', 1, 0, N'C', N'0', N'0', N'portCustomer:slide:list', N'slide', 103, 1, getdate(), NULL, NULL, N'Management slide menu', N'system')
+INSERT sys_menu VALUES (113, N'{"vi_VN":"Quản lý kết quả bài làm","en_US":"Management exam result"}', 2, 3, N'examResult', N'portCustomer/examResultManagement/index', N'', 1, 0, N'C', N'0', N'0', N'portCustomer:examResult:list', N'examResult', 103, 1, getdate(), NULL, NULL, N'Management exam result menu', N'system')
+GO
+INSERT sys_menu VALUES (114, N'{"vi_VN":"Quản lý bài toán chung","en_US":"Management public problem"}', 2, 4, N'publicProblem', N'portCustomer/publicProblemManagement/index', N'', 1, 0, N'C', N'0', N'0', N'portCustomer:publicProblem:list', N'publicProblem', 103, 1, getdate(), NULL, NULL, N'Management public problem menu', N'system')
 GO
 
 -- Staff menu
@@ -178,17 +180,17 @@ INSERT sys_role_menu VALUES (3, 111)
 GO
 INSERT sys_role_menu VALUES (4, 112)
 GO
-INSERT sys_role_menu VALUES (5, 121)
-GO
-INSERT sys_role_menu VALUES (2, 113)
-GO
-INSERT sys_role_menu VALUES (3, 113)
-GO
 INSERT sys_role_menu VALUES (4, 113)
 GO
-INSERT sys_role_menu VALUES (5, 113)
+INSERT sys_role_menu VALUES (5, 121)
 GO
-INSERT sys_role_menu VALUES (5, 112)
+INSERT sys_role_menu VALUES (2, 114)
+GO
+INSERT sys_role_menu VALUES (3, 114)
+GO
+INSERT sys_role_menu VALUES (4, 114)
+GO
+INSERT sys_role_menu VALUES (5, 114)
 GO
 
 -- Management customer menu

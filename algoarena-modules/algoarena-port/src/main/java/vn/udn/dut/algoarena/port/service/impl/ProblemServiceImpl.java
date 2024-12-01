@@ -39,6 +39,15 @@ public class ProblemServiceImpl implements IProblemService {
 	}
 
 	/**
+	 * Query Problem public list
+	 */
+	@Override
+	public TableDataInfo<ProblemVo> queryPagePublicList(ProblemBo bo, PageQuery pageQuery) {
+		Page<ProblemVo> page = baseMapper.selectPagePublicProblemList(pageQuery.build(), this.buildQueryWrapper(bo));
+		return TableDataInfo.build(page);
+	}
+
+	/**
 	 * Query Problem list
 	 */
 	@Override
@@ -59,7 +68,8 @@ public class ProblemServiceImpl implements IProblemService {
 	private Wrapper<Problem> buildQueryWrapper(ProblemBo bo) {
 //        Map<String, Object> params = bo.getParams();
 		QueryWrapper<Problem> wrapper = Wrappers.query();
-		wrapper.eq(bo.getTitle() != null, "p.title", bo.getTitle())
+		wrapper.eq(bo.getExamId() != null, "p.exam_id", bo.getExamId())
+				.eq(bo.getTitle() != null, "p.title", bo.getTitle())
 				.like(bo.getDescription() != null, "p.description", bo.getDescription())
 				.eq(bo.getDifficulty() != null, "p.difficulty", bo.getDifficulty())
 				.like(bo.getRemark() != null, "p.remark", bo.getRemark());

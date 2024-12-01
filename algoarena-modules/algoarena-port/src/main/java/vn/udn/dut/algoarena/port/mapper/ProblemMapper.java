@@ -19,6 +19,15 @@ import java.util.List;
 public interface ProblemMapper extends BaseMapperPlus<Problem, ProblemVo> {
 
 	/**
+	 *
+	 * @param page
+	 * @param queryWrapper
+	 * @return
+	 */
+	Page<ProblemVo> selectPagePublicProblemList(@Param("page") Page<Problem> page,
+										  @Param(Constants.WRAPPER) Wrapper<Problem> queryWrapper);
+
+	/**
 	 * 
 	 * @param page
 	 * @param queryWrapper

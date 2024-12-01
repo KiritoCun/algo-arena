@@ -1532,6 +1532,44 @@ export default {
       deleteCf: 'Are you sure to delete hall?'
     }
   },
+  // Exam menu internationalization
+  examManagement: {
+    searchInput: {
+      titleLb: 'Exam title',
+      titlePh: 'Input',
+    },
+    headerButton: {
+      addTt: 'Add',
+      editTt: 'Edit',
+      deleteTt: 'Delete'
+    },
+    columns: {
+      titleLb: 'Title',
+      descriptionLb: 'Description',
+      startTimeLb: 'Start time',
+      endTimeLb: 'End time',
+      createTimeLb: 'Create time',
+      remarkLb: 'Remark',
+      operateLb: 'Operate',
+      editLb: 'Edit',
+      deleteLb: 'Delete'
+    },
+    problemColumns: {
+      titleLb: 'Problem title',
+      descriptionLb: 'Description',
+      difficultyLb: 'Difficulty',
+      maxScoreLb: 'Max score',
+      remarkLb: 'Remark',
+      operateLb: 'Operate',
+      editLb: 'Edit',
+      deleteLb: 'Delete'
+    },
+    operationMsg: {
+      submitSuccess: 'Edit successfully',
+      deleteSuccess: 'Delete successfully',
+      deleteCf: 'Are you sure to delete exam?'
+    }
+  },
   // Problem menu internationalization
   problemManagement: {
     searchInput: {
@@ -1568,6 +1606,79 @@ export default {
       submitSuccess: 'Edit successfully',
       deleteSuccess: 'Delete successfully',
       deleteCf: 'Are you sure to delete problem?'
+    }
+  },
+  // Submission menu internationalization
+  submissionManagement: {
+    searchInput: {
+      titleLb: 'Problem title',
+      titlePh: 'Input',
+    },
+    headerButton: {
+      addTt: 'Add',
+      editTt: 'Edit',
+      deleteTt: 'Delete'
+    },
+    columns: {
+      examNameLb: 'Exam name',
+      problemNameLb: 'Problem name',
+      userNameLb: 'Full name',
+      codeLb: 'Code',
+      statusLb: 'Status',
+      scoreLb: 'Score',
+      createdTimeLb: 'Submited time',
+      operateLb: 'Operate',
+      editLb: 'Edit',
+      deleteLb: 'Delete'
+    },
+    submissionTestcaseColumns: {
+      inputDataLb: 'Input data',
+      expectedOutputLb: 'Expected output',
+      actualOutputLb: 'Actual output',
+      isCorrectLb: 'Is correct',
+      executedTimeLb: 'Executed at',
+      operateLb: 'Operate',
+      editLb: 'Edit',
+      deleteLb: 'Delete'
+    },
+    operationMsg: {
+      submitSuccess: 'Edit successfully',
+      deleteSuccess: 'Delete successfully',
+      deleteCf: 'Are you sure to delete submission?'
+    }
+  },
+  // ExamResult menu internationalization
+  examResultManagement: {
+    searchInput: {
+      titleLb: 'Problem title',
+      titlePh: 'Input',
+    },
+    headerButton: {
+      addTt: 'Add',
+      editTt: 'Edit',
+      deleteTt: 'Delete'
+    },
+    columns: {
+      examNameLb: 'Exam name',
+      userNameLb: 'Full name',
+      totalScoreLb: 'Total score',
+      completedTimeLb: 'Completed time',
+      operateLb: 'Operate',
+      editLb: 'Edit',
+      deleteLb: 'Delete'
+    },
+    examResultDetailColumns: {
+      problemNameLb: 'Problem name',
+      scoreLb: 'Score',
+      completedTimeLb: 'Completed time',
+      operateLb: 'Operate',
+      editLb: 'Edit',
+      deleteLb: 'Delete'
+    },
+    operationMsg: {
+      submitSuccess: 'Edit successfully',
+      deleteSuccess: 'Delete successfully',
+      deleteCf: 'Are you sure to delete exam result?'
     }
   },
   // Showtime menu internationalization
