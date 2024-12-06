@@ -38,6 +38,8 @@ public class ProblemVo implements Serializable {
 
 	private Integer maxScore;
 
+	private Integer numberTestcase;
+
 	private String remark;
 
 	private Date createTime;

@@ -102,3 +102,121 @@ code {
 	color: white;
 	font-size: 1rem;
 }
+
+.contact-container {
+    display: flex;
+    background-color: #1e1e1e;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  .contact-address {
+    width: 50%;
+    padding-right: 20px;
+  }
+  
+  .contact-logo {
+    width: 120px;
+    margin-bottom: 20px;
+  }
+  
+  .contact-address-detail {
+    margin-top: 20px;
+  }
+  
+  .main-info {
+    margin-bottom: 20px;
+  }
+  
+  .title-text {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .sub-title-text {
+    font-size: 14px;
+    font-weight: lighter;
+  }
+  
+  .sub-info {
+    margin-top: 20px;
+  }
+  
+  .sub-info-item {
+    display: flex;
+    margin-bottom: 15px;
+  }
+  
+  .sub-info-item .content {
+    margin-left: 10px;
+  }
+  
+  .label-text {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .normal-text {
+    font-size: 14px;
+    font-weight: normal;
+  }
+  
+  .contact-others {
+    width: 50%;
+    padding-left: 20px;
+  }
+  
+  .policy, .support {
+    margin-top: 20px;
+  }
+  
+  .policy .title-text, .support .title-text {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .term {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .term-column1, .term-column2 {
+    width: 50%;
+  }
+  
+  .term-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .term-item .icon-background {
+    background-color: #333;
+    border-radius: 50%;
+    padding: 10px;
+    margin-right: 10px;
+  }
+  
+  .term-item .normal-text {
+    font-size: 14px;
+  }
+  
+  .hotline {
+    display: flex;
+    align-items: center;
+  }
+  
+  .hotline-background-icon {
+    background-color: #333;
+    border-radius: 50%;
+    padding: 10px;
+    margin-right: 10px;
+  }
+  
+  .hotline-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: red;
+  }
+  

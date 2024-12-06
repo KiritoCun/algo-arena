@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
 import { SlideVO, SlideForm, SlideQuery } from '@/api/portCustomer/slideManagement/types';
-import { parseStrEmpty } from '@/utils/starcinema';
+import { parseStrEmpty } from '@/utils/algoarena';
 
 /**
  * Query Slide list
@@ -40,7 +40,7 @@ export const addSlide = (data: SlideForm) => {
 };
 
 /**
- * Edit Cinema
+ * Edit Slide
  * @param data
  */
 export const updateSlide = (data: SlideForm) => {

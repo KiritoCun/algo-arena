@@ -38,7 +38,9 @@ public class TestcaseVo implements Serializable {
 
 	private String explanation;
 
-	private boolean isHidden;
+	private Long ossId;
+
+	private Integer isHidden;
 
 	private String remark;
 

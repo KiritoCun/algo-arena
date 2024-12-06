@@ -2,7 +2,7 @@ import axios from 'axios';
 import FileSaver from 'file-saver';
 import { getToken } from '@/utils/auth';
 import errorCode from '@/utils/errorCode';
-import { blobValidate } from '@/utils/starcinema';
+import { blobValidate } from '@/utils/algoarena';
 import { LoadingInstance } from 'element-plus/es/components/loading/src/loading';
 import { getDownloadUrl, getUrl } from '@/utils/request';
 

@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
 import { ProblemVO, TestcaseVO, ProblemForm, TestcaseForm, ProblemQuery, TestcaseQuery } from '@/api/portCustomer/problemManagement/types';
-import { parseStrEmpty } from '@/utils/starcinema';
+import { parseStrEmpty } from '@/utils/algoarena';
 
 /**
  * Query Problem list
@@ -28,6 +28,17 @@ export const getProblem = (id?: string | number): AxiosPromise<ProblemVO> => {
 };
 
 /**
+ * Query detail of Testcase
+ * @param id
+ */
+export const getTestcase = (id?: string | number): AxiosPromise<TestcaseVO> => {
+  return request({
+    url: '/portCustomer/testcase/' + parseStrEmpty(id),
+    method: 'get'
+  });
+};
+
+/**
  * Add Problem
  * @param data
  */
@@ -46,6 +57,18 @@ export const addProblem = (data: ProblemForm) => {
 export const updateProblem = (data: ProblemForm) => {
   return request({
     url: '/portCustomer/problem',
+    method: 'put',
+    data: data
+  });
+};
+
+/**
+ * Edit Testcase
+ * @param data
+ */
+export const updateTestcase = (data: TestcaseForm) => {
+  return request({
+    url: '/portCustomer/testcase',
     method: 'put',
     data: data
   });

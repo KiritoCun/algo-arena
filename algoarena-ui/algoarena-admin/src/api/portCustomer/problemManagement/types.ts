@@ -5,29 +5,29 @@ export interface ProblemVO {
   id: string | number;
 
   /**
-   * Cinema id
+   * Title
    */
-  cinemaId: string | number;
+  title: string;
 
   /**
-   * Cinema name
+   * Description
    */
-  cinemaName: string;
-
-  /**
-   *
-   */
-  problemName: string;
+  description: string;
 
   /**
    *
    */
-  capacity: Boolean;
+  maxScore: number;
 
   /**
    *
    */
-  rowNumber: string | number;
+  numberTestcase: number;
+
+  /**
+   *
+   */
+  level: string | number;
 
   /**
    * Remark
@@ -40,6 +40,11 @@ export interface ProblemForm extends BaseEntity {
    * Problem id
    */
   id?: string | number;
+
+  /**
+   * Exam id
+   */
+  examId?: string | number;
 
   /**
    * Title
@@ -55,6 +60,16 @@ export interface ProblemForm extends BaseEntity {
    *
    */
   difficulty?: string | number;
+
+  /**
+   *
+   */
+  maxScore?: number;
+
+  /**
+   *
+   */
+  numberTestcase?: number;
 
   /**
    * Remark
@@ -87,61 +102,91 @@ export interface ProblemQuery extends PageQuery {
 
 export interface TestcaseVO {
   /**
+   * Testcase id
+   */
+  id?: string | number;
+
+  /**
    * Problem id
    */
   problemId: string | number;
 
   /**
-   * Seat type id
+   * Input data
    */
-  seatTypeId: string | number;
+  inputData: string | number;
 
   /**
-   * Id
+   * Expected output
    */
-  id: string | number;
-
-  /**
-   *
-   */
-  rowCode: string;
+  expectedOutput: string | number;
 
   /**
    *
    */
-  columCode: string | number;
+  illustration: string;
 
   /**
    *
    */
-  createTime: string;
+  explanation: string | number;
+
+  /**
+   *
+   */
+  isHidden: string | number | boolean;
+
+  /**
+   *
+   */
+  remark: string;
 }
 
 export interface TestcaseForm extends BaseEntity {
   /**
-   * Problem id
+   * Testcase id
    */
   id?: string | number;
-
+  
   /**
-   * Cinema id
+   * Problem id
    */
   problemId?: string | number;
 
   /**
-   * Seat type id
+   * Input data
    */
-  seatTypeId?: string | number;
+  inputData?: string | number;
+
+  /**
+   * Expected output
+   */
+  expectedOutput?: string | number;
 
   /**
    *
    */
-  rowCode?: string | number;
+  ossId?: number;
 
   /**
    *
    */
-  rowSeatNumber?: string;
+  illustration?: string;
+
+  /**
+   *
+   */
+  explanation?: string | number;
+
+  /**
+   *
+   */
+  isHidden?: string | number | boolean;
+
+  /**
+   *
+   */
+  remark?: string;
 }
 
 export interface TestcaseQuery {

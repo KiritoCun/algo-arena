@@ -12,13 +12,16 @@ import Timer from "../Timer/Timer";
 import { useRouter } from "next/router";
 import { problems } from "@/utils/problems";
 import { Problem } from "@/utils/types/problem";
+import { createContext, useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../Modals/AuthContext';
 
 type TopbarProps = {
 	problemPage?: boolean;
 };
 
 const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
-	const [user] = useAuthState(auth);
+	const { user, logout } = useContext(AuthContext);
+	//const [user] = useAuthState(auth);
 	const setAuthModalState = useSetRecoilState(authModalState);
 	const router = useRouter();
 
@@ -102,7 +105,7 @@ const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 								z-40 group-hover:scale-100 scale-0 
 								transition-all duration-300 ease-in-out'
 							>
-								<p className='text-sm'>{user.email}</p>
+								<p className='text-sm'>{user.username}</p>
 							</div>
 						</div>
 					)}

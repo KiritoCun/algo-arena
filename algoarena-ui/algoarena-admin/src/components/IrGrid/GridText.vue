@@ -12,7 +12,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { parseTime } from '@/utils/starcinema';
+import { parseTime } from '@/utils/algoarena';
 const props = defineProps({
   rowIndex: {
     type: Number,

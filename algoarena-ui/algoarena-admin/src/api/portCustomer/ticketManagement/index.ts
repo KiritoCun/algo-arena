@@ -8,7 +8,7 @@ import {
   BookingQuery,
   BookingDetailQuery
 } from '@/api/portCustomer/ticketManagement/types';
-import { parseStrEmpty } from '@/utils/starcinema';
+import { parseStrEmpty } from '@/utils/algoarena';
 
 /**
  * Query Booking list

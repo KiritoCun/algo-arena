@@ -91,7 +91,7 @@ const props = defineProps({
     // file type, eg ['png', 'jpg', 'jpeg']
     fileType: {
         type: Array,
-        default: () => ["doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "pdf"],
+        default: () => ["png", "jpg", "jpeg", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "pdf"],
     },
     // Whether to display prompts
     isShowTip: {

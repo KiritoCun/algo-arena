@@ -5,29 +5,24 @@ export interface ExamVO {
   id: string | number;
 
   /**
-   * Cinema id
+   * Title
    */
-  cinemaId: string | number;
+  title: string;
 
   /**
-   * Cinema name
+   * Description
    */
-  cinemaName: string;
-
-  /**
-   *
-   */
-  examName: string;
+  description: string;
 
   /**
    *
    */
-  capacity: Boolean;
+  startTime: string;
 
   /**
    *
    */
-  rowNumber: string | number;
+  endTime: string;
 
   /**
    * Remark
@@ -129,12 +124,12 @@ export interface ProblemVO {
 
 export interface ProblemForm extends BaseEntity {
   /**
-   * Exam id
+   * Problem id
    */
   id?: string | number;
 
   /**
-   * Cinema id
+   * Exam id
    */
   examId?: string | number;
 

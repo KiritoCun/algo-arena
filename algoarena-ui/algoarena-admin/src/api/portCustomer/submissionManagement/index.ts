@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
 import { SubmissionVO, SubmissionTestcaseVO, SubmissionForm, SubmissionTestcaseForm, SubmissionQuery, SubmissionTestcaseQuery } from '@/api/portCustomer/submissionManagement/types';
-import { parseStrEmpty } from '@/utils/starcinema';
+import { parseStrEmpty } from '@/utils/algoarena';
 
 /**
  * Query Submission list

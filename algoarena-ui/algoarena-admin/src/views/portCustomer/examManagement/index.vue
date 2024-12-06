@@ -33,6 +33,18 @@
           @keyup.enter="handleQuery"
         />
       </el-form-item>
+      <el-form-item :label="$t('examManagement.searchInput.applyTimeLb')" style="width: 230px;" class="form-item-search">
+        <el-date-picker
+          v-model="dateRange"
+          value-format="YYYY-MM-DD"
+          format="DD/MM/YYYY"
+          type="daterange"
+          range-separator="-"
+          :start-placeholder="$t('user.searchInput.createTimeStartPh')"
+          :end-placeholder="$t('user.searchInput.createTimeEndPh')"
+          @change="handleQuery"
+        />
+      </el-form-item>
     </template>
     <template v-slot:header-button-left>
       <IrButton
@@ -90,10 +102,23 @@
               <el-input v-model="examForm.description" placeholder="Nhập" />
             </el-form-item>
             <el-form-item label="Thời gian bắt đầu" prop="startTime" class="form-item-row">
-              <el-input v-model="examForm.startTime" placeholder="Nhập" />
+              <el-date-picker
+                clearable
+                v-model="examForm.startTime"
+                type="datetime"
+                value-format="YYYY-MM-DD HH:mm:ss"
+                placeholder="Please select an start time"
+              ></el-date-picker>
             </el-form-item>
             <el-form-item label="Thời gian kết thúc" prop="endTime" class="form-item-row">
-              <el-input v-model="examForm.endTime" placeholder="Nhập" />
+              <el-date-picker
+                clearable
+                v-model="examForm.endTime"
+                type="datetime"
+                value-format="YYYY-MM-DD HH:mm:ss"
+                placeholder="Please select an end time"
+              >
+              </el-date-picker>
             </el-form-item>
             <el-form-item label="Ghi chú" prop="remark" class="form-item-row">
               <el-input v-model="examForm.remark" type="textarea" placeholder="Nhập" />
@@ -117,11 +142,12 @@
 import { listExam, getExam, delExam, addExam, updateExam, listProblem, updateProblems } from '@/api/portCustomer/examManagement';
 // IMPORT TYPE
 import { ExamVO, ProblemVO, ExamQuery, ProblemQuery, ExamForm } from '@/api/portCustomer/examManagement/types';
-import { ElForm, FormRules } from 'element-plus';
+import { DateModelType, ElForm, FormRules } from 'element-plus';
 // IMPORT GLOBAL TOOL (PROXY)
 import { ComponentInternalInstance, reactive } from "vue";
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 // IMPORT DICTIONARY
+const { level } = toRefs<any>(proxy?.useDict("level"))
 ///////////////////////////////////////////////////////////////////////////////
 // VARIABLE SECTION
 ///////////////////////////////////////////////////////////////////////////////
@@ -130,6 +156,7 @@ const examSelected = ref<any>({});
 const layoutLoading = ref(false);
 const layoutExamFormLoading = ref(false);
 const fileUploadRef = ref();
+const dateRange = ref<[DateModelType, DateModelType]>(['','']);
 const examList = ref<ExamVO[]>([]);
 const examIds = ref(<any>[]);
 const examLoading = ref(true);
@@ -150,7 +177,7 @@ const problemRowKey = ref("id");
 const problemColumns = ref<GridColumn[]>([
   { prop: "title", name: 'examManagement.problemColumns.titleLb', sortable: true, size: 220, align: 'left' },
   { prop: "description", name: 'examManagement.problemColumns.descriptionLb', sortable: true, size: 280, align: 'left' },
-  { prop: "difficulty", name: 'examManagement.problemColumns.difficultyLb', sortable: true, size: 70, align: 'left' },
+  { prop: "difficulty", name: 'examManagement.problemColumns.difficultyLb', sortable: true, size: 90, align: 'left', dictData: level },
   { prop: "maxScore", name: 'examManagement.problemColumns.maxScoreLb', sortable: true, size: 140, align: 'left' },
   { prop: "remark", name: 'examManagement.problemColumns.remarkLb', size: 120, align: 'left' }
 ]);
@@ -180,8 +207,10 @@ const examDialog = reactive<DialogOption>({
 });
 const examForm = ref<ExamForm>({...initExamFormData});
 const examFormRules: FormRules = {
-  cinemaId: [{required: true, trigger: "blur", message: "Rạp chiếu không được trống", }],
-  examName: [{ required: true, trigger: "blur", message: "Tên phòng chiếu không được trống" }]
+  title: [{required: true, trigger: "blur", message: "Tên bài thi không được trống", }],
+  description: [{ required: true, trigger: "blur", message: "Mô tả bài thi không được trống" }],
+  startTime: [{ required: true, trigger: "blur", message: "Thời gian bắt đầu là bắt buộc" }],
+  endTime: [{ required: true, trigger: "blur", message: "Thời gian kết thúc là bắt buộc" }]
 };
 ///////////////////////////////////////////////////////////////////////////////
 // METHOD SECTION
@@ -203,7 +232,7 @@ const handleSelectCellExam = (modal: any) => {
 /** Query exam list */
 const getExamList = async () => {
   examLoading.value = true;
-  const res = await listExam(examQueryParams);
+  const res = await listExam(proxy?.addDateRange(examQueryParams, dateRange.value));
   examList.value = res.rows;
   examTotal.value = res.total;
   examLoading.value = false;
@@ -263,7 +292,7 @@ const resetQuery = () => {
 /** Add button action */
 const handleExamAdd = () => {
   examDialog.visible = true;
-  examDialog.title = 'Tạo phòng chiếu';
+  examDialog.title = 'Tạo bài thi';
   nextTick(() => {
     resetExamForm();
   })
@@ -271,7 +300,7 @@ const handleExamAdd = () => {
 /** Edit button action */
 const handleExamUpdate = (row?: ExamForm | ExamVO) => {
   examDialog.visible = true;
-  examDialog.title = 'Cập nhật thông tin bài toán';
+  examDialog.title = 'Cập nhật thông tin bài thi';
   nextTick(async () => {
     resetExamForm();
     const _id = examIds.value[0]
@@ -312,7 +341,7 @@ const handleProblemUpdate = async () => {
 /** Validate delete */
 const handleDeleteExam = async () => {
   const ids = examIds.value
-  await proxy?.$modal.confirmDelete("Xác nhận xóa phòng?").then(action => {
+  await proxy?.$modal.confirmDelete("Xác nhận xóa bài thi?").then(action => {
     layoutLoading.value = true;
     if (action === 'cancel') return;
     delExam(ids).finally(() => layoutLoading.value = false);

@@ -1,7 +1,7 @@
 {
-  "name": "cinema",
+  "name": "algoarena",
   "version": "5.0.0",
-  "description": "Cinema system",
+  "description": "Algorithm arena system",
   "author": "HoaLD",
   "scripts": {
     "serve": "vite preview",
@@ -12,7 +12,7 @@
     "dev": "vite",
     "devadmin": "vite serve --mode development_admin",
     "devcustomer": "vite serve --mode development_customer",
-    "prepare": "cd .. && husky install cinema-ui/.husky",
+    "prepare": "cd .. && husky install algoarena-ui/.husky",
     "prettier": "prettier --write .",
     "preview": "vite preview"
   },

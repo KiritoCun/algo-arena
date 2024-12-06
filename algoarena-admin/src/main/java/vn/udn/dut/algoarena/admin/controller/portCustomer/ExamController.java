@@ -15,8 +15,10 @@ import vn.udn.dut.algoarena.common.mybatis.core.page.PageQuery;
 import vn.udn.dut.algoarena.common.mybatis.core.page.TableDataInfo;
 import vn.udn.dut.algoarena.common.web.core.BaseController;
 import vn.udn.dut.algoarena.port.domain.bo.ExamBo;
+import vn.udn.dut.algoarena.port.domain.bo.ProblemBo;
 import vn.udn.dut.algoarena.port.domain.vo.ExamVo;
 import vn.udn.dut.algoarena.port.service.IExamService;
+import vn.udn.dut.algoarena.port.service.IProblemService;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ import java.util.List;
 @RequestMapping("/portCustomer/exam")
 public class ExamController extends BaseController {
 	private final IExamService examService;
+	private final IProblemService problemService;
 	
 	@SaCheckPermission("portCustomer:exam:list")
 	@GetMapping("/list")
@@ -53,6 +56,17 @@ public class ExamController extends BaseController {
 	@PutMapping()
 	public R<Void> edit(@Validated(EditGroup.class) @RequestBody ExamBo bo) {
 		return toAjax(examService.updateByBo(bo));
+	}
+
+	@SaCheckPermission("portCustomer:exam:edit")
+	@Log(title = "Exam", businessType = BusinessType.UPDATE)
+	@RepeatSubmit()
+	@PutMapping("/{id}")
+	public R<Void> editProblem(@PathVariable Long id, @RequestBody List<ProblemBo> problemList) {
+		for(ProblemBo problemBo : problemList){
+			problemService.updateByBo(problemBo);
+		}
+		return toAjax(true);
 	}
 	
 	@SaCheckPermission("portCustomer:exam:remove")

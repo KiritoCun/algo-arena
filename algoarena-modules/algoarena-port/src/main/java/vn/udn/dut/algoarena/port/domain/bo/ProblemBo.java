@@ -31,6 +31,8 @@ public class ProblemBo {
 
 	private Integer maxScore;
 
+	private Integer numberTestcase;
+
 	private String remark;
 
 	private Date createTime;

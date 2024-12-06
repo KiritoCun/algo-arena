@@ -29,13 +29,15 @@ GO
 
 INSERT sys_role VALUES (1, N'000000', N'Super administrator', N'superadmin', 1, N'1', 1, 1, N'0', N'0', 103, 1, getdate(), NULL, NULL, N'Super administrator', N'system')
 GO
-INSERT sys_role VALUES (2, N'000000', N'Quản lý phòng thi', N'exam_manager', 2, N'1', 1, 1, N'0', N'0', 103, 1, getdate(), NULL, NULL, N'Exam management role', N'system')
+INSERT sys_role VALUES (2, N'000000', N'Quản lý bài thi', N'exam_manager', 2, N'1', 1, 1, N'0', N'0', 103, 1, getdate(), NULL, NULL, N'Exam management role', N'system')
 GO
-INSERT sys_role VALUES (3, N'000000', N'Quản lý bài thi', N'problem_manager', 3, N'1', 1, 1, N'0', N'0', 103, 1, getdate(), NULL, NULL, N'Problem management role', N'system')
+INSERT sys_role VALUES (3, N'000000', N'Quản lý bài toán', N'problem_manager', 3, N'1', 1, 1, N'0', N'0', 103, 1, getdate(), NULL, NULL, N'Problem management role', N'system')
 GO
-INSERT sys_role VALUES (4, N'000000', N'Quản lý bài làm', N'ticket_manager', 4, N'1', 1, 1, N'0', N'0', 103, 1, getdate(), NULL, NULL, N'Ticket management role', N'system')
+INSERT sys_role VALUES (4, N'000000', N'Quản lý bài làm', N'submission_manager', 4, N'1', 1, 1, N'0', N'0', 103, 1, getdate(), NULL, NULL, N'Submission management role', N'system')
 GO
 INSERT sys_role VALUES (5, N'000000', N'Quản lý doanh thu', N'money_manager', 5, N'1', 1, 1, N'0', N'0', 103, 1, getdate(), NULL, NULL, N'Money management role', N'system')
+GO
+INSERT sys_role VALUES (6, N'000000', N'Giảng viên', N'money_manager', 6, N'1', 1, 1, N'0', N'0', 103, 1, getdate(), NULL, NULL, N'Teacher role', N'system')
 GO
 
 IF OBJECT_ID('sys_role_dept', 'U') IS NOT NULL
@@ -61,6 +63,8 @@ GO
 INSERT sys_role_dept VALUES (4, 100)
 GO
 INSERT sys_role_dept VALUES (5, 100)
+GO
+INSERT sys_role_dept VALUES (6, 100)
 GO
 
 IF OBJECT_ID('sys_menu', 'U') IS NOT NULL 
@@ -123,7 +127,7 @@ GO
 INSERT sys_menu VALUES (4, N'{"vi_VN":"Trang chủ","en_US":"Homepage"}', 0, 4, N'http://localhost', null, N'', 0, 0, N'M', N'0', N'0', N'', N'guide', 103, 1, getdate(), null, null, N'Star algoarena official website address', N'system');
 GO
 
--- IT
+-- Role menu
 INSERT sys_role_menu VALUES (1, 1)
 GO
 INSERT sys_role_menu VALUES (1, 2)
@@ -139,6 +143,8 @@ GO
 INSERT sys_role_menu VALUES (4, 2)
 GO
 INSERT sys_role_menu VALUES (5, 3)
+GO
+INSERT sys_role_menu VALUES (6, 2)
 GO
 
 --
@@ -161,8 +167,10 @@ INSERT sys_menu VALUES (106, N'{"vi_VN":"Cấu hình","en_US":"Configuration"}',
 GO
 INSERT sys_menu VALUES (107, N'{"vi_VN":"Thông báo","en_US":"Announcement"}', 1, 8, N'notice', N'system/notice/index', N'', 1, 0, N'C', N'0', N'0', N'system:notice:list', N'#', 103, 1, getdate(), NULL, NULL, N'Notification Announcement Menu', N'system')
 GO
+INSERT sys_menu VALUES (108, N'{"vi_VN":"Tài liệu","en_US":"Document"}', 1, 9, N'document', N'system/document/index', N'', 1, 0, N'C', N'0', N'0', N'system:document:list', N'#', 103, 1, getdate(), NULL, NULL, N'Document Menu', N'system')
+GO
 
-INSERT sys_menu VALUES (110, N'{"vi_VN":"Quản lý phòng thi","en_US":"Management exam"}', 2, 1, N'exam', N'portCustomer/examManagement/index', N'', 1, 0, N'C', N'0', N'0', N'portCustomer:exam:list', N'exam', 103, 1, getdate(), NULL, NULL, N'Management exam menu', N'system')
+INSERT sys_menu VALUES (110, N'{"vi_VN":"Quản lý bài thi","en_US":"Management exam"}', 2, 1, N'exam', N'portCustomer/examManagement/index', N'', 1, 0, N'C', N'0', N'0', N'portCustomer:exam:list', N'exam', 103, 1, getdate(), NULL, NULL, N'Management exam menu', N'system')
 GO
 INSERT sys_menu VALUES (111, N'{"vi_VN":"Quản lý bài toán","en_US":"Management problem"}', 2, 2, N'problem', N'portCustomer/problemManagement/index', N'', 1, 0, N'C', N'0', N'0', N'portCustomer:problem:list', N'problem', 103, 1, getdate(), NULL, NULL, N'Management problem menu', N'system')
 GO
@@ -191,6 +199,14 @@ GO
 INSERT sys_role_menu VALUES (4, 114)
 GO
 INSERT sys_role_menu VALUES (5, 114)
+GO
+INSERT sys_role_menu VALUES (6, 110)
+GO
+INSERT sys_role_menu VALUES (6, 111)
+GO
+INSERT sys_role_menu VALUES (6, 112)
+GO
+INSERT sys_role_menu VALUES (6, 113)
 GO
 
 -- Management customer menu

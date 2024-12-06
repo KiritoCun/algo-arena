@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
 import { ExamResultVO, ExamResultDetailVO, ExamResultForm, ExamResultDetailForm, ExamResultQuery, ExamResultDetailQuery } from '@/api/portCustomer/examResultManagement/types';
-import { parseStrEmpty } from '@/utils/starcinema';
+import { parseStrEmpty } from '@/utils/algoarena';
 
 /**
  * Query ExamResult list

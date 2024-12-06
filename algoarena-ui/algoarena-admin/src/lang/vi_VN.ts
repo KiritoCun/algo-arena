@@ -1181,6 +1181,62 @@ export default {
       deleteCf: 'Xác nhận xoá lịch sử%{id}?'
     }
   },
+  document: {
+    searchInput: {
+      docTitleLb: 'Tiêu đề',
+      docTitlePh: 'Nhập',
+      docTypeLb: 'Loại tài liệu',
+      docTypePh: 'Chọn'
+    },
+    headerButton: {
+      addTt: 'Thêm',
+      editTt: 'Sửa',
+      deleteTt: 'Xoá'
+    },
+    dialog: {
+      addTt: 'Thêm tài liệu',
+      editTt: 'Sửa tài liệu',
+      docTitleLb: 'Tiêu đề',
+      docTitlePh: 'Nhập',
+      docTypeLb: 'Loại',
+      isExternalLinkLb: 'Link ngoài',
+      statusTt: 'Trạng thái',
+      docTargetLb: 'Đối tượng',
+      docTargetPh: 'Nhập',
+      docUrlLb: 'URL',
+      docUrlPh: 'Nhập',
+      docDescriptionLb: 'Mô tả',
+      docDescriptionPh: 'Nhập',
+      imageTypeLb: 'Hình ảnh',
+      imageTypePh: 'Nhập',
+      remarkLb: 'Ghi chú',
+      remarkPh: 'Nhập',
+      footerCancelTt: 'Đóng',
+      footerSubmitTt: 'Lưu',
+      rules: {
+        docTitleRqMsg: 'Tiêu đề tài liệu không được trống'
+      }
+    },
+    columns: {
+      idLb: 'ID',
+      docTypeLb: 'Loại',
+      docTitleLb: 'Tiêu đề',
+      urlLb: 'URL',
+      statusLb: 'Trạng thái',
+      createTimeLb: 'Ngày tạo',
+      operateLb: 'Thao tác',
+      operateEditLb: 'Sửa',
+      operateDeleteLb: 'Xoá'
+    },
+    operationMsg: {
+      submitSuccess: 'Lưu thành công',
+      deleteSuccess: 'Xoá thành công',
+      deleteCf: 'Xác nhận xoá tài liệu%{title}?',
+      statusEnable: 'Kích hoạt',
+      statusDisable: 'Khoá',
+      statusChangeCf: 'Xác nhận "%{action}" tài liệu "%{docTitle}"?'
+    }
+  },
   // Cinema menu internationalization
   cinemaManagement: {
     searchInput: {
@@ -1535,6 +1591,7 @@ export default {
     searchInput: {
       titleLb: 'Tên bài thi',
       titlePh: 'Nhập',
+      applyTimeLb: 'Thời gian thực hiện',
     },
     headerButton: {
       addTt: 'Thêm',
@@ -1573,11 +1630,14 @@ export default {
     searchInput: {
       titleLb: 'Tên bài toán',
       titlePh: 'Nhập',
+      difficultyLb: 'Độ khó',
+      difficultyPh: 'Chọn'
     },
     headerButton: {
       addTt: 'Thêm',
       editTt: 'Sửa',
-      deleteTt: 'Xoá'
+      deleteTt: 'Xoá',
+      saveTt: 'Lưu'
     },
     columns: {
       titleLb: 'Tên bài toán',
@@ -1594,7 +1654,7 @@ export default {
       expectedOutputLb: 'Giá trị mong đợi',
       illustrationLb: 'Hình ảnh minh họa',
       explanationLb: 'Giải thích',
-      isHiddenLb: 'Ẩn',
+      isHiddenLb: 'Hiển thị',
       remarkLb: 'Ghi chú',
       operateLb: 'Thao tác',
       editLb: 'Sửa',

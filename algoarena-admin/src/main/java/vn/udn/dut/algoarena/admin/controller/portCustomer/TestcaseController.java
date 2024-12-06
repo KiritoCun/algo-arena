@@ -30,19 +30,19 @@ public class TestcaseController extends BaseController{
 	
 	private final IBookingService bookingService;
 	
-	@SaCheckPermission("portCustomer:testcase:list")
+	@SaCheckPermission("portCustomer:problem:list")
 	@GetMapping("/list")
 	public TableDataInfo<TestcaseVo> list(TestcaseBo bo, PageQuery pageQuery) {
 		return testcaseService.queryPageList(bo, pageQuery);
 	}
 
-	@SaCheckPermission("portCustomer:testcase:query")
+	@SaCheckPermission("portCustomer:problem:query")
 	@GetMapping(value = { "/", "/{id}" })
 	public R<TestcaseVo> getInfo(@PathVariable(value = "id", required = false) Long id) {
 		return R.ok(testcaseService.queryById(id));
 	}
 	
-	@SaCheckPermission("portCustomer:testcase:add")
+	@SaCheckPermission("portCustomer:problem:add")
 	@Log(title = "Testcase", businessType = BusinessType.INSERT)
 	@RepeatSubmit()
 	@PostMapping()
@@ -50,7 +50,7 @@ public class TestcaseController extends BaseController{
 		return toAjax(testcaseService.insertByBo(bo));
 	}
 
-	@SaCheckPermission("portCustomer:testcase:edit")
+	@SaCheckPermission("portCustomer:problem:edit")
 	@Log(title = "Testcase", businessType = BusinessType.UPDATE)
 	@RepeatSubmit()
 	@PutMapping()
@@ -58,7 +58,7 @@ public class TestcaseController extends BaseController{
 		return toAjax(testcaseService.updateByBo(bo));
 	}
 
-	@SaCheckPermission("portCustomer:testcase:remove")
+	@SaCheckPermission("portCustomer:problem:remove")
 	@Log(title = "Testcase", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
 	public R<Void> remove(@NotEmpty(message = "Primary key cannot be empty") @PathVariable Long[] ids) {

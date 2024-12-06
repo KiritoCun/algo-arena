@@ -87,13 +87,15 @@ GO
 
 INSERT sys_dept VALUES (100, N'000000', 0, N'0', N'Algorithm Arena', 0, N'Administrator', N'0969753414', N'algo-arena@gmail.com', N'0', N'0', 103, 1, getdate(), NULL, NULL)
 GO
-INSERT sys_dept VALUES (101, N'000000', 100, N'0,100', N'Quản lý phòng thi', 1, N'Nguyễn Ngọc Phú', N'0775545294', N'phunguyen@gmail.com', N'0', N'0', 103, 1, getdate(), NULL, NULL)
+INSERT sys_dept VALUES (101, N'000000', 100, N'0,100', N'Quản lý bài thi', 1, N'Nguyễn Ngọc Phú', N'0775545294', N'phunguyen@gmail.com', N'0', N'0', 103, 1, getdate(), NULL, NULL)
 GO
 INSERT sys_dept VALUES (102, N'000000', 100, N'0,100', N'Quản lý bài toán', 2, N'Nguyễn Văn Cường', N'0346844010', N'cuongnguyen@gmail.com', N'0', N'0', 103, 1, getdate(), NULL, NULL)
 GO
-INSERT sys_dept VALUES (103, N'000000', 100, N'0,100', N'Quản lý bài làm', 2, N'Trần Văn Hữu', N'0383609548', N'huutran@gmail.com', N'0', N'0', 103, 1, getdate(), NULL, NULL)
+INSERT sys_dept VALUES (103, N'000000', 100, N'0,100', N'Quản lý bài làm', 3, N'Trần Văn Hữu', N'0383609548', N'huutran@gmail.com', N'0', N'0', 103, 1, getdate(), NULL, NULL)
 GO
-INSERT sys_dept VALUES (104, N'000000', 100, N'0,100', N'Quản lý doanh thu', 2, N'Nguyễn Minh Quốc', N'0933071554', N'quocnguyen@gmail.com', N'0', N'0', 103, 1, getdate(), NULL, NULL)
+INSERT sys_dept VALUES (104, N'000000', 100, N'0,100', N'Quản lý doanh thu', 4, N'Nguyễn Minh Quốc', N'0933071554', N'quocnguyen@gmail.com', N'0', N'0', 103, 1, getdate(), NULL, NULL)
+GO
+INSERT sys_dept VALUES (105, N'000000', 100, N'0,100', N'Giảng viên', 5, N'Nguyễn Minh Quốc', N'0933071554', N'quocnguyen@gmail.com', N'0', N'0', 103, 1, getdate(), NULL, NULL)
 GO
 
 IF OBJECT_ID('sys_notice', 'U') IS NOT NULL
@@ -121,9 +123,9 @@ ON [PRIMARY]
 TEXTIMAGE_ON [PRIMARY]
 GO
 
-INSERT sys_notice VALUES (1, N'000000', N'Reminder: 2023-11-20 A new version has been released', N'4', N'New version content', N'0', 103, 1, getdate(), NULL, NULL, N'administrator')
+INSERT sys_notice VALUES (1, N'000000', N'Reminder: 2023-11-20 A new version has been released', N'3', N'New version content', N'0', 103, 1, getdate(), NULL, NULL, N'administrator')
 GO
-INSERT sys_notice VALUES (2, N'000000', N'Maintenance notice: 2023-11-01 Algorithm Arena system maintenance in the early morning', N'4', N'Maintenance content', N'0', 103, 1, getdate(), NULL, NULL, N'administrator')
+INSERT sys_notice VALUES (2, N'000000', N'Maintenance notice: 2023-11-01 Algorithm Arena system maintenance in the early morning', N'3', N'Maintenance content', N'0', 103, 1, getdate(), NULL, NULL, N'administrator')
 GO
 
 IF OBJECT_ID('sys_post', 'U') IS NOT NULL
@@ -193,11 +195,15 @@ GO
 
 INSERT sys_user VALUES (1, N'000000', 100, N'admin', N'Administrator', N'sys_user', N'admin@gmail.com', N'0987654321', N'1', NULL, N'$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', N'0', N'0', N'127.0.0.1', getdate(), 103, 1, getdate(), NULL, NULL, N'administrator', N'system')
 GO
-INSERT sys_user VALUES (2, N'000000', 103, N'hoald1', N'Lê Đình Hòa', N'sys_user', N'hoald1@gmail.com', N'0999999999', N'1', NULL, N'$2a$10$ASuKduzRhpJdv2be3MQWi.PIxMeNMokIfKJLWc2cP3k0sVhXEtb0K', N'0', N'0', N'127.0.0.1', getdate(), 103, 1, getdate(), NULL, NULL, N'', N'system')
+INSERT sys_user VALUES (2, N'000000', 101, N'hoald', N'Lê Đình Hòa', N'sys_user', N'hoald@gmail.com', N'0999999999', N'1', NULL, N'$2a$10$ASuKduzRhpJdv2be3MQWi.PIxMeNMokIfKJLWc2cP3k0sVhXEtb0K', N'0', N'0', N'127.0.0.1', getdate(), 103, 1, getdate(), NULL, NULL, N'', N'system')
 GO
-INSERT sys_user VALUES (3, N'000000', 103, N'hoald2', N'Lê Đình Hòa', N'sys_user', N'hoald2@gmail.com', N'0999999999', N'1', NULL, N'$2a$10$ASuKduzRhpJdv2be3MQWi.PIxMeNMokIfKJLWc2cP3k0sVhXEtb0K', N'0', N'0', N'127.0.0.1', getdate(), 103, 1, getdate(), NULL, NULL, N'', N'system')
+INSERT sys_user VALUES (3, N'000000', 102, N'dongbd', N'Bùi Đức Đồng', N'sys_user', N'dongbd@gmail.com', N'0888888888', N'1', NULL, N'$2a$10$ASuKduzRhpJdv2be3MQWi.PIxMeNMokIfKJLWc2cP3k0sVhXEtb0K', N'0', N'0', N'127.0.0.1', getdate(), 103, 1, getdate(), NULL, NULL, N'', N'system')
 GO
-INSERT sys_user VALUES (4, N'000000', 103, N'hoald3', N'Lê Đình Hòa', N'sys_user', N'hoald3@gmail.com', N'0999999999', N'1', NULL, N'$2a$10$ASuKduzRhpJdv2be3MQWi.PIxMeNMokIfKJLWc2cP3k0sVhXEtb0K', N'0', N'0', N'127.0.0.1', getdate(), 103, 1, getdate(), NULL, NULL, N'', N'system')
+INSERT sys_user VALUES (4, N'000000', 103, N'vunq', N'Nguyễn Quốc Vũ', N'sys_user', N'vunq@gmail.com', N'0777777777', N'1', NULL, N'$2a$10$ASuKduzRhpJdv2be3MQWi.PIxMeNMokIfKJLWc2cP3k0sVhXEtb0K', N'0', N'0', N'127.0.0.1', getdate(), 103, 1, getdate(), NULL, NULL, N'', N'system')
+GO
+INSERT sys_user VALUES (5, N'000000', 104, N'huyenvtk', N'Võ Thị Khánh Huyền', N'sys_user', N'huyenvtk@gmail.com', N'0666666666', N'1', NULL, N'$2a$10$ASuKduzRhpJdv2be3MQWi.PIxMeNMokIfKJLWc2cP3k0sVhXEtb0K', N'0', N'0', N'127.0.0.1', getdate(), 103, 1, getdate(), NULL, NULL, N'', N'system')
+GO
+INSERT sys_user VALUES (6, N'000000', 105, N'nguyennd', N'Nguyễn Đăng Khảm', N'sys_user', N'khamnd@gmail.com', N'0123456789', N'1', NULL, N'$2a$10$ASuKduzRhpJdv2be3MQWi.PIxMeNMokIfKJLWc2cP3k0sVhXEtb0K', N'0', N'0', N'127.0.0.1', getdate(), 103, 1, getdate(), NULL, NULL, N'', N'system')
 GO
 
 IF OBJECT_ID('sys_logininfor', 'U') IS NOT NULL
@@ -264,11 +270,15 @@ GO
 
 INSERT sys_user_role VALUES (1, 1)
 GO
-INSERT sys_user_role VALUES (2, 1)
+INSERT sys_user_role VALUES (2, 2)
 GO
-INSERT sys_user_role VALUES (3, 1)
+INSERT sys_user_role VALUES (3, 3)
 GO
-INSERT sys_user_role VALUES (4, 1)
+INSERT sys_user_role VALUES (4, 4)
+GO
+INSERT sys_user_role VALUES (5, 5)
+GO
+INSERT sys_user_role VALUES (6, 6)
 GO
 
 IF OBJECT_ID('sys_oss', 'U') IS NOT NULL
@@ -358,6 +368,77 @@ CREATE TABLE sys_data_history
 ON [PRIMARY]
 GO
 
+IF OBJECT_ID('sys_document', 'U') IS NOT NULL
+    DROP TABLE sys_document;
+GO
+CREATE TABLE sys_document
+(
+    id                  bigint                              NOT NULL,
+    tenant_id           nvarchar(20)    DEFAULT ('000000')  NULL,
+    doc_type            nvarchar(20)                        NULL,
+    doc_title           nvarchar(255)                       NULL,
+    doc_url             nvarchar(255)                       NULL,
+    doc_description     nvarchar(255)                       NULL,
+    doc_target          nvarchar(255)                       NULL,
+    image_type          nvarchar(50)                        NULL,
+    is_external_link    nchar(1)     DEFAULT ('0')          NULL,
+    status              nchar(1)     DEFAULT ('0')          NULL,
+    oss_id              bigint                              NULL,
+    create_dept         bigint                              NOT NULL,
+    create_by           bigint                              NOT NULL,
+    create_time         datetime2(7)                        NOT NULL,
+    update_by           bigint                              NULL,
+    update_time         datetime2(7)                        NULL,
+    remark              nvarchar(500)                       NULL,
+    CONSTRAINT PK__sys_document PRIMARY KEY CLUSTERED (id)
+    WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+    ON [PRIMARY]
+)
+ON [PRIMARY]
+GO
+
+EXEC sys.sp_addextendedproperty
+    'MS_Description', N'System document id',
+    'SCHEMA', N'dbo',
+    'TABLE', N'sys_document',
+    'COLUMN', N'id'
+GO
+EXEC sys.sp_addextendedproperty
+    'MS_Description', N'Tenant ID',
+    'SCHEMA', N'dbo',
+    'TABLE', N'sys_document',
+    'COLUMN', N'tenant_id'
+GO
+EXEC sys.sp_addextendedproperty
+    'MS_Description', N'Create department',
+    'SCHEMA', N'dbo',
+    'TABLE', N'sys_document',
+    'COLUMN', N'create_dept'
+GO
+EXEC sp_addextendedproperty
+    'MS_Description', N'Creator',
+    'SCHEMA', N'dbo',
+    'TABLE', N'sys_document',
+    'COLUMN', N'create_by'
+GO
+EXEC sp_addextendedproperty
+    'MS_Description', N'Creation time',
+    'SCHEMA', N'dbo',
+    'TABLE', N'sys_document',
+    'COLUMN', N'create_time'
+GO
+EXEC sys.sp_addextendedproperty
+    'MS_Description', N'Remark' ,
+    'SCHEMA', N'dbo',
+    'TABLE', N'sys_document',
+    'COLUMN', N'remark'
+GO
+EXEC sys.sp_addextendedproperty
+    'MS_Description', N'System document' ,
+    'SCHEMA', N'dbo',
+    'TABLE', N'sys_document'
+GO
+
 IF OBJECT_ID('sys_otp', 'U') IS NOT NULL
   DROP TABLE sys_otp;
 GO
@@ -400,6 +481,7 @@ CREATE TABLE problem
   description         ntext                               NOT NULL,
   difficulty          tinyint                             NOT NULL,
   max_score           tinyint                             NULL,
+  number_testcase     tinyint                             NOT NULL,
   create_dept         bigint                              NULL,
   create_by           bigint                              NULL,
   create_time         datetime2(7)                        NULL,
@@ -421,11 +503,12 @@ CREATE TABLE testcase
   id                  bigint                              NOT NULL,
   tenant_id           nvarchar(20)    DEFAULT ('000000')  NULL,
   problem_id          bigint                              NOT NULL,
-  input_data          nvarchar(255)                       NOT NULL,
-  expected_output     nvarchar(255)                       NOT NULL,
+  input_data          nvarchar(255)                       NULL,
+  expected_output     nvarchar(255)                       NULL,
   illustration        varchar(500)                        NULL,
+  oss_id              bigint                              NULL,
   explanation         nvarchar(255)                       NULL,
-  is_hidden           tinyint                             NOT NULL,
+  is_hidden           tinyint                             NULL,
   create_dept         bigint                              NULL,
   create_by           bigint                              NULL,
   create_time         datetime2(7)                        NULL,
@@ -659,12 +742,13 @@ GO
 CREATE NONCLUSTERED INDEX idx_sys_oper_log_ot ON sys_oper_log (oper_time)
 GO
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (1,
 'Longest Palindromic Substring',
  'Given a string s, return the longest palindromic substring in s.',
  2,
+ 5,
  SYSDATETIME());
 
  INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -675,12 +759,13 @@ VALUES
 (4, 1, '"ac"', '"a"', NULL, 'Single character substrings are palindromes, so the output is either "a" or "c".', 0, SYSDATETIME()),
 (5, 1, '"forgeeksskeegfor"', '"geeksskeeg"', NULL, 'The longest palindromic substring is "geeksskeeg".', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (2,
 'Zigzag Conversion',
  'Given a string s and a number of rows, write the code to convert the string in a zigzag pattern on the given number of rows, and then read it line by line.',
  2,
+ 5,
  SYSDATETIME());
 
  INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -692,12 +777,13 @@ VALUES
 (10, 2, '"ABCDEFGHIJK", 5', '"AIJBHCGDFEK"', NULL, 'With 5 rows, the zigzag pattern forms "AIJBHCGDFEK" after reading line by line.', 0, SYSDATETIME());
 
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (3,
 'Reverse Integer',
  'Given a signed 32-bit integer x, return x with its digits reversed. If reversing x causes the value to go outside the signed 32-bit integer range [-231, 231 - 1], then return 0.',
  2,
+ 5,
  SYSDATETIME());
 
  INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -708,12 +794,13 @@ VALUES
 (14, 3, '0', '0', NULL, 'Reversing 0 gives 0. Edge case.', 0, SYSDATETIME()),
 (15, 3, '1534236469', '0', NULL, 'Reversing 1534236469 exceeds the 32-bit integer range, so the output is 0.', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (4,
 'String to Integer (myAtoi)',
  'Implement the myAtoi(string s) function, which converts a string to a 32-bit signed integer.',
  2,
+ 5,
  SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -724,12 +811,13 @@ VALUES
 (19, 4, '0-1', '0', '', 'Input contains a valid number followed by non-digit characters.', 0, SYSDATETIME()),
 (20, 4, 'words and 987', '0', '', 'Input starts with non-digit characters, so the result is 0.', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (5,
 'Palindrome Number',
  'Given an integer x, return true if x is a palindrome, and false otherwise.',
  1,
+ 5,
  SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -740,12 +828,13 @@ VALUES
 (24, 5, '0', 'true', NULL, '0 is a palindrome.', 0, SYSDATETIME()),
 (25, 5, '12321', 'true', NULL, '12321 reads the same forwards and backwards.', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (6,
 'Regular Expression Matching',
  'Given an input string s and a pattern p, implement regular expression matching with support for "." and "*" where: "." Matches any single character. "*" Matches zero or more of the preceding element. The matching should cover the entire input string (not partial).',
  3,
+ 5,
  SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -756,12 +845,13 @@ VALUES
 (29, 6, '{"s": "aab", "p": "c*a*b"}', 'true', NULL, 'Pattern "c*a*b" matches "aab" as "c*" matches zero "c"s, and "a*" matches "aa".', 0, SYSDATETIME()),
 (30, 6, '{"s": "mississippi", "p": "mis*is*p*."}', 'false', NULL, 'Pattern does not match "mississippi" due to incorrect placement of "p*" in the pattern.', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (7,
 'Container With Most Water',
  'You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]). Find two lines that together with the x-axis form a container, such that the container contains the most water. Return the maximum amount of water a container can store. Notice that you may not slant the container.',
  2,
+ 5,
  SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -772,12 +862,13 @@ VALUES
 (34, 7, '[1,2,1]', '2', NULL, 'Max area is formed by lines at index 0 and 2 with heights 1 and 1.', 0, SYSDATETIME()),
 (35, 7, '[1,3,2,5,25,24,5]', '24', NULL, 'Max area is formed by lines at index 3 and 6 with heights 5 and 5.', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (8,
 'Integer to Roman',
  'Given an integer, convert it to a Roman numeral. The conversion is based on the Roman numeral system with specific rules for subtractive notation and placement of symbols.',
  2,
+ 5,
  SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -788,12 +879,13 @@ VALUES
 (39, 8, '944', 'CMXLIV', NULL, '900 = CM, 40 = XL, 4 = IV.', 0, SYSDATETIME()),
 (40, 8, '1023', 'MXXIII', NULL, '1000 = M, 20 = XX, 3 = III.', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (9,
 'Roman to Integer',
  'Given a Roman numeral, convert it to an integer. Roman numerals are formed using the following symbols: I, V, X, L, C, D, M. Some numerals use subtraction notation (e.g., IV for 4, IX for 9). The valid range for Roman numerals in this problem is [1, 3999].',
  2,
+ 5,
  SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -804,12 +896,13 @@ VALUES
 (44, 9, '"IX"', '9', NULL, 'IX = 9 (I comes before X, subtract 1 from 10).', 0, SYSDATETIME()),
 (45, 9, '"CDXLIV"', '444', NULL, 'CD = 400, XL = 40, IV = 4. So, 400 + 40 + 4 = 444.', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (10,
 'Longest Common Prefix',
  'Write a function to find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string.',
  2,
+ 5,
  SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -820,12 +913,13 @@ VALUES
 (49, 10, '["", "flower", "flow"]', '""', NULL, 'The first string is empty, so there is no common prefix.', 0, SYSDATETIME()),
 (50, 10, '["interview", "interest", "internal"]', '"inte"', NULL, 'The longest common prefix between "interview", "interest", and "internal" is "inte".', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (11,
 '3Sum',
 'Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0. Notice that the solution set must not contain duplicate triplets.',
 2,
+5,
 SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -836,12 +930,13 @@ VALUES
 (54, 11, '[-4, -1, -1, 0, 1, 2]', '[[-1, 0, 1], [-1, -1, 2]]', NULL, 'The triplets that sum up to zero are [-1, 0, 1] and [-1, -1, 2].', 0, SYSDATETIME()),
 (55, 11, '[-1, 0, 1, 1]', '[[-1, 0, 1]]', NULL, 'The only distinct triplet that sums up to zero is [-1, 0, 1].', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (12,
 '3Sum Closest',
 'Given an integer array nums of length n and an integer target, find three integers in nums such that the sum is closest to target. Return the sum of the three integers. You may assume that each input would have exactly one solution.',
 2,
+5,
 SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -852,12 +947,13 @@ VALUES
 (59, 12, '[-1, -1, -1, 2]', '0', NULL, 'The sum that is closest to the target is 0. (-1 + (-1) + 2 = 0)', 0, SYSDATETIME()),
 (60, 12, '[1, 1, 1, 1]', '3', NULL, 'The sum that is closest to the target is 3. (1 + 1 + 1 = 3)', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (13,
 'Letter Combinations of a Phone Number',
 'Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.',
 2,
+5,
 SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -868,12 +964,13 @@ VALUES
 (64, 13, '"79"', '["pq", "pr", "ps", "qt", "qu", "qv", "rt", "ru", "rv", "st", "su", "sv"]', NULL, 'The digit 7 maps to "p", "q", "r", "s" and the digit 9 maps to "w", "x", "y", "z".', 0, SYSDATETIME()),
 (65, 13, '"35"', '["df", "dg", "dh", "ef", "eg", "eh", "ff", "fg", "fh"]', NULL, 'The digit 3 maps to "d", "e", "f" and the digit 5 maps to "j", "k", "l".', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (14,
 '4Sum',
 'Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that: 0 <= a, b, c, d < n, a, b, c, and d are distinct, nums[a] + nums[b] + nums[c] + nums[d] == target. You may return the answer in any order.',
 3,
+5,
 SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -884,12 +981,13 @@ VALUES
 (69, 14, '[1, 2, 3, 4, 5, 6]', '[[1, 2, 3, 4], [1, 2, 3, 5], [1, 2, 4, 5], [1, 3, 4, 5], [2, 3, 4, 5]]', NULL, 'The possible quadruplets that sum to 10 are: [1, 2, 3, 4], [1, 2, 3, 5], [1, 2, 4, 5], [1, 3, 4, 5], [2, 3, 4, 5].', 0, SYSDATETIME()),
 (70, 14, '[-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]', '[[ -5, 0, 3, 2 ], [ -5, 1, 3, 1 ], [ -4, 0, 4, 0 ], ...]', NULL, 'There are multiple valid quadruplets that sum to 0, such as [-5, 0, 3, 2], [-4, -1, 3, 2], and others.', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (15,
 'Remove Nth Node From End of List',
 'Given the head of a linked list, remove the nth node from the end of the list and return its head.',
 2,
+5,
 SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -900,12 +998,13 @@ VALUES
 (74, 15, '[10, 20, 30, 40, 50], 3', '[10, 20, 40, 50]', NULL, 'Removing the 3rd node from the end gives the list: [10, 20, 40, 50].', 0, SYSDATETIME()),
 (75, 15, '[5, 10, 15, 20, 25], 4', '[5, 10, 15, 25]', NULL, 'Removing the 4th node from the end gives the list: [5, 10, 15, 25].', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (16,
 'Valid Parentheses',
 'Given a string s containing just the characters (''('', '')'', ''{'', ''}'', ''['', '']'')'', determine if the input string is valid. An input string is valid if: Open brackets must be closed by the same type of brackets. Open brackets must be closed in the correct order. Every close bracket has a corresponding open bracket of the same type.',
 2,
+5,
 SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -921,12 +1020,13 @@ VALUES
 (80, 16, '{[()]}',
 'true', NULL, 'The string contains valid and properly nested parentheses: {}, [], ().', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (17,
 'Merge Two Sorted Lists',
 'You are given the heads of two sorted linked lists list1 and list2. Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists. Return the head of the merged linked list.',
 2,
+5,
 SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -942,12 +1042,13 @@ VALUES
 (85, 17, '[-5,0,2], [-4,1,3]',
 '[-5,-4,0,1,2,3]', NULL, 'The two lists are merged and sorted in non-decreasing order.', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (18,
 'Generate Parentheses',
 'Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.',
 2,
+5,
 SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -963,12 +1064,13 @@ VALUES
 (90, 18, '5',
 '["((((()))))", "(((()())))", "(((()()))())", "(((()())))()", "((())(())))", "((())(())())", "((())(())()()", "(())(())(())", "(())()()()", "()(())(())", "()(())()()", "()()()(())"]', NULL, 'The function generates all well-formed combinations of parentheses for 5 pairs.', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (19,
 'Merge k Sorted Lists',
 'You are given an array of k linked-lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it.',
 2,
+5,
 SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -984,12 +1086,13 @@ VALUES
 (95, 19, '[[-1,0,1], [-2,0,2], [3,4,5]]',
 '[-2,-1,0,0,1,2,3,4,5]', NULL, 'Merging the 3 sorted lists results in the sorted order of elements.', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (20,
 'Swap Nodes in Pairs',
 'Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list nodes (i.e., only nodes themselves may be changed.)',
 2,
+5,
 SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
@@ -1005,12 +1108,13 @@ VALUES
 (100, 20, '[10,20,30,40,50]',
 '[20,10,40,30,50]', NULL, 'The adjacent pairs (10,20), (30,40) are swapped, while the last node (50) remains the same.', 0, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, create_time)
+INSERT INTO problem(id, title, description, difficulty, number_testcase, create_time)
 VALUES
 (21,
 'Reverse Nodes in k-Group',
 'Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list. k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is. You may not alter the values in the list nodes, only nodes themselves may be changed.',
 3,
+5,
 SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)

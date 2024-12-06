@@ -1,10 +1,10 @@
 import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
 import { CustomerVO, CustomerForm, CustomerQuery } from '@/api/customer/account/types';
-import { parseStrEmpty } from '@/utils/starcinema';
+import { parseStrEmpty } from '@/utils/algoarena';
 
 /**
- * Query Cinema list
+ * Query Customer list
  * @param query
  * @returns {*}
  */
@@ -17,7 +17,7 @@ export const listCustomer = (query?: CustomerQuery): AxiosPromise<CustomerVO[]> 
 };
 
 /**
- * Query detail of Cinema
+ * Query detail of Customer
  * @param id
  */
 export const getCustomer = (id?: string | number): AxiosPromise<CustomerVO> => {
@@ -28,7 +28,7 @@ export const getCustomer = (id?: string | number): AxiosPromise<CustomerVO> => {
 };
 
 /**
- * Add Cinema
+ * Add Customer
  * @param data
  */
 export const addCustomer = (data: CustomerForm) => {
@@ -40,7 +40,7 @@ export const addCustomer = (data: CustomerForm) => {
 };
 
 /**
- * Edit Cinema
+ * Edit Customer
  * @param data
  */
 export const updateCustomer = (data: CustomerForm) => {
@@ -52,7 +52,7 @@ export const updateCustomer = (data: CustomerForm) => {
 };
 
 /**
- * Delete Cinema
+ * Delete Customer
  * @param id
  */
 export const delCustomer = (id: string | number | Array<string | number>) => {

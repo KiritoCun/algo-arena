@@ -33,9 +33,11 @@ public class Testcase extends TenantEntity {
 
 	private String illustration;
 
+	private Long ossId;
+
 	private String explanation;
 
-	private boolean isHidden;
+	private Integer isHidden;
 
 	private String remark;
 }

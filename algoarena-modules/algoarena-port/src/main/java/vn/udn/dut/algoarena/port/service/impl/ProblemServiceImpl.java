@@ -43,7 +43,7 @@ public class ProblemServiceImpl implements IProblemService {
 	 */
 	@Override
 	public TableDataInfo<ProblemVo> queryPagePublicList(ProblemBo bo, PageQuery pageQuery) {
-		Page<ProblemVo> page = baseMapper.selectPagePublicProblemList(pageQuery.build(), this.buildQueryWrapper(bo));
+		Page<ProblemVo> page = baseMapper.selectPagePublicProblemList(pageQuery.build(), this.buildPublicQueryWrapper(bo));
 		return TableDataInfo.build(page);
 	}
 
@@ -69,7 +69,18 @@ public class ProblemServiceImpl implements IProblemService {
 //        Map<String, Object> params = bo.getParams();
 		QueryWrapper<Problem> wrapper = Wrappers.query();
 		wrapper.eq(bo.getExamId() != null, "p.exam_id", bo.getExamId())
-				.eq(bo.getTitle() != null, "p.title", bo.getTitle())
+				.like(bo.getTitle() != null, "p.title", bo.getTitle())
+				.like(bo.getDescription() != null, "p.description", bo.getDescription())
+				.eq(bo.getDifficulty() != null, "p.difficulty", bo.getDifficulty())
+				.like(bo.getRemark() != null, "p.remark", bo.getRemark());
+		return wrapper;
+	}
+
+	private Wrapper<Problem> buildPublicQueryWrapper(ProblemBo bo) {
+//        Map<String, Object> params = bo.getParams();
+		QueryWrapper<Problem> wrapper = Wrappers.query();
+		wrapper.isNull( "p.exam_id")
+				.like(bo.getTitle() != null, "p.title", bo.getTitle())
 				.like(bo.getDescription() != null, "p.description", bo.getDescription())
 				.eq(bo.getDifficulty() != null, "p.difficulty", bo.getDifficulty())
 				.like(bo.getRemark() != null, "p.remark", bo.getRemark());

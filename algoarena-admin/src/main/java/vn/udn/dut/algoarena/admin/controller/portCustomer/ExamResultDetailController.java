@@ -27,19 +27,19 @@ import java.util.List;
 public class ExamResultDetailController extends BaseController {
 	private final IExamResultDetailService examResultDetailService;
 	
-	@SaCheckPermission("portCustomer:examResultDetail:list")
+	@SaCheckPermission("portCustomer:examResult:list")
 	@GetMapping("/list")
 	public TableDataInfo<ExamResultDetailVo> list(ExamResultDetailBo bo, PageQuery pageQuery) {
 		return examResultDetailService.queryPageList(bo, pageQuery);
 	}
 	
-	@SaCheckPermission("portCustomer:examResultDetail:query")
+	@SaCheckPermission("portCustomer:examResult:query")
 	@GetMapping(value = { "/", "/{id}" })
 	public R<ExamResultDetailVo> getInfo(@PathVariable(value = "id", required = false) Long id) {
 		return R.ok(examResultDetailService.queryById(id));
 	}
 	
-	@SaCheckPermission("portCustomer:examResultDetail:add")
+	@SaCheckPermission("portCustomer:examResult:add")
 	@Log(title = "ExamResultDetail", businessType = BusinessType.INSERT)
 	@RepeatSubmit()
 	@PostMapping()
@@ -47,7 +47,7 @@ public class ExamResultDetailController extends BaseController {
 		return toAjax(examResultDetailService.insertByBo(bo));
 	}
 	
-	@SaCheckPermission("portCustomer:examResultDetail:edit")
+	@SaCheckPermission("portCustomer:examResult:edit")
 	@Log(title = "ExamResultDetail", businessType = BusinessType.UPDATE)
 	@RepeatSubmit()
 	@PutMapping()
@@ -55,7 +55,7 @@ public class ExamResultDetailController extends BaseController {
 		return toAjax(examResultDetailService.updateByBo(bo));
 	}
 	
-	@SaCheckPermission("portCustomer:examResultDetail:remove")
+	@SaCheckPermission("portCustomer:examResult:remove")
 	@Log(title = "ExamResultDetail", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
 	public R<Void> remove(@NotEmpty(message = "Primary key cannot be empty") @PathVariable Long[] ids) {

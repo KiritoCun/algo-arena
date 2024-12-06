@@ -15,8 +15,10 @@ import vn.udn.dut.algoarena.common.mybatis.core.page.PageQuery;
 import vn.udn.dut.algoarena.common.mybatis.core.page.TableDataInfo;
 import vn.udn.dut.algoarena.common.web.core.BaseController;
 import vn.udn.dut.algoarena.port.domain.bo.ProblemBo;
+import vn.udn.dut.algoarena.port.domain.bo.TestcaseBo;
 import vn.udn.dut.algoarena.port.domain.vo.ProblemVo;
 import vn.udn.dut.algoarena.port.service.IProblemService;
+import vn.udn.dut.algoarena.port.service.ITestcaseService;
 
 import java.util.List;
 
@@ -26,6 +28,8 @@ import java.util.List;
 @RequestMapping("portCustomer/problem")
 public class ProblemController extends BaseController{
 	private final IProblemService problemService;
+
+	private final ITestcaseService testcaseService;
 
 	@SaCheckPermission("portCustomer:problem:list")
 	@GetMapping("/public-list")
@@ -50,7 +54,15 @@ public class ProblemController extends BaseController{
 	@RepeatSubmit()
 	@PostMapping()
 	public R<Void> add(@Validated(AddGroup.class) @RequestBody ProblemBo bo) {
-		return toAjax(problemService.insertByBo(bo));
+		problemService.insertByBo(bo);
+
+		for (int i = 0; i < bo.getNumberTestcase(); i++) {
+			var testcaseBo = new TestcaseBo();
+			testcaseBo.setProblemId(bo.getId());
+			testcaseService.insertByBo(testcaseBo);
+		}
+
+		return toAjax(true);
 	}
 	
 	@SaCheckPermission("portCustomer:problem:edit")
@@ -59,6 +71,17 @@ public class ProblemController extends BaseController{
 	@PutMapping()
 	public R<Void> edit(@Validated(EditGroup.class) @RequestBody ProblemBo bo) {
 		return toAjax(problemService.updateByBo(bo));
+	}
+
+	@SaCheckPermission("portCustomer:problem:edit")
+	@Log(title = "Problem", businessType = BusinessType.UPDATE)
+	@RepeatSubmit()
+	@PutMapping("/{id}")
+	public R<Void> editTestcase(@PathVariable Long id, @RequestBody List<TestcaseBo> testcaseList) {
+		for(TestcaseBo testcase : testcaseList) {
+			testcaseService.updateByBo(testcase);
+		}
+		return toAjax(true);
 	}
 	
 	@SaCheckPermission("portCustomer:problem:remove")

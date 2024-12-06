@@ -79,7 +79,7 @@
               <el-col :span="11">
                 <el-form-item :label="$t('document.dialog.isExternalLinkLb')" prop="isExternalLink" class="form-item-row">
                   <el-radio-group v-model="form.isExternalLink">
-                    <el-radio v-for="dict in sys_yes_no" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
+                    <el-radio v-for="dict in sys_no_yes" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
@@ -157,7 +157,7 @@ import i18n from '@/lang';
 import { ComponentInternalInstance } from "vue";
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 // IMPORT DICTIONARY
-const { sys_document_type, sys_yes_no, sys_normal_disable, sys_document_image } = toRefs<any>(proxy?.useDict("sys_document_type", "sys_yes_no", "sys_normal_disable", "sys_document_image"));
+const { sys_document_type, sys_no_yes, sys_normal_disable, sys_document_image } = toRefs<any>(proxy?.useDict("sys_document_type", "sys_no_yes", "sys_normal_disable", "sys_document_image"));
 ///////////////////////////////////////////////////////////////////////////////
 // VARIABLE SECTION
 ///////////////////////////////////////////////////////////////////////////////

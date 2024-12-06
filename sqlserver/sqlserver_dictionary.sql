@@ -40,7 +40,15 @@ INSERT sys_dict_type VALUES (7, N'000000', N'Cấu hình thanh toán VNPAY', N'p
 GO
 INSERT sys_dict_type VALUES (8, N'000000', N'Không Có', N'sys_no_yes', N'0', 103, 1, getdate(), NULL, NULL, N'')
 GO
-INSERT sys_dict_type VALUES (9, N'000000', N'Trạng thái đặt vé', N'order_status', N'0', 103, 1, getdate(), NULL, NULL, N'')
+INSERT sys_dict_type VALUES (9, N'000000', N'Độ khó', N'level', N'0', 103, 1, getdate(), NULL, NULL, N'')
+GO
+INSERT sys_dict_type VALUES (10, N'000000', N'Notification type', N'sys_notice_type', N'0', 103, 1, getdate(), NULL, NULL, N'List of notification types')
+GO
+INSERT sys_dict_type VALUES (11, N'000000', N'Notification status', N'sys_notice_status', N'0', 103, 1, getdate(), NULL, NULL, N'Notification status list')
+GO
+INSERT sys_dict_type VALUES (12, N'000000', N'Document type', N'sys_document_type', N'0', 103, 1, getdate(), NULL, NULL, N'')
+GO
+INSERT sys_dict_type VALUES (13, N'000000', N'System status', N'sys_common_status', N'0', 103, 1, getdate(), NULL, NULL, N'Login status list')
 GO
 
 IF OBJECT_ID('sys_dict_data', 'U') IS NOT NULL
@@ -103,9 +111,29 @@ INSERT sys_dict_data VALUES (15, N'000000', 1, N'Không', N'0', N'sys_no_yes', N
 GO
 INSERT sys_dict_data VALUES (16, N'000000', 2, N'Có', N'1', N'sys_no_yes', N'', N'green', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'')
 GO
-INSERT sys_dict_data VALUES (17, N'000000', 1, N'Chưa đặt vé', N'N', N'order_status', N'', N'gray', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'')
+INSERT sys_dict_data VALUES (17, N'000000', 1, N'Easy', N'1', N'level', N'', N'green', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'')
 GO
-INSERT sys_dict_data VALUES (18, N'000000', 2, N'Đã được chọn', N'P', N'order_status', N'', N'yellow', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'')
+INSERT sys_dict_data VALUES (18, N'000000', 2, N'Medium', N'2', N'level', N'', N'yellow', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'')
 GO
-INSERT sys_dict_data VALUES (19, N'000000', 3, N'Đã đặt vé', N'Y', N'order_status', N'', N'green', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'')
+INSERT sys_dict_data VALUES (19, N'000000', 3, N'Hard', N'3', N'level', N'', N'red', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'')
+GO
+INSERT sys_dict_data VALUES (20, N'000000', 1, N'Algorithm Arena', N'1', N'sys_notice_type', N'', N'yellow', N'Y', N'0', 103, 1, getdate(), NULL, NULL, N'')
+GO
+INSERT sys_dict_data VALUES (21, N'000000', 2, N'Teacher', N'2', N'sys_notice_type', N'', N'green', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'')
+GO
+INSERT sys_dict_data VALUES (22, N'000000', 3, N'All', N'3', N'sys_notice_type', N'', N'blue', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'')
+GO
+INSERT sys_dict_data VALUES (23, N'000000', 1, N'Normal', N'0', N'sys_notice_status', N'', N'blue', N'Y', N'0', 103, 1, getdate(), NULL, NULL, N'Normal status')
+GO
+INSERT sys_dict_data VALUES (24, N'000000', 2, N'Disable', N'1', N'sys_notice_status', N'', N'red', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'Disabled')
+GO
+INSERT sys_dict_data VALUES (25, N'000000', 1, N'Guide', N'guide', N'sys_document_type', N'', N'', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'')
+GO
+INSERT sys_dict_data VALUES (26, N'000000', 2, N'Video', N'video', N'sys_document_type', N'', N'', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'')
+GO
+INSERT sys_dict_data VALUES (27, N'000000', 3, N'Document', N'document', N'sys_document_type', N'', N'', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'')
+GO
+INSERT sys_dict_data VALUES (28, N'000000', 1, N'Success', N'0', N'sys_common_status', N'', N'blue', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'Normal status')
+GO
+INSERT sys_dict_data VALUES (29, N'000000', 2, N'Fail', N'1', N'sys_common_status', N'', N'red', N'N', N'0', 103, 1, getdate(), NULL, NULL, N'Disable status')
 GO

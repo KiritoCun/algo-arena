@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
 import { HallVO, HallSeatVO, HallForm, HallSeatForm, HallQuery, HallSeatQuery } from '@/api/portCustomer/hallManagement/types';
-import { parseStrEmpty } from '@/utils/starcinema';
+import { parseStrEmpty } from '@/utils/algoarena';
 
 /**
  * Query Hall list

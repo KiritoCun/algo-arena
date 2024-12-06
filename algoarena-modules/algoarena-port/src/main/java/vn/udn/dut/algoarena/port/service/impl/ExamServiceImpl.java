@@ -17,6 +17,7 @@ import vn.udn.dut.algoarena.port.service.IExamService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ExamService business layer processing
@@ -58,9 +59,11 @@ public class ExamServiceImpl implements IExamService {
 	}
 
 	private LambdaQueryWrapper<Exam> buildQueryWrapper(ExamBo bo) {
-//        Map<String, Object> params = bo.getParams();
+        Map<String, Object> params = bo.getParams();
 		LambdaQueryWrapper<Exam> lqw = Wrappers.lambdaQuery();
-		lqw.like(StringUtils.isNotBlank(bo.getTitle()), Exam::getTitle, bo.getTitle());
+		lqw.like(StringUtils.isNotBlank(bo.getTitle()), Exam::getTitle, bo.getTitle())
+				.between(params.get("beginTime") != null && params.get("endTime") != null, Exam::getStartTime,
+						params.get("beginTime"), params.get("endTime"));
 		
 		return lqw;
 	}

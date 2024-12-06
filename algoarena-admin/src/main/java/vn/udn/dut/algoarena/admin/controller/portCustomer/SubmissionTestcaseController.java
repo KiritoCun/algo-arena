@@ -27,19 +27,19 @@ import java.util.List;
 public class SubmissionTestcaseController extends BaseController {
 	private final ISubmissionTestcaseService submissionTestcaseService;
 	
-	@SaCheckPermission("portCustomer:submissionTestcase:list")
+	@SaCheckPermission("portCustomer:submission:list")
 	@GetMapping("/list")
 	public TableDataInfo<SubmissionTestcaseVo> list(SubmissionTestcaseBo bo, PageQuery pageQuery) {
 		return submissionTestcaseService.queryPageList(bo, pageQuery);
 	}
 	
-	@SaCheckPermission("portCustomer:submissionTestcase:query")
+	@SaCheckPermission("portCustomer:submission:query")
 	@GetMapping(value = { "/", "/{id}" })
 	public R<SubmissionTestcaseVo> getInfo(@PathVariable(value = "id", required = false) Long id) {
 		return R.ok(submissionTestcaseService.queryById(id));
 	}
 	
-	@SaCheckPermission("portCustomer:submissionTestcase:add")
+	@SaCheckPermission("portCustomer:submission:add")
 	@Log(title = "SubmissionTestcase", businessType = BusinessType.INSERT)
 	@RepeatSubmit()
 	@PostMapping()
@@ -47,7 +47,7 @@ public class SubmissionTestcaseController extends BaseController {
 		return toAjax(submissionTestcaseService.insertByBo(bo));
 	}
 	
-	@SaCheckPermission("portCustomer:submissionTestcase:edit")
+	@SaCheckPermission("portCustomer:submission:edit")
 	@Log(title = "SubmissionTestcase", businessType = BusinessType.UPDATE)
 	@RepeatSubmit()
 	@PutMapping()
@@ -55,7 +55,7 @@ public class SubmissionTestcaseController extends BaseController {
 		return toAjax(submissionTestcaseService.updateByBo(bo));
 	}
 	
-	@SaCheckPermission("portCustomer:submissionTestcase:remove")
+	@SaCheckPermission("portCustomer:submission:remove")
 	@Log(title = "SubmissionTestcase", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
 	public R<Void> remove(@NotEmpty(message = "Primary key cannot be empty") @PathVariable Long[] ids) {

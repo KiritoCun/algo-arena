@@ -36,5 +36,7 @@ public class Problem extends TenantEntity {
 
 	private Integer maxScore;
 
+	private Integer numberTestcase;
+
 	private String remark;
 }

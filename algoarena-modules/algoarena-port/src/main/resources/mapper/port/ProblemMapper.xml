@@ -20,7 +20,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		p.update_time,
 		p.remark
 		from problem p
-		where exam_id is NULL
 	</sql>
     
     <sql id="selectProblemVo">

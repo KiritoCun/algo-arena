@@ -1183,6 +1183,62 @@ export default {
       deleteCf: 'Are you sure to delete history%{id}?'
     }
   },
+  document: {
+    searchInput: {
+      docTitleLb: 'Title',
+      docTitlePh: 'Input',
+      docTypeLb: 'Document type',
+      docTypePh: 'Select'
+    },
+    headerButton: {
+      addTt: 'Add',
+      editTt: 'Edit',
+      deleteTt: 'Delete'
+    },
+    dialog: {
+      addTt: 'Add document',
+      editTt: 'Edit document',
+      docTitleLb: 'Title',
+      docTitlePh: 'Input',
+      docTypeLb: 'Type',
+      isExternalLinkLb: 'External link',
+      statusTt: 'Status',
+      docTargetLb: 'Target',
+      docTargetPh: 'Input',
+      docUrlLb: 'URL',
+      docUrlPh: 'Input',
+      docDescriptionLb: 'Description',
+      docDescriptionPh: 'Input',
+      imageTypeLb: 'Image type',
+      imageTypePh: 'Input',
+      remarkLb: 'Remark',
+      remarkPh: 'Input',
+      footerCancelTt: 'Close',
+      footerSubmitTt: 'Save',
+      rules: {
+        docTitleRqMsg: 'Document title cannot be empty'
+      }
+    },
+    columns: {
+      idLb: 'ID',
+      docTypeLb: 'Type',
+      docTitleLb: 'Title',
+      urlLb: 'URL',
+      statusLb: 'Status',
+      createTimeLb: 'Create time',
+      operateLb: 'Operate',
+      operateEditLb: 'Edit',
+      operateDeleteLb: 'Delete'
+    },
+    operationMsg: {
+      submitSuccess: 'Saved successfully',
+      deleteSuccess: 'Deleted successfully',
+      deleteCf: 'Are you sure to delete document(s)%{title}?',
+      statusEnable: 'Enable',
+      statusDisable: 'Disable',
+      statusChangeCf: 'Are you sure to "%{action}" document "%{docTitle}"?'
+    }
+  },
   // Cinema menu internationalization
   cinemaManagement: {
     searchInput: {
@@ -1537,6 +1593,7 @@ export default {
     searchInput: {
       titleLb: 'Exam title',
       titlePh: 'Input',
+      applyTimeLb: 'Apply time',
     },
     headerButton: {
       addTt: 'Add',
@@ -1575,11 +1632,14 @@ export default {
     searchInput: {
       titleLb: 'Problem title',
       titlePh: 'Input',
+      difficultyLb: 'Difficulty level',
+      difficultyPh: 'Select'
     },
     headerButton: {
       addTt: 'Add',
       editTt: 'Edit',
-      deleteTt: 'Delete'
+      deleteTt: 'Delete',
+      saveTt: 'Save'
     },
     columns: {
       titleLb: 'Title',
@@ -1596,7 +1656,7 @@ export default {
       expectedOutputLb: 'Expect output',
       illustrationLb: 'Illustration',
       explanationLb: 'Explanation',
-      isHiddenLb: 'Hide',
+      isHiddenLb: 'Show',
       remarkLb: 'Remark',
       operateLb: 'Operate',
       editLb: 'Edit',

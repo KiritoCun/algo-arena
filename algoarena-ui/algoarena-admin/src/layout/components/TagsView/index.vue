@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import ScrollPane from './ScrollPane.vue'
-import { getNormalPath } from '@/utils/starcinema'
+import { getNormalPath } from '@/utils/algoarena'
 import useTagsViewStore from "@/store/modules/tagsView";
 import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'

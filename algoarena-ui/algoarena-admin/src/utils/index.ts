@@ -1,4 +1,4 @@
-import { parseTime } from '@/utils/starcinema';
+import { parseTime } from '@/utils/algoarena';
 
 /**
  * table time formatting

@@ -42,7 +42,7 @@ import './permission';
 
 import { useDict } from '@/utils/dict';
 import { getConfigKey, updateConfigByKey } from '@/api/system/config';
-import { parseTime, addDateRange, handleTree, selectDictLabel, selectDictLabels, openLink } from '@/utils/starcinema';
+import { parseTime, addDateRange, handleTree, selectDictLabel, selectDictLabels, openLink } from '@/utils/algoarena';
 
 // globalization
 import i18n from '@/lang/index';
