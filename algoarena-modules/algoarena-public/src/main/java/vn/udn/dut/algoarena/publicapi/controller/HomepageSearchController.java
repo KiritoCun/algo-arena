@@ -15,38 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import vn.udn.dut.algoarena.common.core.domain.R;
+import vn.udn.dut.algoarena.common.mybatis.core.page.PageQuery;
+import vn.udn.dut.algoarena.common.mybatis.core.page.TableDataInfo;
 import vn.udn.dut.algoarena.common.web.core.BaseController;
-import vn.udn.dut.algoarena.port.domain.bo.BookingBo;
-import vn.udn.dut.algoarena.port.domain.bo.BookingDetailBo;
-import vn.udn.dut.algoarena.port.domain.bo.AlgoArenaBo;
-import vn.udn.dut.algoarena.port.domain.bo.MovieBo;
-import vn.udn.dut.algoarena.port.domain.bo.PromotionBo;
-import vn.udn.dut.algoarena.port.domain.bo.SeatBo;
-import vn.udn.dut.algoarena.port.domain.bo.ShowtimeBo;
-import vn.udn.dut.algoarena.port.domain.bo.SlideBo;
-import vn.udn.dut.algoarena.port.domain.bo.VnpHistoryBo;
-import vn.udn.dut.algoarena.port.domain.vo.AlgoArenaVo;
-import vn.udn.dut.algoarena.port.domain.vo.HallVo;
-import vn.udn.dut.algoarena.port.domain.vo.InvoiceInfoVo;
-import vn.udn.dut.algoarena.port.domain.vo.MovieVo;
-import vn.udn.dut.algoarena.port.domain.vo.PromotionVo;
-import vn.udn.dut.algoarena.port.service.IBookingDetailService;
-import vn.udn.dut.algoarena.port.service.IBookingService;
-import vn.udn.dut.algoarena.port.service.IAlgoArenaService;
-import vn.udn.dut.algoarena.port.service.IHallService;
-import vn.udn.dut.algoarena.port.domain.vo.SeatOrderVo;
-import vn.udn.dut.algoarena.port.domain.vo.SeatTypeVo;
-import vn.udn.dut.algoarena.port.domain.vo.SeatVo;
-import vn.udn.dut.algoarena.port.domain.vo.ShowtimeInfoVo;
-import vn.udn.dut.algoarena.port.domain.vo.ShowtimeVo;
-import vn.udn.dut.algoarena.port.domain.vo.VnpHistoryVo;
-import vn.udn.dut.algoarena.port.service.IMovieService;
-import vn.udn.dut.algoarena.port.service.IPromotionService;
-import vn.udn.dut.algoarena.port.service.ISeatService;
-import vn.udn.dut.algoarena.port.service.ISeatTypeService;
-import vn.udn.dut.algoarena.port.service.IShowtimeService;
-import vn.udn.dut.algoarena.port.service.ISlideService;
-import vn.udn.dut.algoarena.port.service.IVnpHistoryService;
+import vn.udn.dut.algoarena.port.domain.bo.*;
+import vn.udn.dut.algoarena.port.domain.vo.*;
+import vn.udn.dut.algoarena.port.service.*;
 
 /**
  * Homepage api
@@ -71,6 +45,13 @@ public class HomepageSearchController extends BaseController {
 	private final IBookingService bookingService;
 	private final IBookingDetailService bookingDetailService;
 	private final IHallService hallService;
+
+	private final IProblemService problemService;
+
+	@GetMapping("/problem")
+	public TableDataInfo<ProblemVo> publicList(ProblemBo bo, PageQuery pageQuery) {
+		return problemService.queryPagePublicList(bo, pageQuery);
+	}
 
 	@GetMapping("/documents")
 	public R<Map<String, Object>> getDocuments() {

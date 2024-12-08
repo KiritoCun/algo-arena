@@ -34,6 +34,12 @@ public class Problem extends TenantEntity {
 
 	private Integer difficulty;
 
+	private String keyPath;
+
+	private String category;
+
+	private String videoId;
+
 	private Integer maxScore;
 
 	private Integer numberTestcase;

@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
 
   // Tạo instance Axios với header mặc định
   const apiClient = axios.create({
-    baseURL: 'http://localhost/dev-api/customer/system',
+    baseURL: 'http://localhost:8082/customer/system',
     headers: {
       Authorization: typeof window !== 'undefined' && localStorage.getItem('authToken')
         ? `Customer-Bearer ${localStorage.getItem('authToken')}`

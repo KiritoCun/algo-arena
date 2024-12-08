@@ -101,12 +101,21 @@
               <el-input v-model="problemForm.title" placeholder="Nhập" />
             </el-form-item>
             <el-form-item label="Mô tả" prop="description" class="form-item-row">
-              <el-input v-model="problemForm.description" placeholder="Nhập" />
+              <el-input v-model="problemForm.description" type="textarea" placeholder="Nhập" />
             </el-form-item>
             <el-form-item label="Độ khó" class="form-item-row">
               <el-select v-model="problemForm.difficulty" placeholder="Độ khó">
                 <el-option v-for="dict in level" :key="dict.value" :label="dict.label" :value="dict.value"></el-option>
               </el-select>
+            </el-form-item>
+            <el-form-item label="Khóa đường dẫn" prop="keyPath" class="form-item-row">
+              <el-input v-model="problemForm.keyPath" placeholder="Nhập" />
+            </el-form-item>
+            <el-form-item label="Phân loại" prop="category" class="form-item-row">
+              <el-input v-model="problemForm.category" placeholder="Nhập" />
+            </el-form-item>
+            <el-form-item label="Mã video lời giải" prop="videoId" class="form-item-row">
+              <el-input v-model="problemForm.videoId" placeholder="Nhập" />
             </el-form-item>
             <el-form-item label="Ghi chú" prop="remark" class="form-item-row">
               <el-input v-model="problemForm.remark" type="textarea" placeholder="Nhập" />
@@ -187,6 +196,9 @@ const problemColumns = ref<GridColumn[]>([
   { prop: "title", name: 'problemManagement.columns.titleLb', size: 220, readonly: true, align: 'left' },
   { prop: "description", name: 'problemManagement.columns.descriptionLb', sortable: true, size: 280, readonly: true, align: 'left' },
   { prop: "difficulty", name: 'problemManagement.columns.difficultyLb', sortable: true, size: 90, readonly: true, align: 'left', dictData: level  },
+  { prop: "keyPath", name: 'problemManagement.columns.keyPathLb', sortable: true, size: 120, readonly: true, align: 'left' },
+  { prop: "category", name: 'problemManagement.columns.categoryLb', sortable: true, size: 150, readonly: true, align: 'left' },
+  { prop: "videoId", name: 'problemManagement.columns.videoIdLb', sortable: true, size: 120, readonly: true, align: 'left' },
   { prop: "createTime", name: 'problemManagement.columns.createTimeLb', sortable: true, size: 160, readonly: true, formatter: 'datetime' },
   { prop: "remark", name: 'problemManagement.columns.remarkLb', sortable: true, size: 120, readonly: true, align: 'left' },
 ]);

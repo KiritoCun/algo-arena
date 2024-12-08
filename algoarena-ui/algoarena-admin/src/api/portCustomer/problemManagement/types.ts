@@ -17,6 +17,26 @@ export interface ProblemVO {
   /**
    *
    */
+  difficulty?: string;
+
+  /**
+   *
+   */
+  keyPath?: string;
+
+  /**
+   *
+   */
+  category?: string;
+
+  /**
+   *
+   */
+  videoId?: string;
+
+  /**
+   *
+   */
   maxScore: number;
 
   /**
@@ -60,6 +80,21 @@ export interface ProblemForm extends BaseEntity {
    *
    */
   difficulty?: string | number;
+
+  /**
+   *
+   */
+  keyPath?: string;
+
+  /**
+   *
+   */
+  category?: string;
+
+  /**
+   *
+   */
+  videoId?: string;
 
   /**
    *

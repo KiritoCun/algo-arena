@@ -14,7 +14,7 @@ const Signup: React.FC<SignupProps> = () => {
 	const handleClick = () => {
 		setAuthModalState((prev) => ({ ...prev, type: "login" }));
 	};
-	const [inputs, setInputs] = useState({ email: "", displayName: "", password: "" });
+	const [inputs, setInputs] = useState({ username: "", displayName: "", password: "" });
 	const router = useRouter();
 	const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
 	const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,10 +23,10 @@ const Signup: React.FC<SignupProps> = () => {
 
 	const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (!inputs.email || !inputs.password || !inputs.displayName) return alert("Please fill all fields");
+		if (!inputs.username || !inputs.password || !inputs.displayName) return alert("Hãy điền thông tin các trường!");
 		try {
 			toast.loading("Creating your account", { position: "top-center", toastId: "loadingToast" });
-			const newUser = await createUserWithEmailAndPassword(inputs.email, inputs.password);
+			const newUser = await createUserWithEmailAndPassword(inputs.username, inputs.password);
 			if (!newUser) return;
 			const userData = {
 				uid: newUser.user.uid,
@@ -54,42 +54,40 @@ const Signup: React.FC<SignupProps> = () => {
 
 	return (
 		<form className='space-y-6 px-6 pb-4' onSubmit={handleRegister}>
-			<h3 className='text-xl font-medium text-white'>Register to Algorithm Arena</h3>
+			<h3 className='text-xl font-medium text-white'>Đăng ký tài khoản Algorithm Arena</h3>
 			<div>
-				<label htmlFor='email' className='text-sm font-medium block mb-2 text-gray-300'>
-					Email
+				<label htmlFor='nickName' className='text-sm font-medium block mb-2 text-gray-300'>
+					Họ và tên
 				</label>
 				<input
 					onChange={handleChangeInput}
-					type='email'
-					name='email'
-					id='email'
+					type='text'
+					name='nickName'
+					id='nickName'
 					className='
         border-2 outline-none sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
         bg-gray-600 border-gray-500 placeholder-gray-400 text-white
     '
-					placeholder='name@company.com'
 				/>
 			</div>
 			<div>
-				<label htmlFor='displayName' className='text-sm font-medium block mb-2 text-gray-300'>
-					Display Name
+				<label htmlFor='username' className='text-sm font-medium block mb-2 text-gray-300'>
+					Tên đăng nhập
 				</label>
 				<input
 					onChange={handleChangeInput}
-					type='displayName'
-					name='displayName'
-					id='displayName'
+					type='text'
+					name='username'
+					id='username'
 					className='
         border-2 outline-none sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
         bg-gray-600 border-gray-500 placeholder-gray-400 text-white
     '
-					placeholder='John Doe'
 				/>
 			</div>
 			<div>
 				<label htmlFor='password' className='text-sm font-medium block mb-2 text-gray-300'>
-					Password
+					Mật khẩu
 				</label>
 				<input
 					onChange={handleChangeInput}
@@ -114,9 +112,9 @@ const Signup: React.FC<SignupProps> = () => {
 			</button>
 
 			<div className='text-sm font-medium text-gray-300'>
-				Already have an account?{" "}
+				Đã có tài khoản?{" "}
 				<a href='#' className='text-blue-700 hover:underline' onClick={handleClick}>
-					Log In
+					Đăng nhập
 				</a>
 			</div>
 		</form>

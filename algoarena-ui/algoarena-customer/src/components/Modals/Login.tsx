@@ -25,7 +25,7 @@ const Login: React.FC<LoginProps> = () => {
 
 	const login = async (username: string, password: string) => {
 		try {
-			const response = await axios.post('http://localhost/dev-api/customer/auth/login', {
+			const response = await axios.post('http://localhost:8082/customer/auth/login', {
 			username,
 			password,
 			});
@@ -36,7 +36,7 @@ const Login: React.FC<LoginProps> = () => {
 
 			// Tạo một instance axios với header mặc định
 			const apiClient = axios.create({
-				baseURL: 'http://localhost/dev-api/customer/system',
+				baseURL: 'http://localhost:8082/customer/system',
 				headers: {
 					Authorization: `Customer-Bearer ${token}`,
 				},
@@ -66,7 +66,7 @@ const Login: React.FC<LoginProps> = () => {
 
 	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (!inputs.username || !inputs.password) return alert("Please fill all fields");
+		if (!inputs.username || !inputs.password) return alert("Hãy điền thông tin các trường!");
 		try {
 			//const newUser = await signInWithEmailAndPassword(inputs.email, inputs.password);
 			const user = await login(inputs.username, inputs.password)

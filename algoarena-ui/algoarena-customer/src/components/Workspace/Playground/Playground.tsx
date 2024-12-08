@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import PreferenceNav from "./PreferenceNav/PreferenceNav";
 import Split from "react-split";
 import CodeMirror from "@uiw/react-codemirror";
@@ -13,6 +13,7 @@ import { problems } from "@/utils/problems";
 import { useRouter } from "next/router";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { AuthContext } from '../../Modals/AuthContext';
 
 type PlaygroundProps = {
 	problem: Problem;
@@ -38,7 +39,8 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 		dropdownIsOpen: false,
 	});
 
-	const [user] = useAuthState(auth);
+	//const [user] = useAuthState(auth);
+	const { user } = useContext(AuthContext);
 	const {
 		query: { pid },
 	} = useRouter();
