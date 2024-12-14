@@ -65,4 +65,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		${ew.getCustomSqlSegment}
     	) a
     </select>
+
+	<select id="selectPublicProblemList" resultMap="ProblemResult">
+		select * from (
+		<include refid="selectPublicProblemVo"/>
+		${ew.getCustomSqlSegment}
+		) a
+	</select>
 </mapper>

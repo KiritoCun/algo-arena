@@ -59,8 +59,7 @@ public class TestcaseServiceImpl implements ITestcaseService {
 //      Map<String, Object> params = bo.getParams();
 		QueryWrapper<Testcase> wrapper = Wrappers.query();
 		wrapper.eq(bo.getProblemId() != null, "t.problem_id", bo.getProblemId())
-				.like(bo.getInputData() != null, "t.input_data", bo.getInputData())
-				.like(bo.getExplanation() != null, "t.explanation", bo.getExplanation())
+				.like(bo.getTestcaseJson() != null, "t.testcase_json", bo.getTestcaseJson())
 				.eq(bo.getIllustration() != null, "t.illustration", bo.getIllustration())
 				.like(bo.getRemark() != null, "t.remark", bo.getRemark());
 		return wrapper;

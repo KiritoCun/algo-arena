@@ -506,8 +506,7 @@ CREATE TABLE testcase
   id                  bigint                              NOT NULL,
   tenant_id           nvarchar(20)    DEFAULT ('000000')  NULL,
   problem_id          bigint                              NOT NULL,
-  input_data          nvarchar(255)                       NULL,
-  expected_output     nvarchar(255)                       NULL,
+  testcase_json       nvarchar(255)                       NULL,
   illustration        varchar(500)                        NULL,
   oss_id              bigint                              NULL,
   explanation         nvarchar(255)                       NULL,
@@ -757,6 +756,14 @@ VALUES
  5,
  SYSDATETIME());
 
+  INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
+ VALUES
+ (1, 1, '{ "nums": [2, 7, 11, 15], "target": 9, "expect": [0, 1] }', NULL, NULL, 0, SYSDATETIME()),
+ (2, 1, '{ "nums": [3, 2, 4], "target": 6, "expect": [1, 2] }', NULL, NULL, 0, SYSDATETIME()),
+ (3, 1, '{ "nums": [3, 3], "target": 6, "expect": [0, 1] }', NULL, NULL, 0, SYSDATETIME()),
+ (4, 1, '{ "nums": [1, 5, 3, 6, 7], "target": 10, "expect": [3, 4] }', NULL, NULL, 0, SYSDATETIME()),
+ (5, 1, '{ "nums": [0, 4, 3, 0], "target": 0, "expect": [0, 3] }', NULL, NULL, 0, SYSDATETIME());
+
  INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (2,
@@ -769,6 +776,14 @@ VALUES
  5,
  SYSDATETIME());
 
+  INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
+ VALUES
+ (6, 2, '{ "head": [1, 2, 3, 4, 5], "expect": [5, 4, 3, 2, 1] }', NULL, NULL, 0, SYSDATETIME()),
+ (7, 2, '{ "head": [1, 2], "expect": [2, 1] }', NULL, NULL, 0, SYSDATETIME()),
+ (8, 2, '{ "head": [1], "expect": [1] }', NULL, NULL, 0, SYSDATETIME()),
+ (9, 2, '{ "head": [1, 2, 3], "expect": [3, 2, 1] }', NULL, NULL, 0, SYSDATETIME()),
+ (10, 2, '{ "head": [5, 4, 3, 2, 1], "expect": [1, 2, 3, 4, 5] }', NULL, NULL, 0, SYSDATETIME());
+
   INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (3,
@@ -780,6 +795,14 @@ VALUES
  '',
  5,
  SYSDATETIME());
+
+  INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
+ VALUES
+ (11, 3, '{ "nums": [2, 3, 1, 1, 4], "expect": true }', NULL, NULL, 0, SYSDATETIME()),
+ (12, 3, '{ "nums": [3, 2, 1, 0, 4], "expect": false }', NULL, NULL, 0, SYSDATETIME()),
+ (13, 3, '{ "nums": [0], "expect": true }', NULL, NULL, 0, SYSDATETIME()),
+ (14, 3, '{ "nums": [1, 2, 3], "expect": true }', NULL, NULL, 0, SYSDATETIME()),
+ (15, 3, '{ "nums": [1, 0, 0], "expect": false }', NULL, NULL, 0, SYSDATETIME());
 
    INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -799,6 +822,14 @@ Every close bracket has a corresponding open bracket of the same type.',
  5,
  SYSDATETIME());
 
+  INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
+ VALUES
+ (16, 4, '{ "s": "()", "expect": true }', NULL, NULL, 0, SYSDATETIME()),
+ (17, 4, '{ "s": "()[]{}", "expect": true }', NULL, NULL, 0, SYSDATETIME()),
+ (18, 4, '{ "s": "(]", "expect": false }', NULL, NULL, 0, SYSDATETIME()),
+ (19, 4, '{ "s": "([)]", "expect": false }', NULL, NULL, 0, SYSDATETIME()),
+ (20, 4, '{ "s": "{[]}", "expect": true }', NULL, NULL, 0, SYSDATETIME());
+
    INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (5,
@@ -815,6 +846,14 @@ Given matrix, an m x n matrix, and target, return true if target is in the matri
  5,
  SYSDATETIME());
 
+  INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
+ VALUES
+ (21, 5, '{ "matrix": [[1, 4, 7, 11], [2, 5, 8, 12], [3, 6, 9, 16], [10, 13, 14, 17]], "target": 5, "expect": true }', NULL, NULL, 0, SYSDATETIME()),
+ (22, 5, '{ "matrix": [[1, 4, 7, 11], [2, 5, 8, 12], [3, 6, 9, 16], [10, 13, 14, 17]], "target": 20, "expect": false }', NULL, NULL, 0, SYSDATETIME()),
+ (23, 5, '{ "matrix": [[1, 4, 7, 11], [2, 5, 8, 12], [3, 6, 9, 16], [10, 13, 14, 17]], "target": 3, "expect": true }', NULL, NULL, 0, SYSDATETIME()),
+ (24, 5, '{ "matrix": [[-5]], "target": -5, "expect": true }', NULL, NULL, 0, SYSDATETIME()),
+ (25, 5, '{ "matrix": [[1]], "target": 0, "expect": false }', NULL, NULL, 0, SYSDATETIME());
+
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (6,
@@ -827,7 +866,7 @@ VALUES
  5,
  SYSDATETIME());
 
- INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+ INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (1, 6, '"babad"', '"bab"', NULL, 'The longest palindromic substring is "bab" or "aba" (both are valid).', 0, SYSDATETIME()),
 (2, 6, '"cbbd"', '"bb"', NULL, 'The longest palindromic substring is "bb".', 0, SYSDATETIME()),
@@ -847,7 +886,7 @@ VALUES
  5,
  SYSDATETIME());
 
- INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+ INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (6, 7, '"PAYPALISHIRING", 3', '"PAHNAPLSIIGYIR"', NULL, 'The string is written in zigzag pattern with 3 rows and then read line by line.', 0, SYSDATETIME()),
 (7, 7, '"PAYPALISHIRING", 4', '"PINALSIGYAHRPI"', NULL, 'The string is written in zigzag pattern with 4 rows and then read line by line.', 0, SYSDATETIME()),
@@ -868,7 +907,7 @@ VALUES
  5,
  SYSDATETIME());
 
- INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+ INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (11, 8, '123', '321', NULL, 'Reversing 123 gives 321.', 0, SYSDATETIME()),
 (12, 8, '-123', '-321', NULL, 'Reversing -123 gives -321.', 0, SYSDATETIME()),
@@ -888,7 +927,7 @@ VALUES
  5,
  SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (16, 9, '42', '42', '', 'Input is a simple positive number.', 0, SYSDATETIME()),
 (17, 9, '   -042', '-42', '', 'Input includes leading whitespace and a negative sign with leading zeros.', 0, SYSDATETIME()),
@@ -908,7 +947,7 @@ VALUES
  5,
  SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (21, 10, '121', 'true', NULL, '121 reads as 121 from left to right and from right to left.', 0, SYSDATETIME()),
 (22, 10, '-121', 'false', NULL, 'From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.', 0, SYSDATETIME()),
@@ -928,7 +967,7 @@ VALUES
  5,
  SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (26, 11, '{"s": "aa", "p": "a"}', 'false', NULL, 'Pattern "a" does not match the entire string "aa".', 0, SYSDATETIME()),
 (27, 11, '{"s": "aa", "p": "a*"}', 'true', NULL, 'Pattern "a*" matches "aa" as "*" allows for zero or more "a"s.', 0, SYSDATETIME()),
@@ -948,7 +987,7 @@ VALUES
  5,
  SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (31, 12, '[1,8,6,2,5,4,8,3,7]', '49', NULL, 'Max area is formed by lines at index 1 and 8 with heights 8 and 7.', 0, SYSDATETIME()),
 (32, 12, '[1,1]', '1', NULL, 'Only two lines with minimum height 1, so max area is 1.', 0, SYSDATETIME()),
@@ -968,7 +1007,7 @@ VALUES
  5,
  SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (36, 13, '3749', 'MMMDCCXLIX', NULL, '3000 = MMM, 700 = DCC, 40 = XL, 9 = IX.', 0, SYSDATETIME()),
 (37, 13, '58', 'LVIII', NULL, '50 = L, 8 = VIII.', 0, SYSDATETIME()),
@@ -988,7 +1027,7 @@ VALUES
  5,
  SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (41, 14, '"III"', '3', NULL, 'III = 3.', 0, SYSDATETIME()),
 (42, 14, '"LVIII"', '58', NULL, 'L = 50, V = 5, III = 3. So, 50 + 5 + 3 = 58.', 0, SYSDATETIME()),
@@ -1008,7 +1047,7 @@ VALUES
  5,
  SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (46, 15, '["flower", "flow", "flight"]', '"fl"', NULL, 'The longest common prefix between "flower", "flow", and "flight" is "fl".', 0, SYSDATETIME()),
 (47, 15, '["dog", "racecar", "car"]', '""', NULL, 'There is no common prefix among the input strings, so the output is an empty string.', 0, SYSDATETIME()),
@@ -1028,7 +1067,7 @@ VALUES
 5,
 SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (51, 16, '[-1, 0, 1, 2, -1, -4]', '[[-1, -1, 2], [-1, 0, 1]]', NULL, 'The triplets that sum up to zero are [-1, -1, 2] and [-1, 0, 1].', 0, SYSDATETIME()),
 (52, 16, '[0, 1, 1]', '[]', NULL, 'There is no triplet that sums up to zero.', 0, SYSDATETIME()),
@@ -1048,7 +1087,7 @@ VALUES
 5,
 SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (56, 17, '[-1, 2, 1, -4]', '2', NULL, 'The sum that is closest to the target is 2. (-1 + 2 + 1 = 2)', 0, SYSDATETIME()),
 (57, 17, '[0, 0, 0]', '0', NULL, 'The sum that is closest to the target is 0. (0 + 0 + 0 = 0)', 0, SYSDATETIME()),
@@ -1068,7 +1107,7 @@ VALUES
 5,
 SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (61, 18, '"23"', '["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"]', NULL, 'The digit 2 maps to "a", "b", "c" and the digit 3 maps to "d", "e", "f". All combinations of these letters are returned.', 0, SYSDATETIME()),
 (62, 18, '""', '[]', NULL, 'An empty string returns an empty list because there are no digits to map to letters.', 0, SYSDATETIME()),
@@ -1084,11 +1123,11 @@ VALUES
 3,
 '4-sum',
 'Two Pointers, Array',
-''
+'',
 5,
 SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (66, 19, '[1, 0, -1, 0, -2, 2]', '[[ -2, -1, 1, 2 ], [ -2, 0, 0, 2 ], [ -1, 0, 0, 1 ]]', NULL, 'The quadruplets that sum to 0 are: [-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1].', 0, SYSDATETIME()),
 (67, 19, '[2, 2, 2, 2, 2]', '[[2, 2, 2, 2]]', NULL, 'The only valid quadruplet that sums to 8 is [2, 2, 2, 2].', 0, SYSDATETIME()),
@@ -1108,7 +1147,7 @@ VALUES
 5,
 SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (71, 20, '[1,2,3,4,5], 2', '[1, 2, 3, 5]', NULL, 'Removing the 2nd node from the end gives the list: [1, 2, 3, 5].', 0, SYSDATETIME()),
 (72, 20, '[1], 1', '[]', NULL, 'Removing the 1st node from the end gives an empty list: [].', 0, SYSDATETIME()),
@@ -1128,7 +1167,7 @@ VALUES
 5,
 SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (76, 21, '()',
 'true', NULL, 'The string contains only one pair of valid parentheses: ().', 0, SYSDATETIME()),
@@ -1153,7 +1192,7 @@ VALUES
 5,
 SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (81, 22, '[1,2,4], [1,3,4]',
 '[1,1,2,3,4,4]', NULL, 'Both lists are merged and sorted in non-decreasing order.', 0, SYSDATETIME()),
@@ -1178,7 +1217,7 @@ VALUES
 5,
 SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (86, 23, '3',
 '["((()))", "(()())", "(())()", "()(())", "()()()"]', NULL, 'With 3 pairs of parentheses, the function generates all valid combinations.', 0, SYSDATETIME()),
@@ -1203,7 +1242,7 @@ VALUES
 5,
 SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (91, 24, '[[1,4,5],[1,3,4],[2,6]]',
 '[1,1,2,3,4,4,5,6]', NULL, 'Merging the 3 sorted lists into one sorted list.', 0, SYSDATETIME()),
@@ -1228,7 +1267,7 @@ VALUES
 5,
 SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (96, 25, '[1,2,3,4]',
 '[2,1,4,3]', NULL, 'Swapping each pair of adjacent nodes results in the list [2,1,4,3].', 0, SYSDATETIME()),
@@ -1253,7 +1292,7 @@ VALUES
 5,
 SYSDATETIME());
 
-INSERT INTO testcase(id, problem_id, input_data, expected_output, illustration, explanation, is_hidden, create_time)
+INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
 (101, 26, '[1,2,3,4,5], 2',
 '[2,1,4,3,5]', NULL, 'The first two nodes (1, 2) are reversed, then the next two nodes (3, 4), and the last node (5) remains as it is.', 0, SYSDATETIME()),

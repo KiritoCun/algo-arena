@@ -1,12 +1,4 @@
-package vn.udn.dut.algoarena.publicapi.service;
-
-import org.json.JSONObject;
-import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
-import vn.udn.dut.algoarena.port.domain.vo.TestcaseVo;
-import vn.udn.dut.algoarena.publicapi.helper.JsonToJavaDeclaration;
-import vn.udn.dut.algoarena.publicapi.helper.MethodExtractorHelper;
+package vn.udn.dut.algoarena.customer.controller.test;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -15,64 +7,58 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import org.json.JSONObject;
 
-/**
- *
- * @author HoaLD
- */
-@RequiredArgsConstructor
-@Service
-public class HomepageSearchService {
-
-    public static boolean submitSolution(String submittedCode, String language, String version, TestcaseVo testcaseVo) {
-        boolean passed = false;
-        String methodSignature = MethodExtractorHelper.extractMethodSignature(submittedCode);
+public class PistonApiCaller {
+    public static void main(String[] args) {
+        String submitedCode = """
+            class Solution {
+                public int[] twoSum(int[] nums, int target) {
+                    Map<Integer, Integer> map = new HashMap<>();
+                    for (int i = 0; i < nums.length; i++) {
+                        int complement = target - nums[i];
+                        if (map.containsKey(complement)) {
+                            return new int[]{map.get(complement), i};
+                        }
+                        map.put(nums[i], i);
+                    }
+                    throw new IllegalArgumentException("No two sum solution");
+                }
+            }
+            """;
 
         // Extract the method and add static modifier
-        String extractedCode = submittedCode
+        String extractedCode = submitedCode
                 .replaceFirst("^class Solution \\{", "") // Remove "class Solution {"
                 .replaceFirst("}$", "")                  // Remove last "}"
                 .trim()
                 .replace("public", "public static");     // Add static modifier to methods
 
-        String testcase = testcaseVo.getTestcaseJson();
-        //String testcase = "{ \"s\": \"([)]\",\"expect\": false }";
-        String testcaseDeclaration = JsonToJavaDeclaration.convertJsonToJavaDeclaration(testcase);
+        // Create the code to be executed
         String code = """
-            import java.util.*;
+            import java.util.HashMap;
+            import java.util.Map;
 
             public class Main {
                 public static void main(String[] args) {
-                    try {
-                        ${TESTCASE_DECLARATION}
-                        ${METHOD_SIGNATURE}
-                        System.out.print(compare(result, expect));
-                    } catch (Exception e) {
-                        System.out.print(e.getMessage());
-                    }
+                    int[] nums = {2, 7, 11, 15};
+                    int target = 9;
+                    int[] result = twoSum(nums, target);
+                    String actualResult = "[" + result[0] + "," + result[1] + "]";
+                    String expectResult = "[0,1]";
+                    boolean isPassed = expectResult.equals(actualResult);
+                    System.out.print(isPassed);
                 }
 
                 ${SOLUTION_METHOD}
-
-                private static boolean compare(Object a, Object b) {
-                    if (a instanceof Object[] && b instanceof Object[]) {
-                        return Arrays.deepEquals((Object[]) a, (Object[]) b);
-                    } else if (a instanceof boolean[] && b instanceof boolean[]) {
-                        return Arrays.equals((boolean[]) a, (boolean[]) b);
-                    } else if (a instanceof int[] && b instanceof int[]) {
-                        return Arrays.equals((int[]) a, (int[]) b);
-                    } else if (a instanceof double[] && b instanceof double[]) {
-                        return Arrays.equals((double[]) a, (double[]) b);
-                    } else {
-                        return Objects.equals(a, b);
-                    }
-                }
             }
             """;
 
-        code = code.replace("${TESTCASE_DECLARATION}", testcaseDeclaration)
-                .replace("${METHOD_SIGNATURE}", methodSignature)
-                .replace("${SOLUTION_METHOD}", extractedCode);
+        code = code.replace("${SOLUTION_METHOD}", extractedCode);
+
+        // Define the language and version
+        String language = "java";
+        String version = "15.0.2";
 
         try {
             // Create JSON payload using org.json library
@@ -115,8 +101,6 @@ public class HomepageSearchService {
 
                     // In kết quả
                     System.out.println("Value of 'stdout': " + stdoutValue);
-
-                    passed = Boolean.valueOf(stdoutValue);
                 }
             } else {
                 try (Scanner scanner = new Scanner(connection.getErrorStream(), StandardCharsets.UTF_8)) {
@@ -128,7 +112,5 @@ public class HomepageSearchService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return passed;
     }
 }

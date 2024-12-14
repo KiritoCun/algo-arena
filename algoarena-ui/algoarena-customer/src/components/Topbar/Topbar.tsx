@@ -105,7 +105,7 @@ const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 								z-40 group-hover:scale-100 scale-0 
 								transition-all duration-300 ease-in-out'
 							>
-								<p className='text-sm'>{user.username}</p>
+								<p className='text-sm'>{user.email}</p>
 							</div>
 						</div>
 					)}

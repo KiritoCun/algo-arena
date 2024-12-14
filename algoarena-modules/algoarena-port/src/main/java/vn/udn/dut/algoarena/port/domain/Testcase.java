@@ -27,9 +27,7 @@ public class Testcase extends TenantEntity {
 
 	private Long problemId;
 
-	private String inputData;
-
-	private String expectedOutput;
+	private String testcaseJson;
 
 	private String illustration;
 

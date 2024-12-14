@@ -43,4 +43,11 @@ public interface ProblemMapper extends BaseMapperPlus<Problem, ProblemVo> {
 	 */
 	List<ProblemVo> selectProblemList(@Param(Constants.WRAPPER) Wrapper<Problem> wrapper);
 
+	/**
+	 *
+	 * @param wrapper
+	 * @return
+	 */
+	List<ProblemVo> selectPublicProblemList(@Param(Constants.WRAPPER) Wrapper<Problem> wrapper);
+
 }

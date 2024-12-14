@@ -65,11 +65,21 @@ public class ProblemServiceImpl implements IProblemService {
 		return baseMapper.selectProblemList(this.buildQueryWrapper(bo));
 	}
 
+	/**
+	 * Query Problem list
+	 */
+	@Override
+	public List<ProblemVo> queryPublicList(ProblemBo bo) {
+//		LambdaQueryWrapper<Problem> lqw = buildQueryWrapper(bo);
+		return baseMapper.selectPublicProblemList(this.buildPublicQueryWrapper(bo));
+	}
+
 	private Wrapper<Problem> buildQueryWrapper(ProblemBo bo) {
 //        Map<String, Object> params = bo.getParams();
 		QueryWrapper<Problem> wrapper = Wrappers.query();
 		wrapper.eq(bo.getExamId() != null, "p.exam_id", bo.getExamId())
 				.like(bo.getTitle() != null, "p.title", bo.getTitle())
+				.eq(bo.getKeyPath() != null, "p.key_path", bo.getKeyPath())
 				.like(bo.getDescription() != null, "p.description", bo.getDescription())
 				.eq(bo.getDifficulty() != null, "p.difficulty", bo.getDifficulty())
 				.like(bo.getRemark() != null, "p.remark", bo.getRemark());
@@ -81,6 +91,7 @@ public class ProblemServiceImpl implements IProblemService {
 		QueryWrapper<Problem> wrapper = Wrappers.query();
 		wrapper.isNull( "p.exam_id")
 				.like(bo.getTitle() != null, "p.title", bo.getTitle())
+				.eq(bo.getKeyPath() != null, "p.key_path", bo.getKeyPath())
 				.like(bo.getDescription() != null, "p.description", bo.getDescription())
 				.eq(bo.getDifficulty() != null, "p.difficulty", bo.getDifficulty())
 				.like(bo.getRemark() != null, "p.remark", bo.getRemark());

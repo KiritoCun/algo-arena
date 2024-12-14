@@ -37,6 +37,11 @@ public interface IProblemService {
 	List<ProblemVo> queryList(ProblemBo bo);
 
 	/**
+	 * Query Problem list
+	 */
+	List<ProblemVo> queryPublicList(ProblemBo bo);
+
+	/**
 	 * Add Problem
 	 */
 	Boolean insertByBo(ProblemBo bo);
