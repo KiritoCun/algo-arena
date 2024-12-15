@@ -47,7 +47,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 		{ language: 'Java', version: '15.0.2' },           
 		{ language: 'Python', version: '3.10.0' },     
 		{ language: 'JavaScript', version: '1.32.3' }, 
-		{ language: 'csharp.net', version: '5.0.201' },           
+		{ language: 'C#', version: '5.0.201' },           
 		{ language: 'C++', version: '10.2.0' },            
 		{ language: 'Ruby', version: '3.0.1' },        
 		{ language: 'Go', version: '1.16.2' },         

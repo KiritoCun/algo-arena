@@ -1,18 +1,8 @@
 package vn.udn.dut.algoarena.publicapi.controller;
 
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import org.json.JSONObject;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import lombok.RequiredArgsConstructor;
 import vn.udn.dut.algoarena.common.core.domain.R;
 import vn.udn.dut.algoarena.common.mybatis.core.page.PageQuery;
 import vn.udn.dut.algoarena.common.mybatis.core.page.TableDataInfo;
@@ -20,9 +10,14 @@ import vn.udn.dut.algoarena.common.web.core.BaseController;
 import vn.udn.dut.algoarena.port.domain.bo.*;
 import vn.udn.dut.algoarena.port.domain.vo.*;
 import vn.udn.dut.algoarena.port.service.*;
-import vn.udn.dut.algoarena.publicapi.helper.JsonToJavaDeclaration;
-import vn.udn.dut.algoarena.publicapi.helper.MethodExtractorHelper;
 import vn.udn.dut.algoarena.publicapi.service.HomepageSearchService;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Homepage api
@@ -57,7 +52,7 @@ public class HomepageSearchController extends BaseController {
     }
 
     @PostMapping("/submit-solution")
-    public List<Boolean> submitSolution(@RequestBody Map<String, String> request) {
+    public List<String> submitSolution(@RequestBody Map<String, String> request) {
         String submittedCode = request.get("submittedCode");
         String keyPath = request.get("problemId");
         String language = request.get("language");
@@ -71,9 +66,7 @@ public class HomepageSearchController extends BaseController {
         testcaseBo.setProblemId(problemVo.getId());
         List<TestcaseVo> testcaseList = testcaseService.queryList(testcaseBo);
 
-        return testcaseList.stream()
-                .map(testcaseVo -> HomepageSearchService.submitSolution(submittedCode, language, version, testcaseVo))
-                .collect(Collectors.toList());
+        return HomepageSearchService.submitSolution(submittedCode, language, version, testcaseList);
     }
 
     @GetMapping("/documents")

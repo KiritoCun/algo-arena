@@ -6,33 +6,101 @@ import java.util.regex.Pattern;
 public class MethodExtractorHelper {
 
     // Hàm giúp trích xuất khai báo phương thức từ mã nguồn
-    public static String extractMethodSignature(String code) {
-        // Regex để tìm khai báo hàm
-        String methodRegex = "(public|private|protected)?\\s+(static\\s+)?([\\w\\[\\]]+)\\s+(\\w+)\\s*\\(([^\\)]*)\\)";
+    public static String extractMethodSignature(String code, String index, String language) {
+        // Regex để tìm khai báo hàm tùy theo ngôn ngữ lập trình
+        String methodRegex = "";
+
+        switch (language.toLowerCase()) {
+            case "java":
+            case "c#":
+                methodRegex = "(public|private|protected)?\\s+(static\\s+)?([\\w\\[\\]]+)\\s+(\\w+)\\s*\\(([^\\)]*)\\)";
+                break;
+
+            case "javascript":
+                methodRegex = "function\\s+(\\w+)\\s*\\(([^\\)]*)\\)";
+                break;
+
+            case "php":
+                methodRegex = "function\\s+(\\w+)\\s*\\(([^\\)]*)\\)";
+                break;
+
+            case "c":
+            case "c++":
+                methodRegex = "([\\w\\[\\]]+)\\s+(\\w+)\\s*\\(([^\\)]*)\\)";
+                break;
+
+            case "python":
+                methodRegex = "def\\s+(\\w+)\\s*\\(([^\\)]*)\\)";
+                break;
+
+            case "go":
+                methodRegex = "func\\s+(\\w+)\\s*\\(([^\\)]*)\\)";
+                break;
+
+            default:
+                return "Unsupported language.";
+        }
+
         Pattern pattern = Pattern.compile(methodRegex);
         Matcher matcher = pattern.matcher(code);
 
         if (matcher.find()) {
-            // Lấy kiểu trả về (returnType), tên phương thức (methodName) và tham số (parameters)
-            String returnType = matcher.group(3); // Kiểu trả về (int[])
-            String methodName = matcher.group(4); // Tên phương thức (twoSum)
-            String parameters = matcher.group(5).trim(); // Các tham số trong dấu ngoặc đơn
+            String methodName = "";
+            String parameters = "";
+            String returnType = "";
 
-            // Xử lý tham số: loại bỏ kiểu dữ liệu và chỉ giữ lại tên tham số
+            switch (language.toLowerCase()) {
+                case "java":
+                case "c#":
+                case "c":
+                case "c++":
+                    returnType = matcher.group(3); // Kiểu trả về
+                    methodName = matcher.group(4); // Tên phương thức
+                    parameters = matcher.group(5).trim(); // Các tham số
+                    break;
+
+                case "javascript":
+                case "php":
+                case "python":
+                case "go":
+                    methodName = matcher.group(1); // Tên phương thức
+                    parameters = matcher.group(2); // Các tham số
+                    break;
+            }
+
+            // Xử lý tham số: chỉ giữ lại tên tham số, bỏ kiểu dữ liệu
             if (!parameters.isEmpty()) {
                 String[] paramArray = parameters.split(",");
                 for (int i = 0; i < paramArray.length; i++) {
                     String param = paramArray[i].trim();
-                    // Lấy tên tham số (sau khi loại bỏ kiểu dữ liệu)
-                    paramArray[i] = param.replaceAll("[\\w\\[\\]]+\\s+", ""); // Xóa kiểu dữ liệu
+
+                    if (language.equalsIgnoreCase("java") || language.equalsIgnoreCase("c#") || language.equalsIgnoreCase("c") || language.equalsIgnoreCase("c++")) {
+                        paramArray[i] = param.replaceAll("[\\w\\[\\]]+\\s+", "");
+                    }
                 }
-                // Ghép lại danh sách tham số với dấu phẩy phân cách và khoảng trắng sau dấu phẩy
-                parameters = String.join(", ", paramArray);
+                parameters = String.join(index + ", ", paramArray);
             }
 
             // Trả về chuỗi theo định dạng mong muốn
-            return returnType + " result = " + methodName + "(" + parameters + ");";
+            if (!returnType.isEmpty()) {
+                return returnType + " result" + index + " = " + methodName + "(" + parameters + index + ");";
+            } else {
+                // Thêm khai báo biến phù hợp với các ngôn ngữ không có kiểu trả về rõ ràng
+                switch (language.toLowerCase()) {
+                    case "javascript":
+                        return "let result" + index + " = " + methodName + "(" + parameters + index + ");";
+                    case "python":
+                        return "result" + index + " = " + methodName + "(" + parameters + index + ")";
+                    case "php":
+                        return "$result" + index + " = " + methodName + "(" + parameters + index + ");";
+                    case "go":
+                        return "result" + index + " := " + methodName + "(" + parameters + index + ")";
+                    default:
+                        return "result" + index + " = " + methodName + "(" + parameters + index + ");";
+                }
+            }
         }
+
         return "No method signature found.";
     }
 }

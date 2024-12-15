@@ -2,78 +2,90 @@ package vn.udn.dut.algoarena.publicapi.service;
 
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
 import vn.udn.dut.algoarena.port.domain.vo.TestcaseVo;
-import vn.udn.dut.algoarena.publicapi.helper.JsonToJavaDeclaration;
+import vn.udn.dut.algoarena.publicapi.helper.JsonToLanguageDeclaration;
 import vn.udn.dut.algoarena.publicapi.helper.MethodExtractorHelper;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
-/**
- *
- * @author HoaLD
- */
 @RequiredArgsConstructor
 @Service
 public class HomepageSearchService {
 
-    public static boolean submitSolution(String submittedCode, String language, String version, TestcaseVo testcaseVo) {
-        boolean passed = false;
-        String methodSignature = MethodExtractorHelper.extractMethodSignature(submittedCode);
+    public static List<String> submitSolution(String submittedCode, String language, String version, List<TestcaseVo> testcaseVoList) {
+        List<String> testcaseResult = new ArrayList<>();
 
-        // Extract the method and add static modifier
-        String extractedCode = submittedCode
-                .replaceFirst("^class Solution \\{", "") // Remove "class Solution {"
-                .replaceFirst("}$", "")                  // Remove last "}"
-                .trim()
-                .replace("public", "public static");     // Add static modifier to methods
+        // Extract method signatures for each test case
+        String methodSignature1 = MethodExtractorHelper.extractMethodSignature(submittedCode, "1", language);
+        String methodSignature2 = MethodExtractorHelper.extractMethodSignature(submittedCode, "2", language);
+        String methodSignature3 = MethodExtractorHelper.extractMethodSignature(submittedCode, "3", language);
+        String methodSignature4 = MethodExtractorHelper.extractMethodSignature(submittedCode, "4", language);
+        String methodSignature5 = MethodExtractorHelper.extractMethodSignature(submittedCode, "5", language);
 
-        String testcase = testcaseVo.getTestcaseJson();
-        //String testcase = "{ \"s\": \"([)]\",\"expect\": false }";
-        String testcaseDeclaration = JsonToJavaDeclaration.convertJsonToJavaDeclaration(testcase);
-        String code = """
-            import java.util.*;
+        // Remove class and modify the method for Java
+        if ("java".equals(language)) {
+            submittedCode = submittedCode
+                    .replaceFirst("^class Solution \\{", "") // Remove "class Solution {"
+                    .replaceFirst("}$", "")                  // Remove last "}"
+                    .trim()
+                    .replace("public", "public static");     // Add static modifier to methods
+        } else if ("c#".equals(language)) {
+            submittedCode = submittedCode
+                    .replaceFirst("^public class Solution \\{", "") // Remove "class Solution {"
+                    .replaceFirst("}$", "")                  // Remove last "}"
+                    .trim()
+                    .replace("public", "public static");     // Add static modifier to methods;
+        }
 
-            public class Main {
-                public static void main(String[] args) {
-                    try {
-                        ${TESTCASE_DECLARATION}
-                        ${METHOD_SIGNATURE}
-                        System.out.print(compare(result, expect));
-                    } catch (Exception e) {
-                        System.out.print(e.getMessage());
-                    }
-                }
+        // Get test case JSON
+        String testcase1 = testcaseVoList.get(0).getTestcaseJson();
+        String testcase2 = testcaseVoList.get(1).getTestcaseJson();
+        String testcase3 = testcaseVoList.get(2).getTestcaseJson();
+        String testcase4 = testcaseVoList.get(3).getTestcaseJson();
+        String testcase5 = testcaseVoList.get(4).getTestcaseJson();
 
-                ${SOLUTION_METHOD}
+        // Convert test case to declarations for the specified language
+        String testcaseDeclaration1 = JsonToLanguageDeclaration.convertJsonToDeclaration(testcase1, "1", language);
+        String testcaseDeclaration2 = JsonToLanguageDeclaration.convertJsonToDeclaration(testcase2, "2", language);
+        String testcaseDeclaration3 = JsonToLanguageDeclaration.convertJsonToDeclaration(testcase3, "3", language);
+        String testcaseDeclaration4 = JsonToLanguageDeclaration.convertJsonToDeclaration(testcase4, "4", language);
+        String testcaseDeclaration5 = JsonToLanguageDeclaration.convertJsonToDeclaration(testcase5, "5", language);
 
-                private static boolean compare(Object a, Object b) {
-                    if (a instanceof Object[] && b instanceof Object[]) {
-                        return Arrays.deepEquals((Object[]) a, (Object[]) b);
-                    } else if (a instanceof boolean[] && b instanceof boolean[]) {
-                        return Arrays.equals((boolean[]) a, (boolean[]) b);
-                    } else if (a instanceof int[] && b instanceof int[]) {
-                        return Arrays.equals((int[]) a, (int[]) b);
-                    } else if (a instanceof double[] && b instanceof double[]) {
-                        return Arrays.equals((double[]) a, (double[]) b);
-                    } else {
-                        return Objects.equals(a, b);
-                    }
-                }
-            }
-            """;
+        // Switch based on the language
+        String code = switch (language.toLowerCase()) {
+            case "java" -> getJavaCode(testcaseDeclaration1, methodSignature1, testcaseDeclaration2, methodSignature2,
+                    testcaseDeclaration3, methodSignature3, testcaseDeclaration4, methodSignature4,
+                    testcaseDeclaration5, methodSignature5, submittedCode);
+            case "javascript" -> getJavaScriptCode(testcaseDeclaration1, methodSignature1, testcaseDeclaration2, methodSignature2,
+                    testcaseDeclaration3, methodSignature3, testcaseDeclaration4, methodSignature4,
+                    testcaseDeclaration5, methodSignature5, submittedCode);
+            case "php" -> getPhpCode(testcaseDeclaration1, methodSignature1, testcaseDeclaration2, methodSignature2,
+                    testcaseDeclaration3, methodSignature3, testcaseDeclaration4, methodSignature4,
+                    testcaseDeclaration5, methodSignature5, submittedCode);
+            case "c" -> getCCode(testcaseDeclaration1, methodSignature1, testcaseDeclaration2, methodSignature2,
+                    testcaseDeclaration3, methodSignature3, testcaseDeclaration4, methodSignature4,
+                    testcaseDeclaration5, methodSignature5, submittedCode);
+            case "c++" -> getCppCode(testcaseDeclaration1, methodSignature1, testcaseDeclaration2, methodSignature2,
+                    testcaseDeclaration3, methodSignature3, testcaseDeclaration4, methodSignature4,
+                    testcaseDeclaration5, methodSignature5, submittedCode);
+            case "c#" -> getCSharpCode(testcaseDeclaration1, methodSignature1, testcaseDeclaration2, methodSignature2,
+                    testcaseDeclaration3, methodSignature3, testcaseDeclaration4, methodSignature4,
+                    testcaseDeclaration5, methodSignature5, submittedCode);
+            case "python" -> getPythonCode(testcaseDeclaration1, methodSignature1, testcaseDeclaration2, methodSignature2,
+                    testcaseDeclaration3, methodSignature3, testcaseDeclaration4, methodSignature4,
+                    testcaseDeclaration5, methodSignature5, submittedCode);
+            case "go" -> getGoCode(testcaseDeclaration1, methodSignature1, testcaseDeclaration2, methodSignature2,
+                    testcaseDeclaration3, methodSignature3, testcaseDeclaration4, methodSignature4,
+                    testcaseDeclaration5, methodSignature5, submittedCode);
+            default -> throw new IllegalArgumentException("Unsupported language: " + language);
+        };
 
-        code = code.replace("${TESTCASE_DECLARATION}", testcaseDeclaration)
-                .replace("${METHOD_SIGNATURE}", methodSignature)
-                .replace("${SOLUTION_METHOD}", extractedCode);
-
+        // Send code to the execution API
         try {
             // Create JSON payload using org.json library
             JSONObject jsonPayload = new JSONObject();
@@ -104,19 +116,18 @@ public class HomepageSearchService {
                 try (Scanner scanner = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8)) {
                     String response = scanner.useDelimiter("\\A").next();
                     System.out.println("Response from Piston API: " + response);
+
                     // Parse JSON
                     JSONObject jsonObject = new JSONObject(response);
 
-                    // Lấy giá trị của key "run"
+                    // Get the "stdout" value from the "run" object
                     JSONObject runObject = jsonObject.getJSONObject("run");
-
-                    // Lấy giá trị của key "stdout" bên trong "run"
                     String stdoutValue = runObject.getString("stdout");
 
-                    // In kết quả
+                    // Print the result
                     System.out.println("Value of 'stdout': " + stdoutValue);
 
-                    passed = Boolean.valueOf(stdoutValue);
+                    testcaseResult = Arrays.stream((stdoutValue.trim()).split(",")).toList();
                 }
             } else {
                 try (Scanner scanner = new Scanner(connection.getErrorStream(), StandardCharsets.UTF_8)) {
@@ -129,6 +140,514 @@ public class HomepageSearchService {
             e.printStackTrace();
         }
 
-        return passed;
+        return testcaseResult;
+    }
+
+    private static String getJavaCode(String testcaseDeclaration1, String methodSignature1, String testcaseDeclaration2,
+                                      String methodSignature2, String testcaseDeclaration3, String methodSignature3,
+                                      String testcaseDeclaration4, String methodSignature4, String testcaseDeclaration5,
+                                      String methodSignature5, String submittedCode) {
+        return """
+                import java.util.*;
+
+                public class Main {
+                    public static void main(String[] args) {
+                        try {
+                            ${TESTCASE_DECLARATION1}
+                            ${METHOD_SIGNATURE1}
+                            System.out.print(compare(result1, expect1));
+                            
+                            System.out.print(",");
+                            
+                            ${TESTCASE_DECLARATION2}
+                            ${METHOD_SIGNATURE2}
+                            System.out.print(compare(result2, expect2));
+                            
+                            System.out.print(",");
+                            
+                            ${TESTCASE_DECLARATION3}
+                            ${METHOD_SIGNATURE3}
+                            System.out.print(compare(result3, expect3));
+                            
+                            System.out.print(",");
+                            
+                            ${TESTCASE_DECLARATION4}
+                            ${METHOD_SIGNATURE4}
+                            System.out.print(compare(result4, expect4));
+                            
+                            System.out.print(",");
+                            
+                            ${TESTCASE_DECLARATION5}
+                            ${METHOD_SIGNATURE5}
+                            System.out.print(compare(result5, expect5));
+                        } catch (Exception e) {
+                            System.out.print(e.getMessage());
+                        }
+                    }
+
+                    ${SOLUTION_METHOD}
+
+                    private static boolean compare(Object a, Object b) {
+                        if (a instanceof Object[] && b instanceof Object[]) {
+                            return Arrays.deepEquals((Object[]) a, (Object[]) b);
+                        } else if (a instanceof boolean[] && b instanceof boolean[]) {
+                            return Arrays.equals((boolean[]) a, (boolean[]) b);
+                        } else if (a instanceof int[] && b instanceof int[]) {
+                            return Arrays.equals((int[]) a, (int[]) b);
+                        } else if (a instanceof double[] && b instanceof double[]) {
+                            return Arrays.equals((double[]) a, (double[]) b);
+                        } else {
+                            return Objects.equals(a, b);
+                        }
+                    }
+                }
+                """.replace("${TESTCASE_DECLARATION1}", testcaseDeclaration1)
+                .replace("${METHOD_SIGNATURE1}", methodSignature1)
+                .replace("${TESTCASE_DECLARATION2}", testcaseDeclaration2)
+                .replace("${METHOD_SIGNATURE2}", methodSignature2)
+                .replace("${TESTCASE_DECLARATION3}", testcaseDeclaration3)
+                .replace("${METHOD_SIGNATURE3}", methodSignature3)
+                .replace("${TESTCASE_DECLARATION4}", testcaseDeclaration4)
+                .replace("${METHOD_SIGNATURE4}", methodSignature4)
+                .replace("${TESTCASE_DECLARATION5}", testcaseDeclaration5)
+                .replace("${METHOD_SIGNATURE5}", methodSignature5)
+                .replace("${SOLUTION_METHOD}", submittedCode);
+    }
+
+    private static String getJavaScriptCode(String testcaseDeclaration1, String methodSignature1, String testcaseDeclaration2,
+                                            String methodSignature2, String testcaseDeclaration3, String methodSignature3,
+                                            String testcaseDeclaration4, String methodSignature4, String testcaseDeclaration5,
+                                            String methodSignature5, String submittedCode) {
+        return """
+                function test() {
+                    try {
+                        ${TESTCASE_DECLARATION1}
+                        ${METHOD_SIGNATURE1}
+                        console.log(compare(result1, expect1));
+                        
+                        console.log(",");
+                        
+                        ${TESTCASE_DECLARATION2}
+                        ${METHOD_SIGNATURE2}
+                        console.log(compare(result2, expect2));
+                        
+                        console.log(",");
+                        
+                        ${TESTCASE_DECLARATION3}
+                        ${METHOD_SIGNATURE3}
+                        console.log(compare(result3, expect3));
+                        
+                        console.log(",");
+                        
+                        ${TESTCASE_DECLARATION4}
+                        ${METHOD_SIGNATURE4}
+                        console.log(compare(result4, expect4));
+                        
+                        console.log(",");
+                        
+                        ${TESTCASE_DECLARATION5}
+                        ${METHOD_SIGNATURE5}
+                        console.log(compare(result5, expect5));
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
+
+                ${SOLUTION_METHOD}
+
+                function compare(a, b) {
+                    if (Array.isArray(a) && Array.isArray(b)) {
+                        return JSON.stringify(a) === JSON.stringify(b);
+                    } else {
+                        return a === b;
+                    }
+                }
+                """.replace("${TESTCASE_DECLARATION1}", testcaseDeclaration1)
+                .replace("${METHOD_SIGNATURE1}", methodSignature1)
+                .replace("${TESTCASE_DECLARATION2}", testcaseDeclaration2)
+                .replace("${METHOD_SIGNATURE2}", methodSignature2)
+                .replace("${TESTCASE_DECLARATION3}", testcaseDeclaration3)
+                .replace("${METHOD_SIGNATURE3}", methodSignature3)
+                .replace("${TESTCASE_DECLARATION4}", testcaseDeclaration4)
+                .replace("${METHOD_SIGNATURE4}", methodSignature4)
+                .replace("${TESTCASE_DECLARATION5}", testcaseDeclaration5)
+                .replace("${METHOD_SIGNATURE5}", methodSignature5)
+                .replace("${SOLUTION_METHOD}", submittedCode);
+    }
+
+    private static String getPhpCode(String testcaseDeclaration1, String methodSignature1, String testcaseDeclaration2,
+                                     String methodSignature2, String testcaseDeclaration3, String methodSignature3,
+                                     String testcaseDeclaration4, String methodSignature4, String testcaseDeclaration5,
+                                     String methodSignature5, String submittedCode) {
+        return """
+            <?php
+
+            function test() {
+                try {
+                    ${TESTCASE_DECLARATION1}
+                    ${METHOD_SIGNATURE1}
+                    echo compare(result1, expect1) ? "true" : "false";
+                    
+                    echo ",";
+                    
+                    ${TESTCASE_DECLARATION2}
+                    ${METHOD_SIGNATURE2}
+                    echo compare(result2, expect2) ? "true" : "false";
+                    
+                    echo ",";
+                    
+                    ${TESTCASE_DECLARATION3}
+                    ${METHOD_SIGNATURE3}
+                    echo compare(result3, expect3) ? "true" : "false";
+                    
+                    echo ",";
+                    
+                    ${TESTCASE_DECLARATION4}
+                    ${METHOD_SIGNATURE4}
+                    echo compare(result4, expect4) ? "true" : "false";
+                    
+                    echo ",";
+                    
+                    ${TESTCASE_DECLARATION5}
+                    ${METHOD_SIGNATURE5}
+                    echo compare(result5, expect5) ? "true" : "false";
+                } catch (Exception $e) {
+                    echo $e->getMessage();
+                }
+            }
+
+            ${SOLUTION_METHOD}
+
+            function compare($a, $b) {
+                if (is_array($a) && is_array($b)) {
+                    return json_encode($a) === json_encode($b);
+                } else {
+                    return $a === $b;
+                }
+            }
+
+            test();
+            """.replace("${TESTCASE_DECLARATION1}", testcaseDeclaration1)
+                .replace("${METHOD_SIGNATURE1}", methodSignature1)
+                .replace("${TESTCASE_DECLARATION2}", testcaseDeclaration2)
+                .replace("${METHOD_SIGNATURE2}", methodSignature2)
+                .replace("${TESTCASE_DECLARATION3}", testcaseDeclaration3)
+                .replace("${METHOD_SIGNATURE3}", methodSignature3)
+                .replace("${TESTCASE_DECLARATION4}", testcaseDeclaration4)
+                .replace("${METHOD_SIGNATURE4}", methodSignature4)
+                .replace("${TESTCASE_DECLARATION5}", testcaseDeclaration5)
+                .replace("${METHOD_SIGNATURE5}", methodSignature5)
+                .replace("${SOLUTION_METHOD}", submittedCode);
+    }
+
+    private static String getCCode(String testcaseDeclaration1, String methodSignature1, String testcaseDeclaration2,
+                                   String methodSignature2, String testcaseDeclaration3, String methodSignature3,
+                                   String testcaseDeclaration4, String methodSignature4, String testcaseDeclaration5,
+                                   String methodSignature5, String submittedCode) {
+        return """
+            #include <stdio.h>
+            #include <string.h>
+
+            int compare(void* a, void* b) {
+                if (memcmp(a, b, sizeof(a)) == 0) {
+                    return 1;
+                }
+                return 0;
+            }
+
+            int main() {
+                try {
+                    ${TESTCASE_DECLARATION1}
+                    ${METHOD_SIGNATURE1}
+                    printf("%s", compare(result1, expect1) ? "true" : "false");
+                    
+                    printf(",");
+                    
+                    ${TESTCASE_DECLARATION2}
+                    ${METHOD_SIGNATURE2}
+                    printf("%s", compare(result2, expect2) ? "true" : "false");
+                    
+                    printf(",");
+                    
+                    ${TESTCASE_DECLARATION3}
+                    ${METHOD_SIGNATURE3}
+                    printf("%s", compare(result3, expect3) ? "true" : "false");
+                    
+                    printf(",");
+                    
+                    ${TESTCASE_DECLARATION4}
+                    ${METHOD_SIGNATURE4}
+                    printf("%s", compare(result4, expect4) ? "true" : "false");
+                    
+                    printf(",");
+                    
+                    ${TESTCASE_DECLARATION5}
+                    ${METHOD_SIGNATURE5}
+                    printf("%s", compare(result5, expect5) ? "true" : "false");
+                } catch (Exception e) {
+                    printf("%s", e.getMessage());
+                }
+            }
+
+            ${SOLUTION_METHOD}
+            """.replace("${TESTCASE_DECLARATION1}", testcaseDeclaration1)
+                .replace("${METHOD_SIGNATURE1}", methodSignature1)
+                .replace("${TESTCASE_DECLARATION2}", testcaseDeclaration2)
+                .replace("${METHOD_SIGNATURE2}", methodSignature2)
+                .replace("${TESTCASE_DECLARATION3}", testcaseDeclaration3)
+                .replace("${METHOD_SIGNATURE3}", methodSignature3)
+                .replace("${TESTCASE_DECLARATION4}", testcaseDeclaration4)
+                .replace("${METHOD_SIGNATURE4}", methodSignature4)
+                .replace("${TESTCASE_DECLARATION5}", testcaseDeclaration5)
+                .replace("${METHOD_SIGNATURE5}", methodSignature5)
+                .replace("${SOLUTION_METHOD}", submittedCode);
+    }
+
+    private static String getCppCode(String testcaseDeclaration1, String methodSignature1, String testcaseDeclaration2,
+                                     String methodSignature2, String testcaseDeclaration3, String methodSignature3,
+                                     String testcaseDeclaration4, String methodSignature4, String testcaseDeclaration5,
+                                     String methodSignature5, String submittedCode) {
+        return """
+            #include <iostream>
+            #include <vector>
+            using namespace std;
+
+            template <typename T>
+            bool compare(const T& a, const T& b) {
+                return a == b;
+            }
+
+            int main() {
+                try {
+                    ${TESTCASE_DECLARATION1}
+                    ${METHOD_SIGNATURE1}
+                    cout << (compare(result1, expect1) ? "true" : "false");
+                    
+                    cout << ",";
+                    
+                    ${TESTCASE_DECLARATION2}
+                    ${METHOD_SIGNATURE2}
+                    cout << (compare(result2, expect2) ? "true" : "false");
+                    
+                    cout << ",";
+                    
+                    ${TESTCASE_DECLARATION3}
+                    ${METHOD_SIGNATURE3}
+                    cout << (compare(result3, expect3) ? "true" : "false");
+                    
+                    cout << ",";
+                    
+                    ${TESTCASE_DECLARATION4}
+                    ${METHOD_SIGNATURE4}
+                    cout << (compare(result4, expect4) ? "true" : "false");
+                    
+                    cout << ",";
+                    
+                    ${TESTCASE_DECLARATION5}
+                    ${METHOD_SIGNATURE5}
+                    cout << (compare(result5, expect5) ? "true" : "false");
+                } catch (exception& e) {
+                    cout << e.what();
+                }
+            }
+
+            ${SOLUTION_METHOD}
+            """.replace("${TESTCASE_DECLARATION1}", testcaseDeclaration1)
+                .replace("${METHOD_SIGNATURE1}", methodSignature1)
+                .replace("${TESTCASE_DECLARATION2}", testcaseDeclaration2)
+                .replace("${METHOD_SIGNATURE2}", methodSignature2)
+                .replace("${TESTCASE_DECLARATION3}", testcaseDeclaration3)
+                .replace("${METHOD_SIGNATURE3}", methodSignature3)
+                .replace("${TESTCASE_DECLARATION4}", testcaseDeclaration4)
+                .replace("${METHOD_SIGNATURE4}", methodSignature4)
+                .replace("${TESTCASE_DECLARATION5}", testcaseDeclaration5)
+                .replace("${METHOD_SIGNATURE5}", methodSignature5)
+                .replace("${SOLUTION_METHOD}", submittedCode);
+    }
+
+    private static String getCSharpCode(String testcaseDeclaration1, String methodSignature1, String testcaseDeclaration2,
+                                        String methodSignature2, String testcaseDeclaration3, String methodSignature3,
+                                        String testcaseDeclaration4, String methodSignature4, String testcaseDeclaration5,
+                                        String methodSignature5, String submittedCode) {
+        return """
+            using System;
+            using System.Collections.Generic;
+
+            class Program {
+                static void Main() {
+                    try {
+                        ${TESTCASE_DECLARATION1}
+                        ${METHOD_SIGNATURE1}
+                        Console.WriteLine(compare(result1, expect1) ? "true" : "false");
+                        
+                        Console.WriteLine(",");
+                        
+                        ${TESTCASE_DECLARATION2}
+                        ${METHOD_SIGNATURE2}
+                        Console.WriteLine(compare(result2, expect2) ? "true" : "false");
+                        
+                        Console.WriteLine(",");
+                        
+                        ${TESTCASE_DECLARATION3}
+                        ${METHOD_SIGNATURE3}
+                        Console.WriteLine(compare(result3, expect3) ? "true" : "false");
+                        
+                        Console.WriteLine(",");
+                        
+                        ${TESTCASE_DECLARATION4}
+                        ${METHOD_SIGNATURE4}
+                        Console.WriteLine(compare(result4, expect4) ? "true" : "false");
+                        
+                        Console.WriteLine(",");
+                        
+                        ${TESTCASE_DECLARATION5}
+                        ${METHOD_SIGNATURE5}
+                        Console.WriteLine(compare(result5, expect5) ? "true" : "false");
+                    } catch (Exception e) {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+
+                static bool compare(object a, object b) {
+                    return a.Equals(b);
+                }
+
+                ${SOLUTION_METHOD}
+            }
+            """.replace("${TESTCASE_DECLARATION1}", testcaseDeclaration1)
+                .replace("${METHOD_SIGNATURE1}", methodSignature1)
+                .replace("${TESTCASE_DECLARATION2}", testcaseDeclaration2)
+                .replace("${METHOD_SIGNATURE2}", methodSignature2)
+                .replace("${TESTCASE_DECLARATION3}", testcaseDeclaration3)
+                .replace("${METHOD_SIGNATURE3}", methodSignature3)
+                .replace("${TESTCASE_DECLARATION4}", testcaseDeclaration4)
+                .replace("${METHOD_SIGNATURE4}", methodSignature4)
+                .replace("${TESTCASE_DECLARATION5}", testcaseDeclaration5)
+                .replace("${METHOD_SIGNATURE5}", methodSignature5)
+                .replace("${SOLUTION_METHOD}", submittedCode);
+    }
+
+    private static String getPythonCode(String testcaseDeclaration1, String methodSignature1, String testcaseDeclaration2,
+                                        String methodSignature2, String testcaseDeclaration3, String methodSignature3,
+                                        String testcaseDeclaration4, String methodSignature4, String testcaseDeclaration5,
+                                        String methodSignature5, String submittedCode) {
+        return """
+            def compare(a, b):
+                if isinstance(a, list) and isinstance(b, list):
+                    return a == b
+                return a == b
+
+            def main():
+                try:
+                    ${TESTCASE_DECLARATION1}
+                    ${METHOD_SIGNATURE1}
+                    print(compare(result1, expect1))
+                    
+                    print(",", end=" ")
+                    
+                    ${TESTCASE_DECLARATION2}
+                    ${METHOD_SIGNATURE2}
+                    print(compare(result2, expect2))
+                    
+                    print(",", end=" ")
+                    
+                    ${TESTCASE_DECLARATION3}
+                    ${METHOD_SIGNATURE3}
+                    print(compare(result3, expect3))
+                    
+                    print(",", end=" ")
+                    
+                    ${TESTCASE_DECLARATION4}
+                    ${METHOD_SIGNATURE4}
+                    print(compare(result4, expect4))
+                    
+                    print(",", end=" ")
+                    
+                    ${TESTCASE_DECLARATION5}
+                    ${METHOD_SIGNATURE5}
+                    print(compare(result5, expect5))
+                except Exception as e:
+                    print(str(e))
+
+            ${SOLUTION_METHOD}
+
+            if __name__ == "__main__":
+                main()
+            """.replace("${TESTCASE_DECLARATION1}", testcaseDeclaration1)
+                .replace("${METHOD_SIGNATURE1}", methodSignature1)
+                .replace("${TESTCASE_DECLARATION2}", testcaseDeclaration2)
+                .replace("${METHOD_SIGNATURE2}", methodSignature2)
+                .replace("${TESTCASE_DECLARATION3}", testcaseDeclaration3)
+                .replace("${METHOD_SIGNATURE3}", methodSignature3)
+                .replace("${TESTCASE_DECLARATION4}", testcaseDeclaration4)
+                .replace("${METHOD_SIGNATURE4}", methodSignature4)
+                .replace("${TESTCASE_DECLARATION5}", testcaseDeclaration5)
+                .replace("${METHOD_SIGNATURE5}", methodSignature5)
+                .replace("${SOLUTION_METHOD}", submittedCode);
+    }
+
+    private static String getGoCode(String testcaseDeclaration1, String methodSignature1, String testcaseDeclaration2,
+                                    String methodSignature2, String testcaseDeclaration3, String methodSignature3,
+                                    String testcaseDeclaration4, String methodSignature4, String testcaseDeclaration5,
+                                    String methodSignature5, String submittedCode) {
+        return """
+            package main
+
+            import (
+                "fmt"
+            )
+
+            func compare(a, b interface{}) bool {
+                return a == b
+            }
+
+            func main() {
+                defer func() {
+                    if r := recover(); r != nil {
+                        fmt.Println(r)
+                    }
+                }()
+
+                ${TESTCASE_DECLARATION1}
+                ${METHOD_SIGNATURE1}
+                fmt.Println(compare(result1, expect1))
+
+                fmt.Println(",",)
+
+                ${TESTCASE_DECLARATION2}
+                ${METHOD_SIGNATURE2}
+                fmt.Println(compare(result2, expect2))
+
+                fmt.Println(",",)
+
+                ${TESTCASE_DECLARATION3}
+                ${METHOD_SIGNATURE3}
+                fmt.Println(compare(result3, expect3))
+
+                fmt.Println(",",)
+
+                ${TESTCASE_DECLARATION4}
+                ${METHOD_SIGNATURE4}
+                fmt.Println(compare(result4, expect4))
+
+                fmt.Println(",",)
+
+                ${TESTCASE_DECLARATION5}
+                ${METHOD_SIGNATURE5}
+                fmt.Println(compare(result5, expect5))
+            }
+
+            ${SOLUTION_METHOD}
+            """.replace("${TESTCASE_DECLARATION1}", testcaseDeclaration1)
+                .replace("${METHOD_SIGNATURE1}", methodSignature1)
+                .replace("${TESTCASE_DECLARATION2}", testcaseDeclaration2)
+                .replace("${METHOD_SIGNATURE2}", methodSignature2)
+                .replace("${TESTCASE_DECLARATION3}", testcaseDeclaration3)
+                .replace("${METHOD_SIGNATURE3}", methodSignature3)
+                .replace("${TESTCASE_DECLARATION4}", testcaseDeclaration4)
+                .replace("${METHOD_SIGNATURE4}", methodSignature4)
+                .replace("${TESTCASE_DECLARATION5}", testcaseDeclaration5)
+                .replace("${METHOD_SIGNATURE5}", methodSignature5)
+                .replace("${SOLUTION_METHOD}", submittedCode);
     }
 }

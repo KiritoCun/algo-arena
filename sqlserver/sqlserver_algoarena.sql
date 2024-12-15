@@ -761,7 +761,7 @@ VALUES
  (1, 1, '{ "nums": [2, 7, 11, 15], "target": 9, "expect": [0, 1] }', NULL, NULL, 0, SYSDATETIME()),
  (2, 1, '{ "nums": [3, 2, 4], "target": 6, "expect": [1, 2] }', NULL, NULL, 0, SYSDATETIME()),
  (3, 1, '{ "nums": [3, 3], "target": 6, "expect": [0, 1] }', NULL, NULL, 0, SYSDATETIME()),
- (4, 1, '{ "nums": [1, 5, 3, 6, 7], "target": 10, "expect": [3, 4] }', NULL, NULL, 0, SYSDATETIME()),
+ (4, 1, '{ "nums": [1, 5, 3, 6, 7], "target": 10, "expect": [2, 4] }', NULL, NULL, 0, SYSDATETIME()),
  (5, 1, '{ "nums": [0, 4, 3, 0], "target": 0, "expect": [0, 3] }', NULL, NULL, 0, SYSDATETIME());
 
  INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
