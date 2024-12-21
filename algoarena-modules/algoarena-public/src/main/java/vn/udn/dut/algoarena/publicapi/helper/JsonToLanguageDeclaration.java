@@ -111,19 +111,19 @@ public class JsonToLanguageDeclaration {
         String type = getArrayType(jsonArray, language);
 
         if (language.equals("java")) {
-            arrayString.append("int[] ").append(key).append(index).append(" = new int[] {");
+            arrayString.append(type).append("[] ").append(key).append(index).append(" = new ").append(type).append("[] {");
         } else if (language.equals("c") || language.equals("c++")) {
             arrayString.append(type).append(" ").append(key).append(index).append("[] = {");
         } else if (language.equals("c#")) {
             arrayString.append(type).append("[] ").append(key).append(index).append(" = new ").append(type).append("[] {");
         } else if (language.equals("javascript")) {
-            arrayString.append(type).append(" ").append(key).append(index).append(" = [");
+            arrayString.append("let ").append(key).append(index).append(" = [");
         } else if (language.equals("python")) {
             arrayString.append(key).append(index).append(" = [");
         } else if (language.equals("go")) {
             arrayString.append("var ").append(key).append(index).append(" = []").append(type).append("{");
         } else if (language.equals("php")) {
-            arrayString.append("$").append(key).append(index).append(" = array(");
+            arrayString.append("$").append(key).append(index).append(" = [");
         }
 
         appendArrayContent(arrayString, jsonArray, language);

@@ -30,4 +30,5 @@ export type DBProblem = {
 	videoId?: string;
 	link?: string;
 	keyPath?: string;
+	description?: string;
 };

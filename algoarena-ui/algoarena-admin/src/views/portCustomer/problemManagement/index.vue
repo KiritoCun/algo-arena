@@ -76,15 +76,6 @@
         @onClick="handleTestcaseUpdate"
         :disabledFlag="!!!testcaseIds.length"
       />
-      <IrButton
-        colorStyle="gray"
-        type="secondary"
-        :disabledFlag="testcaseIds.length !== 1 ? true : false"
-        :title="$t('problemManagement.headerButton.editTt')"
-        leftIcon="edit"
-        v-hasPermi="['portCustomer:problemManagement:edit']"
-        @onClick="handleTestcaseUpdate2"
-      />
     </template>
     <template v-slot:dialog>
       <IrDialog :dialog="problemDialog">
@@ -93,7 +84,7 @@
             ref="problemFormRef"
             :rules="problemFormRules"
             :model="problemForm"
-            label-width="150px"
+            label-width="100px"
             class="common-form"
             v-loading="layoutProblemFormLoading"
           >
@@ -110,8 +101,8 @@
             <el-form-item label="Tên bài toán" prop="title" class="form-item-row">
               <el-input v-model="problemForm.title" placeholder="Nhập" />
             </el-form-item>
-            <el-form-item label="Mô tả" prop="description" class="form-item-row">
-              <el-input v-model="problemForm.description" placeholder="Nhập" />
+            <el-form-item label="Mô tả" class="form-item-row">
+              <el-input v-model="problemForm.description" type="textarea" placeholder="Nhập" />
             </el-form-item>
             <el-form-item label="Điểm tối đa" prop="maxScore" class="form-item-row">
               <el-input v-model="problemForm.maxScore" type="number" placeholder="Nhập" />
@@ -204,7 +195,6 @@ const problemTotal = ref(0);
 const problemRowKey = ref("id");
 const problemColumns = ref<GridColumn[]>([
   { prop: "title", name: 'problemManagement.columns.titleLb', size: 220, readonly: true, align: 'left' },
-  { prop: "description", name: 'problemManagement.columns.descriptionLb', sortable: true, size: 280, readonly: true, align: 'left' },
   { prop: "difficulty", name: 'problemManagement.columns.difficultyLb', sortable: true, size: 90, readonly: true, align: 'left', dictData: level  },
   { prop: "createTime", name: 'problemManagement.columns.createTimeLb', sortable: true, size: 160, readonly: true, formatter: 'datetime' },
   { prop: "remark", name: 'problemManagement.columns.remarkLb', sortable: true, size: 120, readonly: true, align: 'left' },
@@ -214,11 +204,8 @@ const testcaseList = ref<any[]>([]);
 const testcaseLoading = ref(false);
 const testcaseRowKey = ref("id");
 const testcaseColumns = ref<GridColumn[]>([
-  { prop: "inputData", name: 'problemManagement.testcaseColumns.inputDataLb', sortable: true, size: 130, align: 'center' },
-  { prop: "expectedOutput", name: 'problemManagement.testcaseColumns.expectedOutputLb', sortable: true, size: 150, align: 'left' },
-  { prop: "explanation", name: 'problemManagement.testcaseColumns.explanationLb', sortable: true, size: 180, align: 'left' },
+  { prop: "testcaseJson", name: 'problemManagement.testcaseColumns.testcaseJsonLb', sortable: true, size: 380, align: 'left' },
   { prop: "isHidden", name: 'problemManagement.testcaseColumns.isHiddenLb', sortable: true, size: 80, align: 'center', dictData: sys_show_hide },
-  { prop: "illustration", name: 'problemManagement.testcaseColumns.illustrationLb', sortable: true, show: false, size: 140, align: 'left' },
   { prop: "remark", name: 'problemManagement.testcaseColumns.remarkLb', size: 120, align: 'left' }
 ]);
 const problemQueryParams = reactive<ProblemQuery>({

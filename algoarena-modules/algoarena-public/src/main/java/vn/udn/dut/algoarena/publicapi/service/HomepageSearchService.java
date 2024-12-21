@@ -40,6 +40,11 @@ public class HomepageSearchService {
                     .replaceFirst("}$", "")                  // Remove last "}"
                     .trim()
                     .replace("public", "public static");     // Add static modifier to methods;
+        } else if ("php".equals(language)) {
+            submittedCode = submittedCode
+                    .replaceFirst("^class Solution \\{", "") // Remove "class Solution {"
+                    .replaceFirst("}$", "")                  // Remove last "}"
+                    .trim();
         }
 
         // Get test case JSON
@@ -127,7 +132,15 @@ public class HomepageSearchService {
                     // Print the result
                     System.out.println("Value of 'stdout': " + stdoutValue);
 
-                    testcaseResult = Arrays.stream((stdoutValue.trim()).split(",")).toList();
+                    if (!"".equals(stdoutValue)) {
+                        testcaseResult = Arrays.stream((stdoutValue.trim().replaceAll("\n", "")).split(",")).toList();//Replace \n for javascript
+                    } else {
+                        String stderr = runObject.getString("stderr");
+                        List<String> errList = new ArrayList<>();
+                        errList.add(stderr);
+                        testcaseResult = errList;
+                    }
+
                 }
             } else {
                 try (Scanner scanner = new Scanner(connection.getErrorStream(), StandardCharsets.UTF_8)) {
@@ -156,27 +169,19 @@ public class HomepageSearchService {
                             ${TESTCASE_DECLARATION1}
                             ${METHOD_SIGNATURE1}
                             System.out.print(compare(result1, expect1));
-                            
                             System.out.print(",");
-                            
                             ${TESTCASE_DECLARATION2}
                             ${METHOD_SIGNATURE2}
                             System.out.print(compare(result2, expect2));
-                            
                             System.out.print(",");
-                            
                             ${TESTCASE_DECLARATION3}
                             ${METHOD_SIGNATURE3}
                             System.out.print(compare(result3, expect3));
-                            
                             System.out.print(",");
-                            
                             ${TESTCASE_DECLARATION4}
                             ${METHOD_SIGNATURE4}
                             System.out.print(compare(result4, expect4));
-                            
                             System.out.print(",");
-                            
                             ${TESTCASE_DECLARATION5}
                             ${METHOD_SIGNATURE5}
                             System.out.print(compare(result5, expect5));
@@ -219,41 +224,31 @@ public class HomepageSearchService {
                                             String testcaseDeclaration4, String methodSignature4, String testcaseDeclaration5,
                                             String methodSignature5, String submittedCode) {
         return """
-                function test() {
-                    try {
-                        ${TESTCASE_DECLARATION1}
-                        ${METHOD_SIGNATURE1}
-                        console.log(compare(result1, expect1));
-                        
-                        console.log(",");
-                        
-                        ${TESTCASE_DECLARATION2}
-                        ${METHOD_SIGNATURE2}
-                        console.log(compare(result2, expect2));
-                        
-                        console.log(",");
-                        
-                        ${TESTCASE_DECLARATION3}
-                        ${METHOD_SIGNATURE3}
-                        console.log(compare(result3, expect3));
-                        
-                        console.log(",");
-                        
-                        ${TESTCASE_DECLARATION4}
-                        ${METHOD_SIGNATURE4}
-                        console.log(compare(result4, expect4));
-                        
-                        console.log(",");
-                        
-                        ${TESTCASE_DECLARATION5}
-                        ${METHOD_SIGNATURE5}
-                        console.log(compare(result5, expect5));
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }
-
                 ${SOLUTION_METHOD}
+                
+                try {
+                    ${TESTCASE_DECLARATION1}
+                    ${METHOD_SIGNATURE1}
+                    console.log(compare(result1, expect1));
+                    console.log(",");
+                    ${TESTCASE_DECLARATION2}
+                    ${METHOD_SIGNATURE2}
+                    console.log(compare(result2, expect2));
+                    console.log(",");
+                    ${TESTCASE_DECLARATION3}
+                    ${METHOD_SIGNATURE3}
+                    console.log(compare(result3, expect3));
+                    console.log(",");
+                    ${TESTCASE_DECLARATION4}
+                    ${METHOD_SIGNATURE4}
+                    console.log(compare(result4, expect4));
+                    console.log(",");
+                    ${TESTCASE_DECLARATION5}
+                    ${METHOD_SIGNATURE5}
+                    console.log(compare(result5, expect5));
+                } catch (e) {
+                    console.error(e);
+                }
 
                 function compare(a, b) {
                     if (Array.isArray(a) && Array.isArray(b)) {
@@ -286,31 +281,23 @@ public class HomepageSearchService {
                 try {
                     ${TESTCASE_DECLARATION1}
                     ${METHOD_SIGNATURE1}
-                    echo compare(result1, expect1) ? "true" : "false";
-                    
+                    echo compare($result1, $expect1) ? "true" : "false";
                     echo ",";
-                    
                     ${TESTCASE_DECLARATION2}
                     ${METHOD_SIGNATURE2}
-                    echo compare(result2, expect2) ? "true" : "false";
-                    
+                    echo compare($result2, $expect2) ? "true" : "false";
                     echo ",";
-                    
                     ${TESTCASE_DECLARATION3}
                     ${METHOD_SIGNATURE3}
-                    echo compare(result3, expect3) ? "true" : "false";
-                    
+                    echo compare($result3, $expect3) ? "true" : "false";
                     echo ",";
-                    
                     ${TESTCASE_DECLARATION4}
                     ${METHOD_SIGNATURE4}
-                    echo compare(result4, expect4) ? "true" : "false";
-                    
+                    echo compare($result4, $expect4) ? "true" : "false";
                     echo ",";
-                    
                     ${TESTCASE_DECLARATION5}
                     ${METHOD_SIGNATURE5}
-                    echo compare(result5, expect5) ? "true" : "false";
+                    echo compare($result5, $expect5) ? "true" : "false";
                 } catch (Exception $e) {
                     echo $e->getMessage();
                 }
@@ -360,27 +347,19 @@ public class HomepageSearchService {
                     ${TESTCASE_DECLARATION1}
                     ${METHOD_SIGNATURE1}
                     printf("%s", compare(result1, expect1) ? "true" : "false");
-                    
                     printf(",");
-                    
                     ${TESTCASE_DECLARATION2}
                     ${METHOD_SIGNATURE2}
                     printf("%s", compare(result2, expect2) ? "true" : "false");
-                    
                     printf(",");
-                    
                     ${TESTCASE_DECLARATION3}
                     ${METHOD_SIGNATURE3}
                     printf("%s", compare(result3, expect3) ? "true" : "false");
-                    
                     printf(",");
-                    
                     ${TESTCASE_DECLARATION4}
                     ${METHOD_SIGNATURE4}
                     printf("%s", compare(result4, expect4) ? "true" : "false");
-                    
                     printf(",");
-                    
                     ${TESTCASE_DECLARATION5}
                     ${METHOD_SIGNATURE5}
                     printf("%s", compare(result5, expect5) ? "true" : "false");
@@ -422,27 +401,19 @@ public class HomepageSearchService {
                     ${TESTCASE_DECLARATION1}
                     ${METHOD_SIGNATURE1}
                     cout << (compare(result1, expect1) ? "true" : "false");
-                    
                     cout << ",";
-                    
                     ${TESTCASE_DECLARATION2}
                     ${METHOD_SIGNATURE2}
                     cout << (compare(result2, expect2) ? "true" : "false");
-                    
                     cout << ",";
-                    
                     ${TESTCASE_DECLARATION3}
                     ${METHOD_SIGNATURE3}
                     cout << (compare(result3, expect3) ? "true" : "false");
-                    
                     cout << ",";
-                    
                     ${TESTCASE_DECLARATION4}
                     ${METHOD_SIGNATURE4}
                     cout << (compare(result4, expect4) ? "true" : "false");
-                    
                     cout << ",";
-                    
                     ${TESTCASE_DECLARATION5}
                     ${METHOD_SIGNATURE5}
                     cout << (compare(result5, expect5) ? "true" : "false");
@@ -471,6 +442,9 @@ public class HomepageSearchService {
                                         String methodSignature5, String submittedCode) {
         return """
             using System;
+            using System.Linq;
+            using System.Text;
+            using System.Collections;
             using System.Collections.Generic;
 
             class Program {
@@ -478,38 +452,55 @@ public class HomepageSearchService {
                     try {
                         ${TESTCASE_DECLARATION1}
                         ${METHOD_SIGNATURE1}
-                        Console.WriteLine(compare(result1, expect1) ? "true" : "false");
-                        
-                        Console.WriteLine(",");
-                        
+                        Console.Write(Compare(result1, expect1) ? "true" : "false");
+                        Console.Write(",");
                         ${TESTCASE_DECLARATION2}
                         ${METHOD_SIGNATURE2}
-                        Console.WriteLine(compare(result2, expect2) ? "true" : "false");
-                        
-                        Console.WriteLine(",");
-                        
+                        Console.Write(Compare(result2, expect2) ? "true" : "false");
+                        Console.Write(",");
                         ${TESTCASE_DECLARATION3}
                         ${METHOD_SIGNATURE3}
-                        Console.WriteLine(compare(result3, expect3) ? "true" : "false");
-                        
-                        Console.WriteLine(",");
-                        
+                        Console.Write(Compare(result3, expect3) ? "true" : "false");
+                        Console.Write(",");
                         ${TESTCASE_DECLARATION4}
                         ${METHOD_SIGNATURE4}
-                        Console.WriteLine(compare(result4, expect4) ? "true" : "false");
-                        
-                        Console.WriteLine(",");
-                        
+                        Console.Write(Compare(result4, expect4) ? "true" : "false");
+                        Console.Write(",");
                         ${TESTCASE_DECLARATION5}
                         ${METHOD_SIGNATURE5}
-                        Console.WriteLine(compare(result5, expect5) ? "true" : "false");
+                        Console.Write(Compare(result5, expect5) ? "true" : "false");
                     } catch (Exception e) {
-                        Console.WriteLine(e.Message);
+                        Console.Write(e.Message);
                     }
                 }
 
-                static bool compare(object a, object b) {
-                    return a.Equals(b);
+                public static bool Compare(object a, object b)
+                {
+                    if (a is Array arrayA && b is Array arrayB)
+                    {
+                        return CompareArrays(arrayA, arrayB);
+                    }
+                    else
+                    {
+                        return Equals(a, b);
+                    }
+                }
+        
+                private static bool CompareArrays(Array arrayA, Array arrayB)
+                {
+                    if (arrayA.Length != arrayB.Length)
+                        return false;
+        
+                    var enumeratorA = arrayA.Cast<object>().GetEnumerator();
+                    var enumeratorB = arrayB.Cast<object>().GetEnumerator();
+        
+                    while (enumeratorA.MoveNext() && enumeratorB.MoveNext())
+                    {
+                        if (!Compare(enumeratorA.Current, enumeratorB.Current))
+                            return false;
+                    }
+        
+                    return true;
                 }
 
                 ${SOLUTION_METHOD}
@@ -542,27 +533,19 @@ public class HomepageSearchService {
                     ${TESTCASE_DECLARATION1}
                     ${METHOD_SIGNATURE1}
                     print(compare(result1, expect1))
-                    
                     print(",", end=" ")
-                    
                     ${TESTCASE_DECLARATION2}
                     ${METHOD_SIGNATURE2}
                     print(compare(result2, expect2))
-                    
                     print(",", end=" ")
-                    
                     ${TESTCASE_DECLARATION3}
                     ${METHOD_SIGNATURE3}
                     print(compare(result3, expect3))
-                    
                     print(",", end=" ")
-                    
                     ${TESTCASE_DECLARATION4}
                     ${METHOD_SIGNATURE4}
                     print(compare(result4, expect4))
-                    
                     print(",", end=" ")
-                    
                     ${TESTCASE_DECLARATION5}
                     ${METHOD_SIGNATURE5}
                     print(compare(result5, expect5))
@@ -611,27 +594,19 @@ public class HomepageSearchService {
                 ${TESTCASE_DECLARATION1}
                 ${METHOD_SIGNATURE1}
                 fmt.Println(compare(result1, expect1))
-
                 fmt.Println(",",)
-
                 ${TESTCASE_DECLARATION2}
                 ${METHOD_SIGNATURE2}
                 fmt.Println(compare(result2, expect2))
-
                 fmt.Println(",",)
-
                 ${TESTCASE_DECLARATION3}
                 ${METHOD_SIGNATURE3}
                 fmt.Println(compare(result3, expect3))
-
                 fmt.Println(",",)
-
                 ${TESTCASE_DECLARATION4}
                 ${METHOD_SIGNATURE4}
                 fmt.Println(compare(result4, expect4))
-
                 fmt.Println(",",)
-
                 ${TESTCASE_DECLARATION5}
                 ${METHOD_SIGNATURE5}
                 fmt.Println(compare(result5, expect5))

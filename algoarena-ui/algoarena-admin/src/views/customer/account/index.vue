@@ -23,6 +23,44 @@
         />
       </el-form-item>
     </template>
+    <template v-slot:header-button>
+      <IrButton
+        colorStyle="blue"
+        type="primary"
+        :title="$t('account.headerButton.addTt')"
+        leftIcon="plus"
+        @onClick="handleAdd"
+      />
+      <IrButton
+        colorStyle="gray"
+        type="secondary"
+        :disabledFlag="ids.length !== 1 ? true : false"
+        :title="$t('account.headerButton.editTt')"
+        leftIcon="edit"
+        @onClick="handleUpdate"
+      />
+      <IrButton
+        colorStyle="red"
+        type="secondary"
+        :disabledFlag="!!!ids.length"
+        :title="$t('account.headerButton.deleteTt')"
+        leftIcon="delete"
+        @onClick="handleDelete"
+      />
+      <MoreButton>
+        <template v-slot:content>
+          <IrButton
+            colorStyle="gray"
+            type="secondary"
+            :title="$t('user.headerButton.importTemplateTt')"
+            leftIcon="download"
+            @onClick="importTemplate"
+          />
+          <IrButton colorStyle="gray" type="secondary" :title="$t('user.headerButton.importTt')" leftIcon="upload" @onClick="handleImport" />
+          <IrButton colorStyle="gray" type="secondary" :title="$t('user.headerButton.exportTt')" leftIcon="download" @onClick="handleExport" />
+        </template>
+      </MoreButton>
+    </template>
     <template v-slot:dialog>
       <IrDialog :dialog="dialog">
         <template v-slot:body>
@@ -34,9 +72,6 @@
             <el-form-item :label="$t('account.dialog.nickNameTt')" prop="nickName" class="form-item-row">
               <el-input v-model="form.nickName" :placeholder="$t('account.dialog.nickNamePh')" />
             </el-form-item>
-            <el-form-item :label="$t('account.dialog.customerTypeTt')" prop="customerType" class="form-item-row">
-              <el-input v-model="form.customerType" :placeholder="$t('account.dialog.customerTypePh')" />
-            </el-form-item>
             <el-form-item :label="$t('account.dialog.emailTt')" prop="email" class="form-item-row">
               <el-input v-model="form.email" :placeholder="$t('account.dialog.emailPh')" />
             </el-form-item>
@@ -44,16 +79,15 @@
               <el-input v-model="form.phonenumber" :placeholder="$t('account.dialog.phonenumberPh')" />
             </el-form-item>
             <el-form-item :label="$t('account.dialog.sexTt')" prop="sex" class="form-item-row">
-              <el-input v-model="form.sex" :placeholder="$t('account.dialog.sexPh')" />
-            </el-form-item>
-            <el-form-item :label="$t('account.dialog.avatarTt')" prop="avatar" class="form-item-row">
-              <el-input v-model="form.avatar" :placeholder="$t('account.dialog.avatarPh')" />
-            </el-form-item>
-            <el-form-item :label="$t('account.dialog.passwordTt')" prop="password" class="form-item-row">
-              <el-input v-model="form.password" :placeholder="$t('account.dialog.passwordPh')" />
+              <el-select v-model="form.sex" :placeholder="$t('user.dialog.sexPh')">
+                <el-option v-for="dict in sys_user_sex" :key="dict.value" :label="dict.label" :value="dict.value"></el-option>
+              </el-select>
             </el-form-item>
             <el-form-item :label="$t('account.dialog.statusTt')" prop="status" class="form-item-row">
-              <el-input v-model="form.status" :placeholder="$t('account.dialog.statusPh')" />
+              <el-radio-group v-model="form.status">
+                <el-radio v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.value">{{
+                dict.label }}</el-radio>
+              </el-radio-group>
             </el-form-item>
             <el-form-item :label="$t('account.dialog.remarkTt')" prop="remark" class="form-item-row">
               <el-input v-model="form.remark" type="textarea" :placeholder="$t('account.dialog.remarkPh')" />
@@ -72,6 +106,22 @@
           />
         </template>
       </IrDialog>
+      <IrDialog :dialog="uploadDialog">
+        <template v-slot:body>
+          <!-- User Import Dialog -->
+          <IrUpload ref="uploadRef" :uploadProp="uploadProp" @onFileSuccess="handleFileSuccess" @downloadTemplate="importTemplate" />
+        </template>
+        <template v-slot:footer>
+          <IrButton
+            colorStyle="gray"
+            type="secondary"
+            :title="$t('user.dialog.footerCancelTt')"
+            :width="100"
+            @onClick="uploadDialog.visible = false"
+          />
+          <IrButton colorStyle="blue" type="primary" :title="$t('user.dialog.footerSubmitTt')" :width="100" @onClick="submitFileForm" />
+        </template>
+      </IrDialog>
     </template>
   </Layout1>
 </template>
@@ -81,6 +131,7 @@
 // IMPORT SECTION
 ///////////////////////////////////////////////////////////////////////////////
 // IMPORT COMPONENT
+import IrUpload from '@/components/IrUpload/index.vue';
 // IMPORT API
 import { listCustomer, getCustomer, delCustomer, addCustomer, updateCustomer } from '@/api/customer/account';
 // IMPORT TYPE
@@ -89,9 +140,10 @@ import { ElForm } from 'element-plus';
 // IMPORT GLOBAL TOOL (PROXY)
 import i18n from '@/lang';
 import { ComponentInternalInstance } from 'vue';
+import { getToken } from "@/utils/auth";
 const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 // IMPORT DICTIONARY
-const { sys_normal_disable } = toRefs<any>(proxy?.useDict("sys_normal_disable"));
+const { sys_normal_disable, sys_user_sex } = toRefs<any>(proxy?.useDict("sys_normal_disable", "sys_user_sex"));
 ///////////////////////////////////////////////////////////////////////////////
 // VARIABLE SECTION
 ///////////////////////////////////////////////////////////////////////////////
@@ -109,19 +161,33 @@ const dialog = reactive<DialogOption>({
   title: '',
   width: '600px'
 });
+const uploadRef = ref(IrUpload);
+const uploadDialog = reactive<DialogOption>({
+  visible: false,
+  title: '',
+  width: '400px'
+});
 const columns = ref<GridColumn[]>([
   { prop: "userId", name: 'account.columns.userIdLb', sortable: true, size: 10, show: false, readonly: true, },
-  { prop: "userName", name: 'account.columns.userNameLb', sortable: true, size: 350, show: true, readonly: true },
-  { prop: "nickName", name: 'account.columns.nickNameLb', sortable: true, size: 350, show: true, readonly: true, align: 'left' },
-  { prop: "customerType", name: 'account.columns.customerTypeLb', sortable: true, size: 350, show: true, readonly: true },
-  { prop: "email", name: 'account.columns.emailLb', sortable: true, size: 350, show: true, readonly: true },
-  { prop: "phonenumber", name: 'account.columns.phonenumberLb', sortable: true, size: 350, show: true, readonly: true },
-  { prop: "sex", name: 'account.columns.sexLb', sortable: true, size: 350, show: true, readonly: true },
-  { prop: "avatar", name: 'account.columns.avatarLb', sortable: true, size: 350, show: true, readonly: true },
-  { prop: "password", name: 'account.columns.passwordLb', sortable: true, size: 350, show: true, readonly: true },
-  { prop: "status", name: 'account.columns.statusLb', sortable: true, size: 350, show: true, readonly: true },
+  { prop: "userName", name: 'account.columns.userNameLb', sortable: true, size: 150, show: true, readonly: true },
+  { prop: "nickName", name: 'account.columns.nickNameLb', sortable: true, size: 200, show: true, readonly: true, align: 'left' },
+  { prop: "customerType", name: 'account.columns.customerTypeLb', sortable: true, size: 120, show: true, readonly: true },
+  { prop: "email", name: 'account.columns.emailLb', sortable: true, size: 180, show: true, readonly: true, align: 'left' },
+  { prop: "phonenumber", name: 'account.columns.phonenumberLb', sortable: true, size: 120, show: true, readonly: true },
+  { prop: "sex", name: 'account.columns.sexLb', sortable: true, size: 100, show: true, readonly: true, dictData: sys_user_sex },
+  { prop: "status", name: 'account.columns.statusLb', sortable: true, size: 100, show: true, readonly: true, dictData: sys_normal_disable },
   { prop: "remark", name: 'account.columns.remarkLb', sortable: true, size: 200, show: true, readonly: true },
-  { prop: "operate", name: 'account.columns.operateLb', size: 120, show: true, readonly: true, pin: 'colPinEnd',
+  { prop: "operate", name: 'user.columns.operateLb', size: 170, show: true, readonly: true, pin: 'colPinEnd',
+      buttonProps: [
+      {
+        index: 1, icon: 'edit', color: 'gray', title: 'user.columns.operateEditLb', onlyKeys: [1], key: rowKey.value, permissionKey: 'system:user:edit',
+        click: (rowIndex: number) => { if (customerList.value) handleUpdate(customerList.value[rowIndex]); }
+      },
+      {
+        index: 2, icon: 'delete', color: 'red', title: 'user.columns.operateDeleteLb', onlyKeys: [1], key: rowKey.value, permissionKey: 'system:user:remove',
+        click: (rowIndex: number) => { if (customerList.value) handleDelete(customerList.value[rowIndex]); }
+      }
+    ]
   }
 ]);
 const initFormData: CustomerForm = {
@@ -156,6 +222,18 @@ const data = reactive<PageData<CustomerForm, CustomerQuery>>({
   },
 });
 const { queryParams, form, rules} = toRefs(data);
+// eslint-disable-next-line no-undef
+const uploadProp = reactive<ImportOption>({
+  // Whether to update existing user data
+  updateSupport: 0,
+  // Set the upload request header
+  headers: { Authorization: import.meta.env.VITE_BEARER_KEY + getToken() },
+  // upload address
+  url: import.meta.env.VITE_APP_BASE_API + "/admin/customer/account/importData",
+  type: "excel",
+  accept: ".xlsx, .xls",
+  templateName: 'user_template.xlsx'
+})
 ///////////////////////////////////////////////////////////////////////////////
 // METHOD SECTION
 ///////////////////////////////////////////////////////////////////////////////
@@ -204,7 +282,7 @@ const handleUpdate = (row?: CustomerVO) => {
   dialog.title = i18n.global.t('account.dialog.editTt');
   nextTick(async () => {
     reset();
-    const id = row?.id || ids.value[0]
+    const id = row?.userId || ids.value[0]
     const { data } = await getCustomer(id);
     nextTick(async () => {
     });
@@ -235,6 +313,32 @@ const handleDelete = async (row?: CustomerVO) => {
   proxy?.$modal.msgSuccess(i18n.global.t('account.operationMsg.deleteSuccess'));
   await getList();
 }
+/** Download Template Action */
+const importTemplate = () => {
+  proxy?.download("customer/account/importTemplate", {
+  }, `user_template_${new Date().getTime()}.xlsx`);
+}
+/** Import button action */
+const handleImport = () => {
+  uploadDialog.title = i18n.global.t('user.operationMsg.importTt');
+  uploadDialog.visible = true;
+}
+/** submit file upload */
+function submitFileForm() {
+  uploadRef.value.submit();
+}
+/** File upload successfully processed */
+const handleFileSuccess = (response: any) => {
+  uploadDialog.visible = false;
+  proxy?.$modal.alertSuccess(response.msg, i18n.global.t('user.operationMsg.importResultTt'));
+  getList();
+}
+/** Export button action */
+const handleExport = () => {
+  proxy?.download("customer/account/export", {
+    ...queryParams.value,
+  }, `user_${new Date().getTime()}.xlsx`);
+};
 ///////////////////////////////////////////////////////////////////////////////
 // INIT SECTION
 ///////////////////////////////////////////////////////////////////////////////

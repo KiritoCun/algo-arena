@@ -17,7 +17,7 @@ public class MethodExtractorHelper {
                 break;
 
             case "javascript":
-                methodRegex = "function\\s+(\\w+)\\s*\\(([^\\)]*)\\)";
+                methodRegex = "var\\s+(\\w+)\\s*=\\s*function\\s*\\(([^\\)]*)\\)";
                 break;
 
             case "php":
@@ -60,6 +60,9 @@ public class MethodExtractorHelper {
                     break;
 
                 case "javascript":
+                    methodName = matcher.group(1); // Tên phương thức
+                    parameters = matcher.group(2).trim(); // Các tham số
+                    break;
                 case "php":
                 case "python":
                 case "go":

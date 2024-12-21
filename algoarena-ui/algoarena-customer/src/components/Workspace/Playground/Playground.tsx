@@ -46,7 +46,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 	const languageVersions: object[] = [
 		{ language: 'Java', version: '15.0.2' },           
 		{ language: 'Python', version: '3.10.0' },     
-		{ language: 'JavaScript', version: '1.32.3' }, 
+		{ language: 'JavaScript', version: '18.15.0' }, 
 		{ language: 'C#', version: '5.0.201' },           
 		{ language: 'C++', version: '10.2.0' },            
 		{ language: 'Ruby', version: '3.0.1' },        
@@ -228,7 +228,13 @@ public:
 				
 					console.log("data back from piston:", data);
 
-					if (data) {
+					if (data.length === 1) {
+						toast.error(`Error: ${data[0]}`, {
+							position: "top-center",
+							autoClose: 3000,
+							theme: "dark",
+						});
+					} else if (data.every(result => result === "true")) {
 						toast.success("Congrats! All tests passed!", {
 							position: "top-center",
 							autoClose: 3000,

@@ -1655,8 +1655,7 @@ export default {
       deleteLb: 'Delete'
     },
     testcaseColumns: {
-      inputDataLb: 'Input data',
-      expectedOutputLb: 'Expect output',
+      testcaseJsonLb: 'Testcase Json',
       illustrationLb: 'Illustration',
       explanationLb: 'Explanation',
       isHiddenLb: 'Show',

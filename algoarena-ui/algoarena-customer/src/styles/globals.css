@@ -220,3 +220,67 @@ code {
     color: red;
   }
   
+  .problem-content {
+    font-family: 'Roboto', sans-serif; /* Sử dụng font chữ hiện đại */
+    line-height: 1.6;
+    margin: 20px;
+    color: #ffffff;
+  }
+  
+  .problem-content h1 {
+    font-size: 24px;
+    color: #ffcc00;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .problem-content p {
+    font-size: 16px;
+    color: #f2f2f2;
+    margin-bottom: 10px;
+  }
+  
+  .problem-content .section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+  
+  .problem-content pre {
+    background: #3c3c3c;
+    border: 1px solid #555555;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    color: #d4d4d4;
+    margin-bottom: 20px; /* Cách đều giữa các example */
+  }
+  
+  .problem-content code {
+    font-family: "Courier New", Courier, monospace;
+    background: #444444;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 14px;
+    color: #00d7ff;
+  }
+  
+  .problem-content pre code strong {
+    color: #ffffff;
+    font-weight: bold;
+  }
+  
+  .problem-content ul {
+    margin-left: 20px;
+    list-style: disc;
+    margin-top: 10px;
+  }
+  
+  .problem-content li {
+    font-size: 16px;
+    color: #f2f2f2;
+    margin-bottom: 5px;
+  }
+  

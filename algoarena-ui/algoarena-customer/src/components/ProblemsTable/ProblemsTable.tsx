@@ -251,17 +251,19 @@ function useGetProblems(setLoadingProblems: React.Dispatch<React.SetStateAction<
       setLoadingProblems(true);
       const querySnapshot = await fetchProblems();
       const tmp: DBProblem[] = [];
-      querySnapshot.forEach((doc) => {
-        let difficultyStr = "";
-        if (doc.difficulty === 1) {
-          difficultyStr = "Easy";
-        } else if (doc.difficulty === 2) {
-          difficultyStr = "Medium";
-        } else if (doc.difficulty === 3) {
-          difficultyStr = "Hard";
-        }
-        tmp.push({ ...doc, difficulty: difficultyStr } as DBProblem);
-      });
+      if (querySnapshot) {
+        querySnapshot.forEach((doc) => {
+          let difficultyStr = "";
+          if (doc.difficulty === 1) {
+            difficultyStr = "Easy";
+          } else if (doc.difficulty === 2) {
+            difficultyStr = "Medium";
+          } else if (doc.difficulty === 3) {
+            difficultyStr = "Hard";
+          }
+          tmp.push({ ...doc, difficulty: difficultyStr } as DBProblem);
+        });
+      }
       setProblems(tmp);
       setLoadingProblems(false);
     };

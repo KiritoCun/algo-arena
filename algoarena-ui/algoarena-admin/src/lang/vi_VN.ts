@@ -1653,8 +1653,7 @@ export default {
       deleteLb: 'Xoá'
     },
     testcaseColumns: {
-      inputDataLb: 'Tham số đầu vào',
-      expectedOutputLb: 'Giá trị mong đợi',
+      testcaseJsonLb: 'Mẫu kiểm thử',
       illustrationLb: 'Hình ảnh minh họa',
       explanationLb: 'Giải thích',
       isHiddenLb: 'Hiển thị',

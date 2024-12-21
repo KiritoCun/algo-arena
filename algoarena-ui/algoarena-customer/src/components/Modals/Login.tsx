@@ -29,6 +29,10 @@ const Login: React.FC<LoginProps> = () => {
 			username,
 			password,
 			});
+			console.log(response)
+			if (response.data.code === 500) {
+				throw new Error(response.data.msg);
+			}
 			const token = response.data.data.token;
 		
 			// Lưu token vào localStorage hoặc sessionStorage
