@@ -63,7 +63,9 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 			PHP: 'twoSum($nums, $target)',
 			C: 'int* twoSum(int* nums, int numsSize, int target, int* returnSize)',
 			'C++': 'vector<int> twoSum(vector<int>& nums, int target)',
-			'C#': 'int[] TwoSum(int[] nums, int target)'
+			'C#': 'int[] TwoSum(int[] nums, int target)',
+			Python: 'def twoSum(self, nums: List[int], target: int) -> List[int]:',
+        	Go: 'func twoSum(nums []int, target int) []int'
 		},
 		'jump-game': {
 			JavaScript: 'canJump = function(nums)',
@@ -71,7 +73,9 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 			PHP: 'canJump($nums)',
 			C: 'bool canJump(int* nums, int numsSize)',
 			'C++': 'bool canJump(vector<int>& nums)',
-			'C#': 'bool CanJump(int[] nums)'
+			'C#': 'bool CanJump(int[] nums)',
+			Python: 'def canJump(self, nums: List[int]) -> bool:',
+        	Go: 'func canJump(nums []int) bool'
 		},
 		'reverse-linked-list': {
 			JavaScript: 'reverseList = function(head)',
@@ -79,7 +83,9 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 			PHP: 'reverseList($head)',
 			C: 'struct ListNode* reverseList(struct ListNode* head)',
 			'C++': 'ListNode* reverseList(ListNode* head)',
-			'C#': 'ListNode ReverseList(ListNode head)'
+			'C#': 'ListNode ReverseList(ListNode head)',
+			Python: 'def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:',
+        	Go: 'func reverseList(head *ListNode) *ListNode'
 		},
 		'search-a-2d-matrix': {
 			JavaScript: 'searchMatrix = function(matrix, target)',
@@ -87,7 +93,9 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 			PHP: 'searchMatrix($matrix, $target)',
 			C: 'bool searchMatrix(int** matrix, int matrixSize, int* matrixColSize, int target)',
 			'C++': 'bool searchMatrix(vector<vector<int>>& matrix, int target)',
-			'C#': 'bool SearchMatrix(int[][] matrix, int target)'
+			'C#': 'bool SearchMatrix(int[][] matrix, int target)',
+			Python: 'def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:',
+        	Go: 'func searchMatrix(matrix [][]int, target int) bool'
 		},
 		'valid-parentheses': {
 			JavaScript: 'isValid = function(s)',
@@ -95,7 +103,9 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 			PHP: 'isValid($s)',
 			C: 'bool isValid(char* s)',
 			'C++': 'bool isValid(string s)',
-			'C#': 'bool IsValid(string s)'
+			'C#': 'bool IsValid(string s)',
+			Python: 'def isValid(self, s: str) -> bool:',
+        	Go: 'func isValid(s string) bool'
 		}
 	}
 
@@ -105,7 +115,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 };`,
 		Java: `class Solution {
 	public ARGUMENTS {
-				
+		
 	}
 }`,
 		PHP: `class Solution {
@@ -126,6 +136,12 @@ public:
 	public ARGUMENTS {
 		
 	}
+}`,
+		'Python': `class Solution:
+	ARGUMENTS
+	`,
+		'Go': `ARGUMENTS {
+	
 }`,
 	};
 

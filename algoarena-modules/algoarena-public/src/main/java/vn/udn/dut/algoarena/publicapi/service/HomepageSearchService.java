@@ -45,6 +45,11 @@ public class HomepageSearchService {
                     .replaceFirst("^class Solution \\{", "") // Remove "class Solution {"
                     .replaceFirst("}$", "")                  // Remove last "}"
                     .trim();
+        } else if ("python".equals(language)) {
+            submittedCode = submittedCode
+                    .replaceFirst("^class Solution:", "") // Remove "class Solution:"
+                    .replace("self, ", "")
+                    .trim();
         }
 
         // Get test case JSON
@@ -523,10 +528,14 @@ public class HomepageSearchService {
                                         String testcaseDeclaration4, String methodSignature4, String testcaseDeclaration5,
                                         String methodSignature5, String submittedCode) {
         return """
+            from typing import List
+            
             def compare(a, b):
                 if isinstance(a, list) and isinstance(b, list):
                     return a == b
                 return a == b
+            
+            ${SOLUTION_METHOD}
 
             def main():
                 try:
@@ -551,8 +560,6 @@ public class HomepageSearchService {
                     print(compare(result5, expect5))
                 except Exception as e:
                     print(str(e))
-
-            ${SOLUTION_METHOD}
 
             if __name__ == "__main__":
                 main()

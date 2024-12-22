@@ -70,18 +70,45 @@ public class MethodExtractorHelper {
                     parameters = matcher.group(2); // Các tham số
                     break;
             }
+            if ("python".equals(language)) {
+                // Xử lý tham số: loại bỏ self và kiểu dữ liệu
+                if (!parameters.isEmpty()) {
+                    String[] paramArray = parameters.split(",");
+                    for (int i = 0; i < paramArray.length; i++) {
+                        String param = paramArray[i].trim();
 
-            // Xử lý tham số: chỉ giữ lại tên tham số, bỏ kiểu dữ liệu
-            if (!parameters.isEmpty()) {
-                String[] paramArray = parameters.split(",");
-                for (int i = 0; i < paramArray.length; i++) {
-                    String param = paramArray[i].trim();
+                        // Loại bỏ kiểu dữ liệu: chỉ giữ tên biến (bỏ phần sau dấu ":")
+                        param = param.replaceAll(":.*", "").trim();
 
-                    if (language.equalsIgnoreCase("java") || language.equalsIgnoreCase("c#") || language.equalsIgnoreCase("c") || language.equalsIgnoreCase("c++")) {
-                        paramArray[i] = param.replaceAll("[\\w\\[\\]]+\\s+", "");
+                        // Loại bỏ 'self' nếu nó tồn tại
+                        if (!param.equals("self")) {
+                            paramArray[i] = param;
+                        } else {
+                            paramArray[i] = ""; // Xóa self khỏi danh sách
+                        }
+                    }
+
+                    // Gộp lại các tham số, loại bỏ những tham số trống
+                    parameters = String.join(index + ", ", paramArray).replaceAll(",\\s*,", ",").trim();
+                    parameters = parameters.substring(2);
+                    // Xóa dấu phẩy thừa nếu 'self' bị xóa và nó đứng đầu
+                    if (parameters.startsWith(",")) {
+                        parameters = parameters.substring(1).trim();
                     }
                 }
-                parameters = String.join(index + ", ", paramArray);
+            } else {
+                // Xử lý tham số: chỉ giữ lại tên tham số, bỏ kiểu dữ liệu
+                if (!parameters.isEmpty()) {
+                    String[] paramArray = parameters.split(",");
+                    for (int i = 0; i < paramArray.length; i++) {
+                        String param = paramArray[i].trim();
+
+                        if (language.equalsIgnoreCase("java") || language.equalsIgnoreCase("c#") || language.equalsIgnoreCase("c") || language.equalsIgnoreCase("c++")) {
+                            paramArray[i] = param.replaceAll("[\\w\\[\\]]+\\s+", "");
+                        }
+                    }
+                    parameters = String.join(index + ", ", paramArray);
+                }
             }
 
             // Trả về chuỗi theo định dạng mong muốn

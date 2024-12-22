@@ -5,7 +5,7 @@ const LanguageDropdown = () => {
   const { setLanguage } = useContext(LanguageContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("JavaScript");
-  const languages = ["JavaScript", "Java", "PHP", "C", "C++", "C#"];
+  const languages = ["JavaScript", "Java", "PHP", "C", "C++", "C#", "Python" , "Go"];
 
   const handleSelectLanguage = (language: string) => {
     setSelectedLanguage(language);
