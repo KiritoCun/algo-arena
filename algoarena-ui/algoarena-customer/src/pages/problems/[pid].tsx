@@ -1,57 +1,92 @@
 import Topbar from "@/components/Topbar/Topbar";
 import Workspace from "@/components/Workspace/Workspace";
 import useHasMounted from "@/hooks/useHasMounted";
-import { problems } from "@/utils/problems";
-import { Problem } from "@/utils/types/problem";
 import React from "react";
+import { fetchProblems } from "@/pages/api/api";
+
+type Problem = {
+  id: string;
+  pid: string;
+  title: string;
+  description: string;
+  handlerFunction: string;
+};
 
 type ProblemPageProps = {
-	problem: Problem;
+  problem: Problem | null;
 };
 
 const ProblemPage: React.FC<ProblemPageProps> = ({ problem }) => {
-	const hasMounted = useHasMounted();
+  const hasMounted = useHasMounted();
 
-	if (!hasMounted) return null;
+  if (!hasMounted || !problem) return <div>Problem not found</div>;
 
-	return (
-		<div>
-			<Topbar problemPage />
-			<Workspace problem={problem} />
-		</div>
-	);
+  return (
+    <div>
+      <Topbar problemPage />
+      <Workspace problem={problem} />
+    </div>
+  );
 };
+
 export default ProblemPage;
 
-// fetch the local data
-//  SSG
-// getStaticPaths => it create the dynamic routes
+// getStaticPaths: Tạo các route động
 export async function getStaticPaths() {
-	const paths = Object.keys(problems).map((key) => ({
-		params: { pid: key },
-	}));
+  let problems: Problem[] = [];
+  try {
+    // Gọi API để lấy danh sách bài toán
+    const rawProblems = await fetchProblems();
 
-	return {
-		paths,
-		fallback: false,
-	};
+    // Chuyển đổi dữ liệu trả về
+    problems = rawProblems.map((item: any) => ({
+      id: item.keyPath,
+      pid: item.keyPath,
+      title: item.title,
+      description: item.description,
+      handlerFunction: "", // Bạn có thể thêm logic để lấy function nếu cần
+    }));
+  } catch (error) {
+    console.error("Failed to fetch problems:", error);
+  }
+
+  const paths = problems.map((problem) => ({
+    params: { pid: problem.pid },
+  }));
+
+  return {
+    paths,
+    fallback: true, // Cho phép fallback khi route chưa tồn tại
+  };
 }
 
-// getStaticProps => it fetch the data
-
+// getStaticProps: Fetch dữ liệu động
 export async function getStaticProps({ params }: { params: { pid: string } }) {
-	const { pid } = params;
-	const problem = problems[pid];
+  const { pid } = params;
 
-	if (!problem) {
-		return {
-			notFound: true,
-		};
-	}
-	problem.handlerFunction = problem.handlerFunction.toString();
-	return {
-		props: {
-			problem,
-		},
-	};
+  let problems: Problem[] = [];
+  try {
+    // Gọi API để lấy danh sách bài toán
+    const rawProblems = await fetchProblems();
+
+    // Chuyển đổi dữ liệu trả về
+    problems = rawProblems.map((item: any) => ({
+      id: item.keyPath,
+      pid: item.keyPath,
+      title: item.title,
+      description: item.description,
+      handlerFunction: "", // Bạn có thể thêm logic để lấy function nếu cần
+    }));
+  } catch (error) {
+    console.error("Failed to fetch problems:", error);
+  }
+
+  // Tìm bài toán dựa trên pid
+  const problem = problems.find((item) => item.pid === pid) || null;
+
+  return {
+    props: {
+      problem,
+    },
+  };
 }

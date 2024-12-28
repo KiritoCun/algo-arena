@@ -11,6 +11,7 @@ import vn.udn.dut.algoarena.port.domain.bo.*;
 import vn.udn.dut.algoarena.port.domain.vo.*;
 import vn.udn.dut.algoarena.port.service.*;
 import vn.udn.dut.algoarena.publicapi.service.HomepageSearchService;
+import vn.udn.dut.algoarena.publicapi.service.HomepageSearchService2;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,10 +46,30 @@ public class HomepageSearchController extends BaseController {
 
     private final IProblemService problemService;
     private final ITestcaseService testcaseService;
+    private final IProblemFunctionSignatureService problemFunctionSignatureService;
 
     @GetMapping("/problem")
-    public TableDataInfo<ProblemVo> publicList(ProblemBo bo, PageQuery pageQuery) {
+    public TableDataInfo<ProblemVo> publicProblemList(ProblemBo bo, PageQuery pageQuery) {
         return problemService.queryPagePublicList(bo, pageQuery);
+    }
+
+    @GetMapping("/testcase/{keyPath}")
+    public List<TestcaseVo> publicTestcaseList(@PathVariable String keyPath) {
+        ProblemBo problemBo = new ProblemBo();
+        problemBo.setKeyPath(keyPath);
+
+        ProblemVo problemVo = problemService.queryPublicList(problemBo).get(0);
+
+        TestcaseBo bo = new TestcaseBo();
+        bo.setProblemId(problemVo.getId());
+        return testcaseService.queryList(bo);
+    }
+
+    @GetMapping("/problem-function-signature/{keyPath}")
+    public List<ProblemFunctionSignatureVo> publicProblemFunctionSignatureList(@PathVariable String keyPath) {
+        ProblemFunctionSignatureBo bo = new ProblemFunctionSignatureBo();
+        bo.setKeyPath(keyPath);
+        return problemFunctionSignatureService.queryList(bo);
     }
 
     @PostMapping("/submit-solution")
@@ -64,6 +85,25 @@ public class HomepageSearchController extends BaseController {
         ProblemVo problemVo = problemVoList.get(0);
         TestcaseBo testcaseBo = new TestcaseBo();
         testcaseBo.setProblemId(problemVo.getId());
+        List<TestcaseVo> testcaseList = testcaseService.queryList(testcaseBo);
+
+        return HomepageSearchService2.submitSolution(submittedCode, language, version, testcaseList);
+    }
+
+    @PostMapping("/run-solution")
+    public List<String> runSolution(@RequestBody Map<String, String> request) {
+        String submittedCode = request.get("submittedCode");
+        String keyPath = request.get("problemId");
+        String language = request.get("language");
+        String version = request.get("version");
+
+        ProblemBo problemBo = new ProblemBo();
+        problemBo.setKeyPath(keyPath);
+        List<ProblemVo> problemVoList = problemService.queryPublicList(problemBo);
+        ProblemVo problemVo = problemVoList.get(0);
+        TestcaseBo testcaseBo = new TestcaseBo();
+        testcaseBo.setProblemId(problemVo.getId());
+        testcaseBo.setIsHidden(0);
         List<TestcaseVo> testcaseList = testcaseService.queryList(testcaseBo);
 
         return HomepageSearchService.submitSolution(submittedCode, language, version, testcaseList);

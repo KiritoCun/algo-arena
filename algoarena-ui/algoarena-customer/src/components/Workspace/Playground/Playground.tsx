@@ -16,6 +16,7 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import { AuthContext } from '../../Modals/AuthContext';
 import { LanguageContext } from "../LanguageContext";
 import { LANGUAGE_CONFIG } from "@/constants";
+import { fetchTestcases, fetchProblemFunctionSignatures } from "@/pages/api/api";
 
 type PlaygroundProps = {
 	problem: Problem;
@@ -30,6 +31,123 @@ export interface ISettings {
 }
 
 const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved }) => {
+	const { language } = useContext(LanguageContext);
+	// Biến state để lưu trữ giá trị lọc
+    const [testcases, setStateTestcases] = useState<Object[] | []>([]);
+	const [functionSignatures, setFunctionSignatures] = useState([]);
+	const testcases2 = []
+	const testcases3 = [
+		{
+		  id: 1,
+		  inputText: "Input data 1",
+		  outputText: "Output data 1",
+		  resultText: "Accepted",
+		  success: true,
+		},
+		{
+		  id: 2,
+		  inputText: "Input data 2",
+		  outputText: "Output data 2",
+		  resultText: "Wrong Answer",
+		  success: false,
+		},
+		{
+		  id: 3,
+		  inputText: "Input data 3",
+		  outputText: "Output data 3",
+		  resultText: "Accepted",
+		  success: true,
+		},
+	  ];
+
+	// Hàm gọi API để cập nhật problem
+	useEffect(() => {
+		setActiveTestCaseId(0)
+		const setTestcases = async () => {
+			console.log(problem)
+			const res = await fetchTestcases(problem.id);
+			// Xử lý danh sách
+			const tcs = res
+			.filter(testcase => testcase.isHidden === 0) // Lọc các phần tử có isHidden = 0
+			.map((testcase, index) => {
+				const testcaseJson = testcase.testcaseJson; // Lấy chuỗi JSON gốc
+	
+				// Tìm giá trị của `expect` bằng regex
+				const expectMatch = testcaseJson.match(/"expect":\s*(\[.*?\]|true|false|".*?"|\d+)/);
+				const outputText = expectMatch ? expectMatch[1] : ""; // Giá trị outputText là chuỗi `expect`
+	
+				// Loại bỏ `expect` ra khỏi chuỗi JSON
+				const inputPart = testcaseJson.replace(/"expect":\s*(\[.*?\]|true|false|".*?"|\d+),?\s*/, "").trim();
+				const inputTextMatch = inputPart.match(/{(.*)}/); // Lấy phần input bên trong {}
+	
+				// Chuyển phần input thành chuỗi inputText
+				const inputText = inputTextMatch
+					? inputTextMatch[1]
+						  .trim()
+						  .replace(/"/g, "") // Loại bỏ dấu ngoặc kép
+						  .replace(/:/g, " = ") // Đổi dấu ':' thành ' = '
+						  .replace(/,\s*$/, "") // Xóa dấu phẩy thừa ở cuối
+						  .replace(/,/g, ", ") // Thêm khoảng trắng sau dấu ','
+					: "";
+	
+				return {
+					id: index + 1, // Thêm trường id (bắt đầu từ 1)
+					inputText,
+					outputText // Chuỗi `expect`
+				};
+			});
+
+			setStateTestcases(tcs)
+		};
+		setTestcases();
+	}, [problem.id]); // Chạy lại khi problem.id thay đổi
+
+	// Hàm khởi tạo functionSignatures từ API
+	const initializeFunctionSignatures = async (problemId: string) => {
+		const fetchedSignatures = await fetchProblemFunctionSignatures(problemId);
+		setFunctionSignatures(fetchedSignatures);
+	  };
+	
+	  // Hàm generateCodeSample đã sửa lại cho phù hợp với async
+	  const generateCodeSample = (language: string, keyPath: string) => {
+		// Kiểm tra nếu chưa có functionSignatures, tránh lỗi
+		if (functionSignatures.length === 0) {
+		  return '// Function signatures not loaded yet';
+		}
+	
+		const signatureEntry = functionSignatures.find(
+		  (entry) => entry.keyPath === keyPath && entry.language === language
+		);
+	
+		if (!signatureEntry) {
+		  if (!functionSignatures.some((entry) => entry.keyPath === keyPath)) {
+			return `// Problem "${keyPath}" not found.`;
+		  }
+		  return `// Language "${language}" not supported for problem "${keyPath}".`;
+		}
+	
+		const functionSignature = signatureEntry.functionSignature;
+		const codeSampleTemplate = codeSamples[language];
+	
+		if (!codeSampleTemplate) {
+		  return `// Language "${language}" does not have a code sample template.`;
+		}
+	
+		return codeSampleTemplate.replace('ARGUMENTS', functionSignature);
+	  };
+	
+	  // useEffect để tải functionSignatures khi component mount
+	  useEffect(() => {
+		initializeFunctionSignatures(problem.id);
+	  }, [problem.id]); // Chạy khi `problemId` thay đổi
+	
+	  // useEffect để tạo userCode khi functionSignatures đã được tải
+	  useEffect(() => {
+		if (functionSignatures.length > 0) {
+		  setUserCode(generateCodeSample(language, problem.id, problem.id));
+		}
+	  }, [functionSignatures, language, problem.id]); // Chạy khi functionSignatures hoặc language thay đổi
+
 	const [activeTestCaseId, setActiveTestCaseId] = useState<number>(0);
 	let [userCode, setUserCode] = useState<string>(problem.starterCode);
 
@@ -41,7 +159,9 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 		dropdownIsOpen: false,
 	});
 
-	const { language } = useContext(LanguageContext);
+	const [activeTab, setActiveTab] = useState<"Testcases" | "Test Result">(
+		"Testcases"
+	  );
 
 	const languageVersions: object[] = [
 		{ language: 'Java', version: '15.0.2' },           
@@ -55,59 +175,6 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 		{ language: 'C', version: '10.2.0' },              
 		{ language: 'PHP', version: '8.2.3' },         
 	  ];
-
-	const functionSignatures  = {
-		'two-sum': {
-			JavaScript: 'twoSum = function(nums, target)',
-			Java: 'int[] twoSum(int[] nums, int target)',
-			PHP: 'twoSum($nums, $target)',
-			C: 'int* twoSum(int* nums, int numsSize, int target, int* returnSize)',
-			'C++': 'vector<int> twoSum(vector<int>& nums, int target)',
-			'C#': 'int[] TwoSum(int[] nums, int target)',
-			Python: 'def twoSum(self, nums: List[int], target: int) -> List[int]:',
-        	Go: 'func twoSum(nums []int, target int) []int'
-		},
-		'jump-game': {
-			JavaScript: 'canJump = function(nums)',
-			Java: 'boolean canJump(int[] nums)',
-			PHP: 'canJump($nums)',
-			C: 'bool canJump(int* nums, int numsSize)',
-			'C++': 'bool canJump(vector<int>& nums)',
-			'C#': 'bool CanJump(int[] nums)',
-			Python: 'def canJump(self, nums: List[int]) -> bool:',
-        	Go: 'func canJump(nums []int) bool'
-		},
-		'reverse-linked-list': {
-			JavaScript: 'reverseList = function(head)',
-			Java: 'ListNode reverseList(ListNode head)',
-			PHP: 'reverseList($head)',
-			C: 'struct ListNode* reverseList(struct ListNode* head)',
-			'C++': 'ListNode* reverseList(ListNode* head)',
-			'C#': 'ListNode ReverseList(ListNode head)',
-			Python: 'def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:',
-        	Go: 'func reverseList(head *ListNode) *ListNode'
-		},
-		'search-a-2d-matrix': {
-			JavaScript: 'searchMatrix = function(matrix, target)',
-			Java: 'boolean searchMatrix(int[][] matrix, int target)',
-			PHP: 'searchMatrix($matrix, $target)',
-			C: 'bool searchMatrix(int** matrix, int matrixSize, int* matrixColSize, int target)',
-			'C++': 'bool searchMatrix(vector<vector<int>>& matrix, int target)',
-			'C#': 'bool SearchMatrix(int[][] matrix, int target)',
-			Python: 'def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:',
-        	Go: 'func searchMatrix(matrix [][]int, target int) bool'
-		},
-		'valid-parentheses': {
-			JavaScript: 'isValid = function(s)',
-			Java: 'boolean isValid(String s)',
-			PHP: 'isValid($s)',
-			C: 'bool isValid(char* s)',
-			'C++': 'bool isValid(string s)',
-			'C#': 'bool IsValid(string s)',
-			Python: 'def isValid(self, s: str) -> bool:',
-        	Go: 'func isValid(s string) bool'
-		}
-	}
 
 	const codeSamples = {
 		JavaScript: `var ARGUMENTS {
@@ -145,46 +212,106 @@ public:
 }`,
 	};
 
-	function generateCodeSample(language: string, keyPath: string) {
-		// Kiểm tra nếu không tồn tại bài toán hoặc ngôn ngữ
-		if (!functionSignatures[keyPath]) {
-		  return `// Problem "${keyPath}" not found.`;
-		}
-		if (!functionSignatures[keyPath][language]) {
-		  return `// Language "${language}" not supported for problem "${keyPath}".`;
-		}
-	  
-		// Lấy chữ ký hàm từ arguments
-		const functionSignature = functionSignatures[keyPath][language];
-	  
-		// Lấy code mẫu từ codeSamples
-		const codeSampleTemplate = codeSamples[language];
-	  
-		if (!codeSampleTemplate) {
-		  return `// Language "${language}" does not have a code sample template.`;
-		}
-	  
-		// Thay thế ARGUMENTS bằng functionSignature
-		return codeSampleTemplate.replace("ARGUMENTS", functionSignature);
-	  }
-
 	//const [user] = useAuthState(auth);
 	const { user } = useContext(AuthContext);
 	const {
 		query: { pid },
 	} = useRouter();
 
-	const handleSubmit = async () => {
-		// if (!user) {
-		// 	toast.error("Please login to submit your code", {
-		// 		position: "top-center",
-		// 		autoClose: 3000,
-		// 		theme: "dark",
-		// 	});
-		// 	//return;
-		// }
+	const handleRun = async () => {
+		setActiveTab("Test Result")
+		if (!user) {
+			toast.error("Please login to submit your code", {
+				position: "top-center",
+				autoClose: 3000,
+				theme: "dark",
+			});
+			return;
+		}
 		try {
 			console.log(userCode)
+			toast.loading("Checking solution", { position: "top-center", toastId: "loadingToast" });
+					const configCompile = languageVersions.find(
+						(item) => item.language.toLowerCase() === language.toLowerCase()
+					);
+					const response = await fetch("http://localhost:8082/customer/homepage/search/run-solution", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						submittedCode: userCode,
+						problemId: pid,
+						language: language.toLowerCase(),
+						version: configCompile.version
+					}),
+					});
+				
+					const data = await response.json();
+				
+					console.log("data back from piston:", data);
+
+					if (data.length === 1) {
+						toast.dismiss("loadingToast");
+						toast.error(`Error: ${data[0]}`, {
+							position: "top-center",
+							autoClose: 3000,
+							theme: "dark",
+						});
+					} else if (Array.isArray(data) && data.every(result => result === "true")) {
+						toast.dismiss("loadingToast");
+						toast.success("Congrats! All tests passed!", {
+							position: "top-center",
+							autoClose: 3000,
+							theme: "dark",
+						});
+						setSuccess(true);
+						setTimeout(() => {
+							setSuccess(false);
+						}, 4000);
+
+						const userRef = doc(firestore, "users", user.uid);
+						await updateDoc(userRef, {
+							solvedProblems: arrayUnion(pid),
+						});
+						setSolved(true);
+					} else {
+						toast.dismiss("loadingToast");
+						toast.error("Oops! One or more test cases failed", {
+							position: "top-center",
+							autoClose: 3000,
+							theme: "dark",
+						});
+					}
+
+		} catch (error: any) {
+			console.log(error);
+			console.log(error.message);
+			if (
+				error.message.startsWith("AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:")
+			) {
+				toast.dismiss("loadingToast");
+				toast.error("Oops! One or more test cases failed", {
+					position: "top-center",
+					autoClose: 3000,
+					theme: "dark",
+				});
+			}
+		}
+	};
+
+	const handleSubmit = async () => {
+		if (!user) {
+			toast.error("Please login to submit your code", {
+				position: "top-center",
+				autoClose: 3000,
+				theme: "dark",
+			});
+			return;
+		}
+		try {
+			console.log(userCode)
+			toast.loading("Checking solution", { position: "top-center", toastId: "loadingToast" });
 			//userCode = userCode.slice(userCode.indexOf(problem.starterFunctionName));
 			// const cb = new Function(`return ${userCode}`)();
 			// const handler = problems[pid as string].handlerFunction;
@@ -245,12 +372,14 @@ public:
 					console.log("data back from piston:", data);
 
 					if (data.length === 1) {
+						toast.dismiss("loadingToast");
 						toast.error(`Error: ${data[0]}`, {
 							position: "top-center",
 							autoClose: 3000,
 							theme: "dark",
 						});
-					} else if (data.every(result => result === "true")) {
+					} else if (Array.isArray(data) && data.every(result => result === "true")) {
+						toast.dismiss("loadingToast");
 						toast.success("Congrats! All tests passed!", {
 							position: "top-center",
 							autoClose: 3000,
@@ -267,6 +396,7 @@ public:
 						});
 						setSolved(true);
 					} else {
+						toast.dismiss("loadingToast");
 						toast.error("Oops! One or more test cases failed", {
 							position: "top-center",
 							autoClose: 3000,
@@ -280,6 +410,7 @@ public:
 			if (
 				error.message.startsWith("AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:")
 			) {
+				toast.dismiss("loadingToast");
 				toast.error("Oops! One or more test cases failed", {
 					position: "top-center",
 					autoClose: 3000,
@@ -307,7 +438,7 @@ public:
 
 	useEffect(() => {
 	// Update userCode when language changes
-	setUserCode(generateCodeSample(language, pid as string));
+	setUserCode(generateCodeSample(language, pid as string, pid as string));
 	}, [language, pid]);
 
 	const onChange = (value: string) => {
@@ -330,48 +461,127 @@ public:
 						style={{ fontSize: settings.fontSize }}
 					/>
 				</div>
-				<div className='w-full px-5 overflow-auto'>
-					{/* testcase heading */}
-					<div className='flex h-10 items-center space-x-6'>
-						<div className='relative flex h-full flex-col justify-center cursor-pointer'>
-							<div className='text-sm font-medium leading-5 text-white'>Testcases</div>
-							<hr className='absolute bottom-0 h-0.5 w-full rounded-full border-none bg-white' />
+				<div className="w-full px-5 overflow-auto">
+					{/* Tabs Heading */}
+					<div className="flex h-10 items-center space-x-6">
+						<div
+						className={`relative flex h-full flex-col justify-center cursor-pointer ${
+							activeTab === "Testcases" ? "" : "text-gray-500"
+						}`}
+						onClick={() => setActiveTab("Testcases")}
+						>
+						<div className="text-sm font-medium leading-5 text-white">
+							Testcases
+						</div>
+						{activeTab === "Testcases" && (
+							<hr className="absolute bottom-0 h-0.5 w-full rounded-full border-none bg-white" />
+						)}
+						</div>
+						<div
+						className={`relative flex h-full flex-col justify-center cursor-pointer ${
+							activeTab === "Test Result" ? "" : "text-gray-500"
+						}`}
+						onClick={() => setActiveTab("Test Result")}
+						>
+						<div className="text-sm font-medium leading-5 text-white">
+							Test Result
+						</div>
+						{activeTab === "Test Result" && (
+							<hr className="absolute bottom-0 h-0.5 w-full rounded-full border-none bg-white" />
+						)}
 						</div>
 					</div>
 
-					<div className='flex'>
-						{problem.examples.map((example, index) => (
+					{/* Nội dung của tab */}
+					{activeTab === "Testcases" && (
+						<div>
+						<div className="flex">
+							{testcases.map((example, index) => (
 							<div
-								className='mr-2 items-start mt-2 '
+								className="mr-2 items-start mt-2"
 								key={example.id}
 								onClick={() => setActiveTestCaseId(index)}
 							>
-								<div className='flex flex-wrap items-center gap-y-4'>
-									<div
-										className={`font-medium items-center transition-all focus:outline-none inline-flex bg-dark-fill-3 hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap
-										${activeTestCaseId === index ? "text-white" : "text-gray-500"}
-									`}
-									>
-										Case {index + 1}
-									</div>
+								<div className="flex flex-wrap items-center gap-y-4">
+								<div
+									className={`font-medium items-center transition-all focus:outline-none inline-flex bg-dark-fill-3 hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap ${
+									activeTestCaseId === index
+										? "text-white"
+										: "text-gray-500"
+									}`}
+								>
+									Case {index + 1}
+								</div>
 								</div>
 							</div>
-						))}
-					</div>
+							))}
+						</div>
 
-					<div className='font-semibold my-4'>
-						<p className='text-sm font-medium mt-4 text-white'>Input:</p>
-						<div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2'>
-							{problem.examples[activeTestCaseId].inputText}
+						<div className="font-semibold my-4">
+							<p className="text-sm font-medium mt-4 text-white">Input:</p>
+							<div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
+							{testcases[activeTestCaseId]?.inputText}
+							</div>
+							<p className="text-sm font-medium mt-4 text-white">Output:</p>
+							<div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
+							{testcases[activeTestCaseId]?.outputText}
+							</div>
 						</div>
-						<p className='text-sm font-medium mt-4 text-white'>Output:</p>
-						<div className='w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2'>
-							{problem.examples[activeTestCaseId].outputText}
 						</div>
+					)}
+
+					{activeTab === "Test Result" && (
+						<div>
+						<div className="flex">
+							{testcases2.map((example, index) => (
+							<div
+								className="mr-2 items-start mt-2"
+								key={example.id}
+								onClick={() => setActiveTestCaseId(index)}
+							>
+								<div className="flex items-center gap-x-2">
+								{activeTab === "Test Result" && (
+									<span
+									className={`h-3 w-3 rounded-full ${
+										example.resultText === "Accepted"
+										? "bg-green-500"
+										: "bg-red-500"
+									}`}
+									></span>
+								)}
+								<div
+									className={`font-medium items-center transition-all focus:outline-none inline-flex bg-dark-fill-3 hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap ${
+									activeTestCaseId === index
+										? "text-white"
+										: "text-gray-500"
+									}`}
+								>
+									Case {index + 1}
+								</div>
+								</div>
+							</div>
+							))}
+						</div>
+						{testcases2.length != 0 && (
+							<div className="font-semibold my-4">
+								<p className="text-sm font-medium mt-4 text-white">Input:</p>
+								<div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
+								{testcases2[activeTestCaseId]?.inputText}
+								</div>
+								<p className="text-sm font-medium mt-4 text-white">Output:</p>
+								<div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
+								{testcases2[activeTestCaseId]?.outputText}
+								</div>
+							</div>
+						)}
+						{(testcases2.length == 0) && (
+							<p className="text-sm font-medium mt-4 text-white">You must run your code first</p>
+						)}
+						</div>
+					)}
 					</div>
-				</div>
 			</Split>
-			<EditorFooter handleSubmit={handleSubmit} />
+			<EditorFooter handleRun={handleRun} handleSubmit={handleSubmit} />
 		</div>
 	);
 };

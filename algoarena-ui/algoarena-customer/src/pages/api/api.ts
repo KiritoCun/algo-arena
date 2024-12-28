@@ -29,6 +29,28 @@ export const fetchProblems = async () => {
     }
 };
 
+export const fetchTestcases = async (keyPath: string) => {
+    try {
+        const response = await apiClient.get('/homepage/search/testcase/' + keyPath);
+        if (response.status === 200) {
+        return response.data
+        } else {
+        }
+    } catch (error) {
+    }
+};
+
+export const fetchProblemFunctionSignatures = async (keyPath: string) => {
+    try {
+        const response = await apiClient.get('/homepage/search/problem-function-signature/' + keyPath);
+        if (response.status === 200) {
+        return response.data
+        } else {
+        }
+    } catch (error) {
+    }
+};
+
 // Hàm lấy danh sách bài toán đã giải
 export const fetchSolvedProblems = async (userId: string) => {
   const response = await api.get(`/users/${userId}/solved-problems`);

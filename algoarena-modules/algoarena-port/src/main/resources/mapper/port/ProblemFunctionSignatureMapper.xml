@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vn.udn.dut.algoarena.port.mapper.ProblemFunctionSignatureMapper">
+	<resultMap type="vn.udn.dut.algoarena.port.domain.vo.ProblemFunctionSignatureVo" id="ProblemFunctionSignatureResult">
+        <id property="id" column="id"/>
+    </resultMap>
+    
+    <sql id="selectProblemFunctionSignatureVo">
+    	select pfs.id,
+			  pfs.tenant_id,
+			  pfs.problem_id,
+		      p.key_path,
+			  pfs.language,
+			  pfs.function_signature,
+		      pfs.create_by,
+		      pfs.create_time,
+		      pfs.update_by,
+		      pfs.update_time,
+		      pfs.remark
+		from problem_function_signature pfs left join problem p on pfs.problem_id = p.id
+    </sql>
+    
+    
+    <select id="selectPageProblemFunctionSignatureList" resultMap="ProblemFunctionSignatureResult">
+    	select * from (
+    		<include refid="selectProblemFunctionSignatureVo"/>
+    		${ew.getCustomSqlSegment}
+    	) a
+    </select>
+    
+    <select id="selectProblemFunctionSignatureList" resultMap="ProblemFunctionSignatureResult">
+    	select * from (
+    		<include refid="selectProblemFunctionSignatureVo"/>
+    		${ew.getCustomSqlSegment}
+    	) a
+    </select>
+</mapper>

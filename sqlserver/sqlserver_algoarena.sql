@@ -783,8 +783,8 @@ VALUES
 (1, 1, '{ "nums": [2, 7, 11, 15], "target": 9, "expect": [0, 1] }', NULL, NULL, 0, SYSDATETIME()),
 (2, 1, '{ "nums": [3, 2, 4], "target": 6, "expect": [1, 2] }', NULL, NULL, 0, SYSDATETIME()),
 (3, 1, '{ "nums": [3, 3], "target": 6, "expect": [0, 1] }', NULL, NULL, 0, SYSDATETIME()),
-(4, 1, '{ "nums": [1, 5, 3, 6, 7], "target": 10, "expect": [2, 4] }', NULL, NULL, 0, SYSDATETIME()),
-(5, 1, '{ "nums": [0, 4, 3, 0], "target": 0, "expect": [0, 3] }', NULL, NULL, 0, SYSDATETIME());
+(4, 1, '{ "nums": [1, 5, 3, 6, 7], "target": 10, "expect": [2, 4] }', NULL, NULL, 1, SYSDATETIME()),
+(5, 1, '{ "nums": [0, 4, 3, 0], "target": 0, "expect": [0, 3] }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -820,8 +820,8 @@ VALUES
 (6, 2, '{ "head": [1, 2, 3, 4, 5], "expect": [5, 4, 3, 2, 1] }', NULL, NULL, 0, SYSDATETIME()),
 (7, 2, '{ "head": [1, 2], "expect": [2, 1] }', NULL, NULL, 0, SYSDATETIME()),
 (8, 2, '{ "head": [1], "expect": [1] }', NULL, NULL, 0, SYSDATETIME()),
-(9, 2, '{ "head": [1, 2, 3], "expect": [3, 2, 1] }', NULL, NULL, 0, SYSDATETIME()),
-(10, 2, '{ "head": [5, 4, 3, 2, 1], "expect": [1, 2, 3, 4, 5] }', NULL, NULL, 0, SYSDATETIME());
+(9, 2, '{ "head": [1, 2, 3], "expect": [3, 2, 1] }', NULL, NULL, 1, SYSDATETIME()),
+(10, 2, '{ "head": [5, 4, 3, 2, 1], "expect": [1, 2, 3, 4, 5] }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -856,8 +856,8 @@ VALUES
 (11, 3, '{ "nums": [2, 3, 1, 1, 4], "expect": true }', NULL, NULL, 0, SYSDATETIME()),
 (12, 3, '{ "nums": [3, 2, 1, 0, 4], "expect": false }', NULL, NULL, 0, SYSDATETIME()),
 (13, 3, '{ "nums": [0], "expect": true }', NULL, NULL, 0, SYSDATETIME()),
-(14, 3, '{ "nums": [1, 2, 3], "expect": true }', NULL, NULL, 0, SYSDATETIME()),
-(15, 3, '{ "nums": [1, 0, 0], "expect": false }', NULL, NULL, 0, SYSDATETIME());
+(14, 3, '{ "nums": [1, 2, 3], "expect": true }', NULL, NULL, 1, SYSDATETIME()),
+(15, 3, '{ "nums": [1, 0, 0], "expect": false }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -902,8 +902,8 @@ VALUES
 (16, 4, '{ "s": "()", "expect": true }', NULL, NULL, 0, SYSDATETIME()),
 (17, 4, '{ "s": "()[]{}", "expect": true }', NULL, NULL, 0, SYSDATETIME()),
 (18, 4, '{ "s": "(]", "expect": false }', NULL, NULL, 0, SYSDATETIME()),
-(19, 4, '{ "s": "([)]", "expect": false }', NULL, NULL, 0, SYSDATETIME()),
-(20, 4, '{ "s": "{[]}", "expect": true }', NULL, NULL, 0, SYSDATETIME());
+(19, 4, '{ "s": "([)]", "expect": false }', NULL, NULL, 1, SYSDATETIME()),
+(20, 4, '{ "s": "{[]}", "expect": true }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -946,8 +946,8 @@ VALUES
 (21, 5, '{ "matrix": [[1, 4, 7, 11], [2, 5, 8, 12], [3, 6, 9, 16], [10, 13, 14, 17]], "target": 5, "expect": true }', NULL, NULL, 0, SYSDATETIME()),
 (22, 5, '{ "matrix": [[1, 4, 7, 11], [2, 5, 8, 12], [3, 6, 9, 16], [10, 13, 14, 17]], "target": 20, "expect": false }', NULL, NULL, 0, SYSDATETIME()),
 (23, 5, '{ "matrix": [[1, 4, 7, 11], [2, 5, 8, 12], [3, 6, 9, 16], [10, 13, 14, 17]], "target": 3, "expect": true }', NULL, NULL, 0, SYSDATETIME()),
-(24, 5, '{ "matrix": [[-5]], "target": -5, "expect": true }', NULL, NULL, 0, SYSDATETIME()),
-(25, 5, '{ "matrix": [[1]], "target": 0, "expect": false }', NULL, NULL, 0, SYSDATETIME());
+(24, 5, '{ "matrix": [[-5]], "target": -5, "expect": true }', NULL, NULL, 1, SYSDATETIME()),
+(25, 5, '{ "matrix": [[1]], "target": 0, "expect": false }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -978,8 +978,8 @@ VALUES
 (26, 6, '{ "s": "babad", "expect": ["bab", "aba"] }', NULL, NULL, 0, SYSDATETIME()),
 (27, 6, '{ "s": "cbbd", "expect": ["bb"] }', NULL, NULL, 0, SYSDATETIME()),
 (28, 6, '{ "s": "a", "expect": ["a"] }', NULL, NULL, 0, SYSDATETIME()),
-(29, 6, '{ "s": "ac", "expect": ["a", "c"] }', NULL, NULL, 0, SYSDATETIME()),
-(30, 6, '{ "s": "abb", "expect": ["bb"] }', NULL, NULL, 0, SYSDATETIME());
+(29, 6, '{ "s": "ac", "expect": ["a", "c"] }', NULL, NULL, 1, SYSDATETIME()),
+(30, 6, '{ "s": "abb", "expect": ["bb"] }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1012,8 +1012,8 @@ VALUES
 (31, 7, '{ "s": "PAYPALISHIRING", "numRows": 3, "expect": "PAHNAPLSIIGYIR" }', NULL, NULL, 0, SYSDATETIME()),
 (32, 7, '{ "s": "PAYPALISHIRING", "numRows": 4, "expect": "PINALSIGYAHRPI" }', NULL, NULL, 0, SYSDATETIME()),
 (33, 7, '{ "s": "A", "numRows": 1, "expect": "A" }', NULL, NULL, 0, SYSDATETIME()),
-(34, 7, '{ "s": "HELLO", "numRows": 2, "expect": "HLOEL" }', NULL, NULL, 0, SYSDATETIME()),
-(35, 7, '{ "s": "ABCD", "numRows": 3, "expect": "ABDC" }', NULL, NULL, 0, SYSDATETIME());
+(34, 7, '{ "s": "HELLO", "numRows": 2, "expect": "HLOEL" }', NULL, NULL, 1, SYSDATETIME()),
+(35, 7, '{ "s": "ABCD", "numRows": 3, "expect": "ABDC" }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1048,8 +1048,8 @@ VALUES
 (36, 8, '{ "x": 123, "expect": 321 }', NULL, NULL, 0, SYSDATETIME()),
 (37, 8, '{ "x": -123, "expect": -321 }', NULL, NULL, 0, SYSDATETIME()),
 (38, 8, '{ "x": 120, "expect": 21 }', NULL, NULL, 0, SYSDATETIME()),
-(39, 8, '{ "x": 0, "expect": 0 }', NULL, NULL, 0, SYSDATETIME()),
-(40, 8, '{ "x": 1534236469, "expect": 0 }', NULL, NULL, 0, SYSDATETIME());
+(39, 8, '{ "x": 0, "expect": 0 }', NULL, NULL, 1, SYSDATETIME()),
+(40, 8, '{ "x": 1534236469, "expect": 0 }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1085,8 +1085,8 @@ VALUES
 (41, 9, '{ "s": "42", "expect": 42 }', NULL, NULL, 0, SYSDATETIME()),
 (42, 9, '{ "s": "   -42", "expect": -42 }', NULL, NULL, 0, SYSDATETIME()),
 (43, 9, '{ "s": "4193 with words", "expect": 4193 }', NULL, NULL, 0, SYSDATETIME()),
-(44, 9, '{ "s": "words and 987", "expect": 0 }', NULL, NULL, 0, SYSDATETIME()),
-(45, 9, '{ "s": "-91283472332", "expect": -2147483648 }', NULL, NULL, 0, SYSDATETIME());
+(44, 9, '{ "s": "words and 987", "expect": 0 }', NULL, NULL, 1, SYSDATETIME()),
+(45, 9, '{ "s": "-91283472332", "expect": -2147483648 }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1121,8 +1121,8 @@ VALUES
 (46, 10, '{ "x": 121, "expect": true }', NULL, NULL, 0, SYSDATETIME()),
 (47, 10, '{ "x": -121, "expect": false }', NULL, NULL, 0, SYSDATETIME()),
 (48, 10, '{ "x": 10, "expect": false }', NULL, NULL, 0, SYSDATETIME()),
-(49, 10, '{ "x": 12321, "expect": true }', NULL, NULL, 0, SYSDATETIME()),
-(50, 10, '{ "x": 0, "expect": true }', NULL, NULL, 0, SYSDATETIME());
+(49, 10, '{ "x": 12321, "expect": true }', NULL, NULL, 1, SYSDATETIME()),
+(50, 10, '{ "x": 0, "expect": true }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1158,8 +1158,8 @@ VALUES
 (51, 11, '{ "s": "aa", "p": "a", "expect": false }', NULL, NULL, 0, SYSDATETIME()),
 (52, 11, '{ "s": "aa", "p": "a*", "expect": true }', NULL, NULL, 0, SYSDATETIME()),
 (53, 11, '{ "s": "ab", "p": ".*", "expect": true }', NULL, NULL, 0, SYSDATETIME()),
-(54, 11, '{ "s": "aab", "p": "c*a*b", "expect": true }', NULL, NULL, 0, SYSDATETIME()),
-(55, 11, '{ "s": "mississippi", "p": "mis*is*p*.", "expect": false }', NULL, NULL, 0, SYSDATETIME());
+(54, 11, '{ "s": "aab", "p": "c*a*b", "expect": true }', NULL, NULL, 1, SYSDATETIME()),
+(55, 11, '{ "s": "mississippi", "p": "mis*is*p*.", "expect": false }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1192,8 +1192,8 @@ VALUES
 (56, 12, '{ "height": [1, 1], "expect": 1 }', NULL, NULL, 0, SYSDATETIME()),
 (57, 12, '{ "height": [4, 3, 2, 1, 4], "expect": 16 }', NULL, NULL, 0, SYSDATETIME()),
 (58, 12, '{ "height": [1, 2, 1], "expect": 2 }', NULL, NULL, 0, SYSDATETIME()),
-(59, 12, '{ "height": [1, 8, 6, 2, 5, 4, 8, 3, 7], "expect": 49 }', NULL, NULL, 0, SYSDATETIME()),
-(60, 12, '{ "height": [1, 3, 2, 5, 25, 24, 5], "expect": 24 }', NULL, NULL, 0, SYSDATETIME());
+(59, 12, '{ "height": [1, 8, 6, 2, 5, 4, 8, 3, 7], "expect": 49 }', NULL, NULL, 1, SYSDATETIME()),
+(60, 12, '{ "height": [1, 3, 2, 5, 25, 24, 5], "expect": 24 }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1228,8 +1228,8 @@ VALUES
 (61, 13, '{ "num": 3, "expect": "III" }', NULL, NULL, 0, SYSDATETIME()),
 (62, 13, '{ "num": 4, "expect": "IV" }', NULL, NULL, 0, SYSDATETIME()),
 (63, 13, '{ "num": 9, "expect": "IX" }', NULL, NULL, 0, SYSDATETIME()),
-(64, 13, '{ "num": 58, "expect": "LVIII" }', NULL, NULL, 0, SYSDATETIME()),
-(65, 13, '{ "num": 1994, "expect": "MCMXCIV" }', NULL, NULL, 0, SYSDATETIME());
+(64, 13, '{ "num": 58, "expect": "LVIII" }', NULL, NULL, 1, SYSDATETIME()),
+(65, 13, '{ "num": 1994, "expect": "MCMXCIV" }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1265,8 +1265,8 @@ VALUES
 (66, 14, '{ "roman": "III", "expect": 3 }', NULL, NULL, 0, SYSDATETIME()),
 (67, 14, '{ "roman": "IV", "expect": 4 }', NULL, NULL, 0, SYSDATETIME()),
 (68, 14, '{ "roman": "IX", "expect": 9 }', NULL, NULL, 0, SYSDATETIME()),
-(69, 14, '{ "roman": "LVIII", "expect": 58 }', NULL, NULL, 0, SYSDATETIME()),
-(70, 14, '{ "roman": "MCMXCIV", "expect": 1994 }', NULL, NULL, 0, SYSDATETIME());
+(69, 14, '{ "roman": "LVIII", "expect": 58 }', NULL, NULL, 1, SYSDATETIME()),
+(70, 14, '{ "roman": "MCMXCIV", "expect": 1994 }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1300,8 +1300,8 @@ VALUES
 (71, 15, '{ "strs": ["flower", "flow", "flight"], "expect": "fl" }', NULL, NULL, 0, SYSDATETIME()),
 (72, 15, '{ "strs": ["dog", "racecar", "car"], "expect": "" }', NULL, NULL, 0, SYSDATETIME()),
 (73, 15, '{ "strs": ["interspecies", "interstellar", "interstate"], "expect": "inters" }', NULL, NULL, 0, SYSDATETIME()),
-(74, 15, '{ "strs": ["throne", "throne"], "expect": "throne" }', NULL, NULL, 0, SYSDATETIME()),
-(75, 15, '{ "strs": ["a"], "expect": "a" }', NULL, NULL, 0, SYSDATETIME());
+(74, 15, '{ "strs": ["throne", "throne"], "expect": "throne" }', NULL, NULL, 1, SYSDATETIME()),
+(75, 15, '{ "strs": ["a"], "expect": "a" }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1337,8 +1337,8 @@ VALUES
 (76, 16, '{ "nums": [-1, 0, 1, 2, -1, -4], "expect": [[-1, -1, 2], [-1, 0, 1]] }', NULL, NULL, 0, SYSDATETIME()),
 (77, 16, '{ "nums": [0, 0, 0, 0], "expect": [[0, 0, 0]] }', NULL, NULL, 0, SYSDATETIME()),
 (78, 16, '{ "nums": [-1, 0, 1], "expect": [[-1, 0, 1]] }', NULL, NULL, 0, SYSDATETIME()),
-(79, 16, '{ "nums": [1, 2, -2, -1], "expect": [] }', NULL, NULL, 0, SYSDATETIME()),
-(80, 16, '{ "nums": [-1, -1, 2, 2], "expect": [[-1, -1, 2]] }', NULL, NULL, 0, SYSDATETIME());
+(79, 16, '{ "nums": [1, 2, -2, -1], "expect": [] }', NULL, NULL, 1, SYSDATETIME()),
+(80, 16, '{ "nums": [-1, -1, 2, 2], "expect": [[-1, -1, 2]] }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1372,8 +1372,8 @@ VALUES
 (81, 17, '{ "nums": [-1, 2, 1, -4], "target": 1, "expect": 2 }', NULL, NULL, 0, SYSDATETIME()),
 (82, 17, '{ "nums": [0, 0, 0], "target": 1, "expect": 0 }', NULL, NULL, 0, SYSDATETIME()),
 (83, 17, '{ "nums": [1, 1, 1], "target": 3, "expect": 3 }', NULL, NULL, 0, SYSDATETIME()),
-(84, 17, '{ "nums": [-1, 0, 1, 1], "target": 0, "expect": 0 }', NULL, NULL, 0, SYSDATETIME()),
-(85, 17, '{ "nums": [1, 2, 3], "target": 6, "expect": 6 }', NULL, NULL, 0, SYSDATETIME());
+(84, 17, '{ "nums": [-1, 0, 1, 1], "target": 0, "expect": 0 }', NULL, NULL, 1, SYSDATETIME()),
+(85, 17, '{ "nums": [1, 2, 3], "target": 6, "expect": 6 }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1409,8 +1409,8 @@ VALUES
 (86, 18, '{ "digits": "23", "expect": ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"] }', NULL, NULL, 0, SYSDATETIME()),
 (87, 18, '{ "digits": "2", "expect": ["a", "b", "c"] }', NULL, NULL, 0, SYSDATETIME()),
 (88, 18, '{ "digits": "78", "expect": ["pq", "pr", "ps", "pq", "pr", "ps", "qt", "qu", "qv", "qt", "qu", "qv"] }', NULL, NULL, 0, SYSDATETIME()),
-(89, 18, '{ "digits": "", "expect": [] }', NULL, NULL, 0, SYSDATETIME()),
-(90, 18, '{ "digits": "7", "expect": ["p", "q", "r", "s"] }', NULL, NULL, 0, SYSDATETIME());
+(89, 18, '{ "digits": "", "expect": [] }', NULL, NULL, 1, SYSDATETIME()),
+(90, 18, '{ "digits": "7", "expect": ["p", "q", "r", "s"] }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1444,8 +1444,8 @@ VALUES
 (91, 19, '{ "nums": [1, 0, -1, 0, -2, 2], "target": 0, "expect": [[-2, -1, 1, 2], [-2, 0, 0, 2], [-1, 0, 0, 1]] }', NULL, NULL, 0, SYSDATETIME()),
 (92, 19, '{ "nums": [2, 2, 2, 2, 2], "target": 8, "expect": [[2, 2, 2, 2]] }', NULL, NULL, 0, SYSDATETIME()),
 (93, 19, '{ "nums": [1, 1, 1, 1], "target": 4, "expect": [[1, 1, 1, 1]] }', NULL, NULL, 0, SYSDATETIME()),
-(94, 19, '{ "nums": [1, 2, 3, 4, 5, 6, 7, 8, 9], "target": 10, "expect": [[1, 2, 3, 4], [1, 2, 2, 5], [1, 3, 2, 4]] }', NULL, NULL, 0, SYSDATETIME()),
-(95, 19, '{ "nums": [1, 0, -1, 0, -2, 2], "target": 8, "expect": [] }', NULL, NULL, 0, SYSDATETIME());
+(94, 19, '{ "nums": [1, 2, 3, 4, 5, 6, 7, 8, 9], "target": 10, "expect": [[1, 2, 3, 4], [1, 2, 2, 5], [1, 3, 2, 4]] }', NULL, NULL, 1, SYSDATETIME()),
+(95, 19, '{ "nums": [1, 0, -1, 0, -2, 2], "target": 8, "expect": [] }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1480,8 +1480,8 @@ VALUES
 (96, 20, '{ "head": [1, 2, 3, 4, 5], "n": 2, "expect": [1, 2, 3, 5] }', NULL, NULL, 0, SYSDATETIME()),
 (97, 20, '{ "head": [1], "n": 1, "expect": [] }', NULL, NULL, 0, SYSDATETIME()),
 (98, 20, '{ "head": [1, 2], "n": 1, "expect": [1] }', NULL, NULL, 0, SYSDATETIME()),
-(99, 20, '{ "head": [1, 2, 3, 4, 5], "n": 1, "expect": [1, 2, 3, 4] }', NULL, NULL, 0, SYSDATETIME()),
-(100, 20, '{ "head": [1, 2, 3, 4, 5], "n": 5, "expect": [2, 3, 4, 5] }', NULL, NULL, 0, SYSDATETIME());
+(99, 20, '{ "head": [1, 2, 3, 4, 5], "n": 1, "expect": [1, 2, 3, 4] }', NULL, NULL, 1, SYSDATETIME()),
+(100, 20, '{ "head": [1, 2, 3, 4, 5], "n": 5, "expect": [2, 3, 4, 5] }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1514,8 +1514,8 @@ VALUES
 (101, 21, '{ "list1": [1, 2, 4], "list2": [1, 3, 4], "expect": [1, 1, 2, 3, 4, 4] }', NULL, NULL, 0, SYSDATETIME()),
 (102, 21, '{ "list1": [], "list2": [0], "expect": [0] }', NULL, NULL, 0, SYSDATETIME()),
 (103, 21, '{ "list1": [1], "list2": [], "expect": [1] }', NULL, NULL, 0, SYSDATETIME()),
-(104, 21, '{ "list1": [], "list2": [], "expect": [] }', NULL, NULL, 0, SYSDATETIME()),
-(105, 21, '{ "list1": [1, 2, 3, 5], "list2": [4, 6, 7], "expect": [1, 2, 3, 4, 5, 6, 7] }', NULL, NULL, 0, SYSDATETIME());
+(104, 21, '{ "list1": [], "list2": [], "expect": [] }', NULL, NULL, 1, SYSDATETIME()),
+(105, 21, '{ "list1": [1, 2, 3, 5], "list2": [4, 6, 7], "expect": [1, 2, 3, 4, 5, 6, 7] }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1547,8 +1547,8 @@ VALUES
 (106, 22, '{ "n": 3, "expect": ["((()))", "(()())", "(())()", "()(())", "()()()"] }', NULL, NULL, 0, SYSDATETIME()),
 (107, 22, '{ "n": 1, "expect": ["()"] }', NULL, NULL, 0, SYSDATETIME()),
 (108, 22, '{ "n": 2, "expect": ["(())", "()()"] }', NULL, NULL, 0, SYSDATETIME()),
-(109, 22, '{ "n": 4, "expect": ["(((())))", "((()()))", "((())())", "((()))()", "(()(()))", "(()()())", "(()())()", "(())(())", "(())()()", "()((()))", "()(()())", "()(())()", "()()(())", "()()()()"] }', NULL, NULL, 0, SYSDATETIME()),
-(110, 22, '{ "n": 0, "expect": [] }', NULL, NULL, 0, SYSDATETIME());
+(109, 22, '{ "n": 4, "expect": ["(((())))", "((()()))", "((())())", "((()))()", "(()(()))", "(()()())", "(()())()", "(())(())", "(())()()", "()((()))", "()(()())", "()(())()", "()()(())", "()()()()"] }', NULL, NULL, 1, SYSDATETIME()),
+(110, 22, '{ "n": 0, "expect": [] }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
@@ -1584,60 +1584,12 @@ VALUES
 (111, 23, '{ "lists": [[1,4,5],[1,3,4],[2,6]], "expect": [1,1,2,3,4,4,5,6] }', NULL, NULL, 0, SYSDATETIME()),
 (112, 23, '{ "lists": [[],[],[]], "expect": [] }', NULL, NULL, 0, SYSDATETIME()),
 (113, 23, '{ "lists": [[1,2,3],[],[4,5,6]], "expect": [1,2,3,4,5,6] }', NULL, NULL, 0, SYSDATETIME()),
-(114, 23, '{ "lists": [[-10,-5,0],[-5,0,5],[-10,10]], "expect": [-10,-10,-5,-5,0,0,5,10,10] }', NULL, NULL, 0, SYSDATETIME()),
-(115, 23, '{ "lists": [[2,5,7],[],[3,6]], "expect": [2,3,5,6,7] }', NULL, NULL, 0, SYSDATETIME());
+(114, 23, '{ "lists": [[-10,-5,0],[-5,0,5],[-10,10]], "expect": [-10,-10,-5,-5,0,0,5,10,10] }', NULL, NULL, 1, SYSDATETIME()),
+(115, 23, '{ "lists": [[2,5,7],[],[3,6]], "expect": [2,3,5,6,7] }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (24,
-'Valid Parentheses',
-'<div class="problem-content">
-  <h1>Valid Parentheses</h1>
-  <p>Given a string s containing just the characters <code> (, ), {, }, [, ] </code>, determine if the input string is valid.</p>
-  <p>An input string is valid if:</p>
-  <ul>
-    <li>Open brackets must be closed by the same type of brackets.</li>
-    <li>Open brackets must be closed in the correct order.</li>
-  </ul>
-  <h3 class="section-title">Example 1:</h3>
-  <pre><code><strong>Input:</strong> s = "()"
-<strong>Output:</strong> true</code></pre>
-  <h3 class="section-title">Example 2:</h3>
-  <pre><code><strong>Input:</strong> s = "()[]{}"
-<strong>Output:</strong> true</code></pre>
-  <h3 class="section-title">Example 3:</h3>
-  <pre><code><strong>Input:</strong> s = "(]"
-<strong>Output:</strong> false</code></pre>
-  <h3 class="section-title">Example 4:</h3>
-  <pre><code><strong>Input:</strong> s = "([)]"
-<strong>Output:</strong> false</code></pre>
-  <h3 class="section-title">Example 5:</h3>
-  <pre><code><strong>Input:</strong> s = "{[]}"
-<strong>Output:</strong> true</code></pre>
-  <h3 class="section-title">Constraints:</h3>
-  <ul>
-    <li><code>1 <= s.length <= 10^4</code></li>
-    <li><code>s</code> consists of parentheses only <code>"()[]{}"</code>.</li>
-  </ul>
-</div>',
-1,
-'valid-parentheses',
-'Stack',
-'',
-5,
-SYSDATETIME());
-
-INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
-VALUES
-(116, 24, '{ "head": [1,2,3,4], "expect": [2,1,4,3] }', NULL, NULL, 0, SYSDATETIME()),
-(117, 24, '{ "head": [1,2,3], "expect": [2,1,3] }', NULL, NULL, 0, SYSDATETIME()),
-(118, 24, '{ "head": [1], "expect": [1] }', NULL, NULL, 0, SYSDATETIME()),
-(119, 24, '{ "head": [], "expect": [] }', NULL, NULL, 0, SYSDATETIME()),
-(120, 24, '{ "head": [1,2,3,4,5], "expect": [2,1,4,3,5] }', NULL, NULL, 0, SYSDATETIME());
-
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
-VALUES
-(25,
 'Merge Intervals',
 '<div class="problem-content">
   <h1>Merge Intervals</h1>
@@ -1664,11 +1616,11 @@ SYSDATETIME());
 
 INSERT INTO testcase(id, problem_id, testcase_json, illustration, explanation, is_hidden, create_time)
 VALUES
-(121, 25, '{ "head": [1,2,3,4,5], "k": 2, "expect": [2,1,4,3,5] }', NULL, NULL, 0, SYSDATETIME()),
-(122, 25, '{ "head": [1,2,3,4,5], "k": 3, "expect": [3,2,1,4,5] }', NULL, NULL, 0, SYSDATETIME()),
-(123, 25, '{ "head": [1,2,3,4,5], "k": 1, "expect": [1,2,3,4,5] }', NULL, NULL, 0, SYSDATETIME()),
-(124, 25, '{ "head": [1], "k": 1, "expect": [1] }', NULL, NULL, 0, SYSDATETIME()),
-(125, 25, '{ "head": [], "k": 3, "expect": [] }', NULL, NULL, 0, SYSDATETIME());
+(116, 24, '{ "head": [1,2,3,4,5], "k": 2, "expect": [2,1,4,3,5] }', NULL, NULL, 0, SYSDATETIME()),
+(117, 24, '{ "head": [1,2,3,4,5], "k": 3, "expect": [3,2,1,4,5] }', NULL, NULL, 0, SYSDATETIME()),
+(118, 24, '{ "head": [1,2,3,4,5], "k": 1, "expect": [1,2,3,4,5] }', NULL, NULL, 0, SYSDATETIME()),
+(119, 24, '{ "head": [1], "k": 1, "expect": [1] }', NULL, NULL, 1, SYSDATETIME()),
+(120, 24, '{ "head": [], "k": 3, "expect": [] }', NULL, NULL, 1, SYSDATETIME());
 
 INSERT INTO exam(id, title, description, start_time, end_time, create_time)
 VALUES
@@ -1696,3 +1648,264 @@ VALUES
 '2024-12-11 07:00:00',
 '2024-12-11 08:00:00',
 SYSDATETIME());
+
+IF OBJECT_ID('problem_function_signature', 'U') IS NOT NULL
+  DROP TABLE problem_function_signature;
+GO
+
+CREATE TABLE problem_function_signature (
+  id                bigint IDENTITY(1,1) PRIMARY KEY,
+  problem_id        bigint NOT NULL,
+  language          nvarchar(50) NOT NULL,
+  function_signature nvarchar(255) NOT NULL,
+  tenant_id         nvarchar(20) DEFAULT ('000000') NULL,
+  create_by         bigint NULL,
+  create_time       datetime2(7) NULL,
+  update_by         bigint NULL,
+  update_time       datetime2(7) NULL,
+  remark            nvarchar(255) NULL
+);
+GO
+
+-- Chèn function signatures cho các bài toán
+INSERT INTO problem_function_signature (problem_id, language, function_signature)
+VALUES
+  -- Two Sum
+  (1, 'JavaScript', 'twoSum = function(nums, target)'),
+  (1, 'Java', 'int[] twoSum(int[] nums, int target)'),
+  (1, 'PHP', 'twoSum($nums, $target)'),
+  (1, 'C', 'int* twoSum(int* nums, int numsSize, int target, int* returnSize)'),
+  (1, 'C++', 'vector<int> twoSum(vector<int>& nums, int target)'),
+  (1, 'C#', 'int[] TwoSum(int[] nums, int target)'),
+  (1, 'Python', 'def twoSum(self, nums: List[int], target: int) -> List[int]:'),
+  (1, 'Go', 'func twoSum(nums []int, target int) []int'),
+
+  -- Reverse Linked List
+  (2, 'JavaScript', 'reverseList = function(head)'),
+  (2, 'Java', 'ListNode reverseList(ListNode head)'),
+  (2, 'PHP', 'reverseList($head)'),
+  (2, 'C', 'struct ListNode* reverseList(struct ListNode* head)'),
+  (2, 'C++', 'ListNode* reverseList(ListNode* head)'),
+  (2, 'C#', 'ListNode ReverseList(ListNode head)'),
+  (2, 'Python', 'def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:'),
+  (2, 'Go', 'func reverseList(head *ListNode) *ListNode'),
+
+  -- Jump Game
+  (3, 'JavaScript', 'canJump = function(nums)'),
+  (3, 'Java', 'boolean canJump(int[] nums)'),
+  (3, 'PHP', 'canJump($nums)'),
+  (3, 'C', 'bool canJump(int* nums, int numsSize)'),
+  (3, 'C++', 'bool canJump(vector<int>& nums)'),
+  (3, 'C#', 'bool CanJump(int[] nums)'),
+  (3, 'Python', 'def canJump(self, nums: List[int]) -> bool:'),
+  (3, 'Go', 'func canJump(nums []int) bool'),
+
+  -- Valid Parentheses
+  (4, 'JavaScript', 'isValid = function(s)'),
+  (4, 'Java', 'boolean isValid(String s)'),
+  (4, 'PHP', 'isValid($s)'),
+  (4, 'C', 'bool isValid(char* s)'),
+  (4, 'C++', 'bool isValid(string s)'),
+  (4, 'C#', 'bool IsValid(string s)'),
+  (4, 'Python', 'def isValid(self, s: str) -> bool:'),
+  (4, 'Go', 'func isValid(s string) bool'),
+
+  -- Search a 2D Matrix
+  (5, 'JavaScript', 'searchMatrix = function(matrix, target)'),
+  (5, 'Java', 'boolean searchMatrix(int[][] matrix, int target)'),
+  (5, 'PHP', 'searchMatrix($matrix, $target)'),
+  (5, 'C', 'bool searchMatrix(int** matrix, int matrixSize, int* matrixColSize, int target)'),
+  (5, 'C++', 'bool searchMatrix(vector<vector<int>>& matrix, int target)'),
+  (5, 'C#', 'bool SearchMatrix(int[][] matrix, int target)'),
+  (5, 'Python', 'def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:'),
+  (5, 'Go', 'func searchMatrix(matrix [][]int, target int) bool'),
+
+  -- Longest Palindromic Substring
+  (6, 'JavaScript', 'longestPalindrome = function(s)'),
+  (6, 'Java', 'String longestPalindrome(String s)'),
+  (6, 'PHP', 'longestPalindrome($s)'),
+  (6, 'C', 'char* longestPalindrome(char* s)'),
+  (6, 'C++', 'string longestPalindrome(string s)'),
+  (6, 'C#', 'string LongestPalindrome(string s)'),
+  (6, 'Python', 'def longestPalindrome(self, s: str) -> str:'),
+  (6, 'Go', 'func longestPalindrome(s string) string'),
+
+  -- Zigzag Conversion
+  (7, 'JavaScript', 'convert = function(s, numRows)'),
+  (7, 'Java', 'String convert(String s, int numRows)'),
+  (7, 'PHP', 'convert($s, $numRows)'),
+  (7, 'C', 'char* convert(char* s, int numRows)'),
+  (7, 'C++', 'string convert(string s, int numRows)'),
+  (7, 'C#', 'string Convert(string s, int numRows)'),
+  (7, 'Python', 'def convert(self, s: str, numRows: int) -> str:'),
+  (7, 'Go', 'func convert(s string, numRows int) string'),
+
+  -- Reverse Integer
+  (8, 'JavaScript', 'reverse = function(x)'),
+  (8, 'Java', 'int reverse(int x)'),
+  (8, 'PHP', 'reverse($x)'),
+  (8, 'C', 'int reverse(int x)'),
+  (8, 'C++', 'int reverse(int x)'),
+  (8, 'C#', 'int Reverse(int x)'),
+  (8, 'Python', 'def reverse(self, x: int) -> int:'),
+  (8, 'Go', 'func reverse(x int) int'),
+
+-- String to Integer (myAtoi)
+  (9, 'JavaScript', 'myAtoi = function(s)'),
+  (9, 'Java', 'int myAtoi(String s)'),
+  (9, 'PHP', 'myAtoi($s)'),
+  (9, 'C', 'int myAtoi(char* s)'),
+  (9, 'C++', 'int myAtoi(string s)'),
+  (9, 'C#', 'int MyAtoi(string s)'),
+  (9, 'Python', 'def myAtoi(self, s: str) -> int:'),
+  (9, 'Go', 'func myAtoi(s string) int'),
+
+  -- Palindrome Number
+  (10, 'JavaScript', 'isPalindrome = function(x)'),
+  (10, 'Java', 'boolean isPalindrome(int x)'),
+  (10, 'PHP', 'isPalindrome($x)'),
+  (10, 'C', 'bool isPalindrome(int x)'),
+  (10, 'C++', 'bool isPalindrome(int x)'),
+  (10, 'C#', 'bool IsPalindrome(int x)'),
+  (10, 'Python', 'def isPalindrome(self, x: int) -> bool:'),
+  (10, 'Go', 'func isPalindrome(x int) bool'),
+
+  -- Regular Expression Matching
+  (11, 'JavaScript', 'isMatch = function(s, p)'),
+  (11, 'Java', 'boolean isMatch(String s, String p)'),
+  (11, 'PHP', 'isMatch($s, $p)'),
+  (11, 'C', 'bool isMatch(char* s, char* p)'),
+  (11, 'C++', 'bool isMatch(string s, string p)'),
+  (11, 'C#', 'bool IsMatch(string s, string p)'),
+  (11, 'Python', 'def isMatch(self, s: str, p: str) -> bool:'),
+  (11, 'Go', 'func isMatch(s string, p string) bool'),
+
+  -- Container With Most Water
+  (12, 'JavaScript', 'maxArea = function(height)'),
+  (12, 'Java', 'int maxArea(int[] height)'),
+  (12, 'PHP', 'maxArea($height)'),
+  (12, 'C', 'int maxArea(int* height, int heightSize)'),
+  (12, 'C++', 'int maxArea(vector<int>& height)'),
+  (12, 'C#', 'int MaxArea(int[] height)'),
+  (12, 'Python', 'def maxArea(self, height: List[int]) -> int:'),
+  (12, 'Go', 'func maxArea(height []int) int'),
+
+  -- Integer to Roman
+  (13, 'JavaScript', 'intToRoman = function(num)'),
+  (13, 'Java', 'String intToRoman(int num)'),
+  (13, 'PHP', 'intToRoman($num)'),
+  (13, 'C', 'char* intToRoman(int num)'),
+  (13, 'C++', 'string intToRoman(int num)'),
+  (13, 'C#', 'string IntToRoman(int num)'),
+  (13, 'Python', 'def intToRoman(self, num: int) -> str:'),
+  (13, 'Go', 'func intToRoman(num int) string'),
+
+  -- Roman to Integer
+  (14, 'JavaScript', 'romanToInt = function(s)'),
+  (14, 'Java', 'int romanToInt(String s)'),
+  (14, 'PHP', 'romanToInt($s)'),
+  (14, 'C', 'int romanToInt(char* s)'),
+  (14, 'C++', 'int romanToInt(string s)'),
+  (14, 'C#', 'int RomanToInt(string s)'),
+  (14, 'Python', 'def romanToInt(self, s: str) -> int:'),
+  (14, 'Go', 'func romanToInt(s string) int'),
+
+  -- Longest Common Prefix
+  (15, 'JavaScript', 'longestCommonPrefix = function(strs)'),
+  (15, 'Java', 'String longestCommonPrefix(String[] strs)'),
+  (15, 'PHP', 'longestCommonPrefix($strs)'),
+  (15, 'C', 'char* longestCommonPrefix(char** strs, int strsSize)'),
+  (15, 'C++', 'string longestCommonPrefix(vector<string>& strs)'),
+  (15, 'C#', 'string LongestCommonPrefix(string[] strs)'),
+  (15, 'Python', 'def longestCommonPrefix(self, strs: List[str]) -> str:'),
+  (15, 'Go', 'func longestCommonPrefix(strs []string) string'),
+
+-- 3Sum
+  (16, 'JavaScript', 'threeSum = function(nums)'),
+  (16, 'Java', 'List<List<Integer>> threeSum(int[] nums)'),
+  (16, 'PHP', 'threeSum($nums)'),
+  (16, 'C', 'int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes)'),
+  (16, 'C++', 'vector<vector<int>> threeSum(vector<int>& nums)'),
+  (16, 'C#', 'IList<IList<int>> ThreeSum(int[] nums)'),
+  (16, 'Python', 'def threeSum(self, nums: List[int]) -> List[List[int]]:'),
+  (16, 'Go', 'func threeSum(nums []int) [][]int'),
+
+  -- 3Sum Closest
+  (17, 'JavaScript', 'threeSumClosest = function(nums, target)'),
+  (17, 'Java', 'int threeSumClosest(int[] nums, int target)'),
+  (17, 'PHP', 'threeSumClosest($nums, $target)'),
+  (17, 'C', 'int threeSumClosest(int* nums, int numsSize, int target)'),
+  (17, 'C++', 'int threeSumClosest(vector<int>& nums, int target)'),
+  (17, 'C#', 'int ThreeSumClosest(int[] nums, int target)'),
+  (17, 'Python', 'def threeSumClosest(self, nums: List[int], target: int) -> int:'),
+  (17, 'Go', 'func threeSumClosest(nums []int, target int) int'),
+
+  -- Letter Combinations of a Phone Number
+  (18, 'JavaScript', 'letterCombinations = function(digits)'),
+  (18, 'Java', 'List<String> letterCombinations(String digits)'),
+  (18, 'PHP', 'letterCombinations($digits)'),
+  (18, 'C', 'char** letterCombinations(char* digits, int* returnSize)'),
+  (18, 'C++', 'vector<string> letterCombinations(string digits)'),
+  (18, 'C#', 'IList<string> LetterCombinations(string digits)'),
+  (18, 'Python', 'def letterCombinations(self, digits: str) -> List[str]:'),
+  (18, 'Go', 'func letterCombinations(digits string) []string'),
+
+  -- 4Sum
+  (19, 'JavaScript', 'fourSum = function(nums, target)'),
+  (19, 'Java', 'List<List<Integer>> fourSum(int[] nums, int target)'),
+  (19, 'PHP', 'fourSum($nums, $target)'),
+  (19, 'C', 'int** fourSum(int* nums, int numsSize, int target, int* returnSize, int** returnColumnSizes)'),
+  (19, 'C++', 'vector<vector<int>> fourSum(vector<int>& nums, int target)'),
+  (19, 'C#', 'IList<IList<int>> FourSum(int[] nums, int target)'),
+  (19, 'Python', 'def fourSum(self, nums: List[int], target: int) -> List[List[int]]:'),
+  (19, 'Go', 'func fourSum(nums []int, target int) [][]int'),
+
+  -- Remove Nth Node From End of List
+  (20, 'JavaScript', 'removeNthFromEnd = function(head, n)'),
+  (20, 'Java', 'ListNode removeNthFromEnd(ListNode head, int n)'),
+  (20, 'PHP', 'removeNthFromEnd($head, $n)'),
+  (20, 'C', 'struct ListNode* removeNthFromEnd(struct ListNode* head, int n)'),
+  (20, 'C++', 'ListNode* removeNthFromEnd(ListNode* head, int n)'),
+  (20, 'C#', 'ListNode RemoveNthFromEnd(ListNode head, int n)'),
+  (20, 'Python', 'def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:'),
+  (20, 'Go', 'func removeNthFromEnd(head *ListNode, n int) *ListNode'),
+
+  -- Merge Two Sorted Lists
+  (21, 'JavaScript', 'mergeTwoLists = function(list1, list2)'),
+  (21, 'Java', 'ListNode mergeTwoLists(ListNode list1, ListNode list2)'),
+  (21, 'PHP', 'mergeTwoLists($list1, $list2)'),
+  (21, 'C', 'struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2)'),
+  (21, 'C++', 'ListNode* mergeTwoLists(ListNode* list1, ListNode* list2)'),
+  (21, 'C#', 'ListNode MergeTwoLists(ListNode list1, ListNode list2)'),
+  (21, 'Python', 'def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:'),
+  (21, 'Go', 'func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode'),
+
+  -- Generate Parentheses
+  (22, 'JavaScript', 'generateParenthesis = function(n)'),
+  (22, 'Java', 'List<String> generateParenthesis(int n)'),
+  (22, 'PHP', 'generateParenthesis($n)'),
+  (22, 'C', 'char** generateParenthesis(int n, int* returnSize)'),
+  (22, 'C++', 'vector<string> generateParenthesis(int n)'),
+  (22, 'C#', 'IList<string> GenerateParenthesis(int n)'),
+  (22, 'Python', 'def generateParenthesis(self, n: int) -> List[str]:'),
+  (22, 'Go', 'func generateParenthesis(n int) []string'),
+
+  -- Reverse Linked List
+  (23, 'JavaScript', 'reverseList = function(head)'),
+  (23, 'Java', 'ListNode reverseList(ListNode head)'),
+  (23, 'PHP', 'reverseList($head)'),
+  (23, 'C', 'struct ListNode* reverseList(struct ListNode* head)'),
+  (23, 'C++', 'ListNode* reverseList(ListNode* head)'),
+  (23, 'C#', 'ListNode ReverseList(ListNode head)'),
+  (23, 'Python', 'def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:'),
+  (23, 'Go', 'func reverseList(head *ListNode) *ListNode'),
+
+  -- Merge Intervals
+  (24, 'JavaScript', 'merge = function(intervals)'),
+  (24, 'Java', 'int[][] merge(int[][] intervals)'),
+  (24, 'PHP', 'merge($intervals)'),
+  (24, 'C', 'int** merge(int** intervals, int intervalsSize, int* intervalsColSize, int* returnSize, int** returnColumnSizes)'),
+  (24, 'C++', 'vector<vector<int>> merge(vector<vector<int>>& intervals)'),
+  (24, 'C#', 'int[][] Merge(int[][] intervals)'),
+  (24, 'Python', 'def merge(self, intervals: List[List[int]]) -> List[List[int]]:'),
+  (24, 'Go', 'func merge(intervals [][]int) [][]int');

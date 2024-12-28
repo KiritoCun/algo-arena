@@ -52,7 +52,8 @@ public class JsonToLanguageDeclaration {
                 result.append("        ").append(key).append(index).append(" = ").append(number.doubleValue()).append("\n");
             }
         } else if (language.equals("go")) {
-            result.append("var ").append(key).append(index).append(" = ").append(number.doubleValue()).append(";\n");
+            String numberValue = (number.doubleValue() + " ").replace(".0 ", "");
+            result.append("var ").append(key).append(index).append(" = ").append(numberValue).append(";\n");
         } else if (language.equals("php")) {
             result.append("$").append(key).append(index).append(" = ").append(number.doubleValue()).append(";\n");
         } else if (language.equals("c") || language.equals("c++")) {
@@ -79,9 +80,9 @@ public class JsonToLanguageDeclaration {
             result.append("let ").append(key).append(index).append(" = ").append(value).append(";\n");
         } else if (language.equals("python")) {
             if (indexOfParams == 1) {
-                result.append(key).append(index).append(" = ").append(value).append("\n");
+                result.append(key).append(index).append(" = ").append(value ? "True" : "False").append("\n");
             } else {
-                result.append("        ").append(key).append(index).append(" = ").append(value).append("\n");
+                result.append("        ").append(key).append(index).append(" = ").append(value ? "True" : "False").append("\n");
             }
         } else if (language.equals("go")) {
             result.append("var ").append(key).append(index).append(" = ").append(value).append(";\n");
@@ -147,7 +148,7 @@ public class JsonToLanguageDeclaration {
         if (language.equals("python")) {
             arrayString.append("]\n");
         } else {
-            arrayString.append(language.equals("javascript") || language.equals("python") || language.equals("go") || language.equals("php") ? "];\n" : "};\n");
+            arrayString.append(language.equals("javascript") || language.equals("php") ? "];\n" : "};\n");
         }
 
         return arrayString.toString();

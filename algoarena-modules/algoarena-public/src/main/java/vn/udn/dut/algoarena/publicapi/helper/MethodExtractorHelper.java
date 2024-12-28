@@ -105,6 +105,8 @@ public class MethodExtractorHelper {
 
                         if (language.equalsIgnoreCase("java") || language.equalsIgnoreCase("c#") || language.equalsIgnoreCase("c") || language.equalsIgnoreCase("c++")) {
                             paramArray[i] = param.replaceAll("[\\w\\[\\]]+\\s+", "");
+                        } else if (language.equalsIgnoreCase("go")) {
+                            paramArray[i] = param.replaceAll("\\s*\\[.*?\\]|\\s*\\S+$", "");
                         }
                     }
                     parameters = String.join(index + ", ", paramArray);

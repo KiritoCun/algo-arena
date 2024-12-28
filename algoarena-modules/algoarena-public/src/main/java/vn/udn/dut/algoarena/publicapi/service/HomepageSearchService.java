@@ -138,7 +138,11 @@ public class HomepageSearchService {
                     System.out.println("Value of 'stdout': " + stdoutValue);
 
                     if (!"".equals(stdoutValue)) {
-                        testcaseResult = Arrays.stream((stdoutValue.trim().replaceAll("\n", "")).split(",")).toList();//Replace \n for javascript
+                        if ("python".equals(language)) {
+                            testcaseResult = Arrays.stream((stdoutValue.trim().toLowerCase().replaceAll(" ", "").replaceAll("\n", "")).split(",")).toList();
+                        } else {
+                            testcaseResult = Arrays.stream((stdoutValue.trim().replaceAll("\n", "")).split(",")).toList();//Replace \n for javascript
+                        }
                     } else {
                         String stderr = runObject.getString("stderr");
                         List<String> errList = new ArrayList<>();
@@ -393,6 +397,7 @@ public class HomepageSearchService {
                                      String methodSignature5, String submittedCode) {
         return """
             #include <iostream>
+            #include <unordered_map>
             #include <vector>
             using namespace std;
 
@@ -585,10 +590,44 @@ public class HomepageSearchService {
 
             import (
                 "fmt"
+                "reflect"
             )
 
             func compare(a, b interface{}) bool {
-                return a == b
+                // Handle slices
+                if reflect.TypeOf(a) != reflect.TypeOf(b) {
+                    return false
+                }
+            
+                switch aTyped := a.(type) {
+                case []int:
+                    bTyped, ok := b.([]int)
+                    if !ok {
+                        return false
+                    }
+                    return reflect.DeepEqual(aTyped, bTyped)
+                case []bool:
+                    bTyped, ok := b.([]bool)
+                    if !ok {
+                        return false
+                    }
+                    return reflect.DeepEqual(aTyped, bTyped)
+                case []float64:
+                    bTyped, ok := b.([]float64)
+                    if !ok {
+                        return false
+                    }
+                    return reflect.DeepEqual(aTyped, bTyped)
+                case []interface{}:
+                    bTyped, ok := b.([]interface{})
+                    if !ok {
+                        return false
+                    }
+                    return reflect.DeepEqual(aTyped, bTyped)
+                default:
+                    // Fallback for other types
+                    return reflect.DeepEqual(a, b)
+                }
             }
 
             func main() {
