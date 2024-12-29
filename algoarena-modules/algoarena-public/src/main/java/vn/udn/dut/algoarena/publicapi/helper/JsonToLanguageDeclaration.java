@@ -189,12 +189,4 @@ public class JsonToLanguageDeclaration {
         }
         return "Object";
     }
-
-    public static void main(String[] args) {
-        String jsonString = "{\"nums1\": [2, 7, 11, 15]}";
-        String index = "1";
-        String language = "java"; // Change the language as needed: "javascript", "python", "go", "c#", "php", "c++", etc.
-        String result = convertJsonToDeclaration(jsonString, index, language);
-        System.out.println(result);
-    }
 }

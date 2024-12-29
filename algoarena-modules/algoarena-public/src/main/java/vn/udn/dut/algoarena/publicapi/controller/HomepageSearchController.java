@@ -106,7 +106,7 @@ public class HomepageSearchController extends BaseController {
         testcaseBo.setIsHidden(0);
         List<TestcaseVo> testcaseList = testcaseService.queryList(testcaseBo);
 
-        return HomepageSearchService.submitSolution(submittedCode, language, version, testcaseList);
+        return HomepageSearchService2.submitSolution(submittedCode, language, version, testcaseList);
     }
 
     @GetMapping("/documents")

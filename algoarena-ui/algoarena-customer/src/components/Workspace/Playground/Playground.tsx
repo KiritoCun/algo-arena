@@ -34,28 +34,26 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 	const { language } = useContext(LanguageContext);
 	// Biến state để lưu trữ giá trị lọc
     const [testcases, setStateTestcases] = useState<Object[] | []>([]);
+	const [resultTestcases, setStateResultTestcases] = useState<Object[] | []>([]);
 	const [functionSignatures, setFunctionSignatures] = useState([]);
-	const testcases2 = []
+	const [errorMessage, setErrorMessage] = useState('You must run your code first');
 	const testcases3 = [
 		{
 		  id: 1,
 		  inputText: "Input data 1",
 		  outputText: "Output data 1",
-		  resultText: "Accepted",
 		  success: true,
 		},
 		{
 		  id: 2,
 		  inputText: "Input data 2",
 		  outputText: "Output data 2",
-		  resultText: "Wrong Answer",
 		  success: false,
 		},
 		{
 		  id: 3,
 		  inputText: "Input data 3",
 		  outputText: "Output data 3",
-		  resultText: "Accepted",
 		  success: true,
 		},
 	  ];
@@ -219,9 +217,8 @@ public:
 	} = useRouter();
 
 	const handleRun = async () => {
-		setActiveTab("Test Result")
 		if (!user) {
-			toast.error("Please login to submit your code", {
+			toast.error("Please login to run your code", {
 				position: "top-center",
 				autoClose: 3000,
 				theme: "dark",
@@ -230,7 +227,7 @@ public:
 		}
 		try {
 			console.log(userCode)
-			toast.loading("Checking solution", { position: "top-center", toastId: "loadingToast" });
+			toast.loading("Running solution", { position: "top-center", toastId: "loadingToast" });
 					const configCompile = languageVersions.find(
 						(item) => item.language.toLowerCase() === language.toLowerCase()
 					);
@@ -253,35 +250,25 @@ public:
 
 					if (data.length === 1) {
 						toast.dismiss("loadingToast");
-						toast.error(`Error: ${data[0]}`, {
-							position: "top-center",
-							autoClose: 3000,
-							theme: "dark",
-						});
+						setStateResultTestcases([])
+						setErrorMessage(`${data[0]}`)
+						setActiveTab("Test Result")
 					} else if (Array.isArray(data) && data.every(result => result === "true")) {
 						toast.dismiss("loadingToast");
-						toast.success("Congrats! All tests passed!", {
-							position: "top-center",
-							autoClose: 3000,
-							theme: "dark",
-						});
-						setSuccess(true);
-						setTimeout(() => {
-							setSuccess(false);
-						}, 4000);
-
-						const userRef = doc(firestore, "users", user.uid);
-						await updateDoc(userRef, {
-							solvedProblems: arrayUnion(pid),
-						});
-						setSolved(true);
+						const resultTestcases = testcases.map((testcase, index) => ({
+							...testcase, // Sao chép toàn bộ thuộc tính từ testcase
+							success: data[index], // Thêm thuộc tính success từ mảng res
+						}));
+						setStateResultTestcases(resultTestcases)
+						setActiveTab("Test Result")
 					} else {
 						toast.dismiss("loadingToast");
-						toast.error("Oops! One or more test cases failed", {
-							position: "top-center",
-							autoClose: 3000,
-							theme: "dark",
-						});
+						const resultTestcases = testcases.map((testcase, index) => ({
+							...testcase, // Sao chép toàn bộ thuộc tính từ testcase
+							success: data[index], // Thêm thuộc tính success từ mảng res
+						}));
+						setStateResultTestcases(resultTestcases)
+						setActiveTab("Test Result")
 					}
 
 		} catch (error: any) {
@@ -484,7 +471,7 @@ public:
 						onClick={() => setActiveTab("Test Result")}
 						>
 						<div className="text-sm font-medium leading-5 text-white">
-							Test Result
+							Test Results
 						</div>
 						{activeTab === "Test Result" && (
 							<hr className="absolute bottom-0 h-0.5 w-full rounded-full border-none bg-white" />
@@ -533,7 +520,7 @@ public:
 					{activeTab === "Test Result" && (
 						<div>
 						<div className="flex">
-							{testcases2.map((example, index) => (
+							{resultTestcases.map((example, index) => (
 							<div
 								className="mr-2 items-start mt-2"
 								key={example.id}
@@ -543,7 +530,7 @@ public:
 								{activeTab === "Test Result" && (
 									<span
 									className={`h-3 w-3 rounded-full ${
-										example.resultText === "Accepted"
+										example.success === "true" || example.success === "True"
 										? "bg-green-500"
 										: "bg-red-500"
 									}`}
@@ -562,20 +549,20 @@ public:
 							</div>
 							))}
 						</div>
-						{testcases2.length != 0 && (
+						{resultTestcases.length != 0 && (
 							<div className="font-semibold my-4">
 								<p className="text-sm font-medium mt-4 text-white">Input:</p>
 								<div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
-								{testcases2[activeTestCaseId]?.inputText}
+								{resultTestcases[activeTestCaseId]?.inputText}
 								</div>
 								<p className="text-sm font-medium mt-4 text-white">Output:</p>
 								<div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
-								{testcases2[activeTestCaseId]?.outputText}
+								{resultTestcases[activeTestCaseId]?.outputText}
 								</div>
 							</div>
 						)}
-						{(testcases2.length == 0) && (
-							<p className="text-sm font-medium mt-4 text-white">You must run your code first</p>
+						{(resultTestcases.length == 0) && (
+							<p className="text-sm font-medium mt-4 text-white">{errorMessage}</p>
 						)}
 						</div>
 					)}

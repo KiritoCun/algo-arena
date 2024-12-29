@@ -60,6 +60,7 @@ public class TestcaseServiceImpl implements ITestcaseService {
 		QueryWrapper<Testcase> wrapper = Wrappers.query();
 		wrapper.eq(bo.getProblemId() != null, "t.problem_id", bo.getProblemId())
 				.like(bo.getTestcaseJson() != null, "t.testcase_json", bo.getTestcaseJson())
+				.eq(bo.getIsHidden() != null, "t.is_hidden", bo.getIsHidden())
 				.eq(bo.getIllustration() != null, "t.illustration", bo.getIllustration())
 				.like(bo.getRemark() != null, "t.remark", bo.getRemark());
 		return wrapper;
