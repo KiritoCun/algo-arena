@@ -90,7 +90,6 @@ public class MethodExtractorHelper {
 
                     // Gộp lại các tham số, loại bỏ những tham số trống
                     parameters = String.join(index + ", ", paramArray).replaceAll(",\\s*,", ",").trim();
-                    parameters = parameters.substring(2);
                     // Xóa dấu phẩy thừa nếu 'self' bị xóa và nó đứng đầu
                     if (parameters.startsWith(",")) {
                         parameters = parameters.substring(1).trim();

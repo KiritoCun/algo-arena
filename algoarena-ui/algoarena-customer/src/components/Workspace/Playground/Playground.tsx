@@ -175,16 +175,16 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 	  ];
 
 	const codeSamples = {
-		JavaScript: `var ARGUMENTS {
+		JavaScript: `ARGUMENTS {
     
 };`,
 		Java: `class Solution {
-	public ARGUMENTS {
+	ARGUMENTS {
 		
 	}
 }`,
 		PHP: `class Solution {
-	function ARGUMENTS {
+	ARGUMENTS {
 		
 	}
 }`,
@@ -198,7 +198,7 @@ public:
 	}
 };`,
 		'C#': `public class Solution {
-	public ARGUMENTS {
+	ARGUMENTS {
 		
 	}
 }`,
@@ -562,7 +562,13 @@ public:
 							</div>
 						)}
 						{(resultTestcases.length == 0) && (
-							<p className="text-sm font-medium mt-4 text-white">{errorMessage}</p>
+							<p
+							className={`text-sm font-medium mt-4 ${
+							  errorMessage === 'You must run your code first' ? 'text-white' : 'text-red-500'
+							}`}
+						  >
+							{errorMessage}
+						  </p>
 						)}
 						</div>
 					)}

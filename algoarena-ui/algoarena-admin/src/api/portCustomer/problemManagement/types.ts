@@ -231,3 +231,65 @@ export interface TestcaseQuery {
    */
   problemId?: string | number;
 }
+
+export interface FunctionDefinitionVO {
+  /**
+   * Function definition id
+   */
+  id?: string | number;
+
+  /**
+   * Problem id
+   */
+  problemId: string | number;
+
+  /**
+   * Programing language
+   */
+  language: string;
+
+  /**
+   * Function definition inferer
+   */
+  functionDefinition: string;
+
+  /**
+   *
+   */
+  remark: string;
+}
+
+export interface FunctionDefinitionForm extends BaseEntity {
+  /**
+   * Testcase id
+   */
+  id?: string | number;
+  
+  /**
+   * Problem id
+   */
+  problemId?: string | number;
+
+  /**
+   * Programing language
+   */
+  language?: string;
+
+  /**
+   * Function definition inferer
+   */
+  functionDefinition?: string;
+
+  /**
+   *
+   */
+  remark?: string;
+}
+
+export interface FunctionDefinitionQuery {
+  
+  /**
+   *
+   */
+  problemId?: string | number;
+}

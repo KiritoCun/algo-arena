@@ -39,6 +39,8 @@ public class ProblemBo {
 
 	private Integer numberTestcase;
 
+	private String functionDefinitionJava;
+
 	private String remark;
 
 	private Date createTime;

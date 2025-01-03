@@ -25,9 +25,6 @@ import vn.udn.dut.algoarena.common.core.utils.ServletUtils;
 import vn.udn.dut.algoarena.customer.domain.vo.PaymentInfoVo;
 import vn.udn.dut.algoarena.port.constant.PaymentConstants;
 import vn.udn.dut.algoarena.port.domain.bo.VnpHistoryBo;
-import vn.udn.dut.algoarena.port.domain.vo.PromotionVo;
-import vn.udn.dut.algoarena.port.domain.vo.SeatVo;
-import vn.udn.dut.algoarena.port.service.IShowtimeService;
 import vn.udn.dut.algoarena.port.service.IVnpHistoryService;
 import vn.udn.dut.algoarena.system.constant.SystemConstants;
 import vn.udn.dut.algoarena.system.service.ISysDictDataService;
@@ -42,7 +39,6 @@ public class VnpayPaymentService {
 
 	private final ISysDictDataService dictDataService;
 	private final IVnpHistoryService vnpHistoryService;
-	private final IShowtimeService showtimeService;
 
 	public void setPickupFullPaymentInfo(PaymentInfoVo paymentInfo) {
 		paymentInfo.setOrderInfo("Thanh toan ve xem phim");
@@ -151,33 +147,5 @@ public class VnpayPaymentService {
 		vnpHistory.setSecureHash(vnp_SecureHash);
 		vnpHistoryService.insertByBo(vnpHistory);
 		return paymentUrl;
-	}
-
-	public String getPaymentUrl(List<SeatVo> seats, String seatIdsStr, PromotionVo promotion) throws Exception {
-		Long total = 0L;
-		for (SeatVo seat : seats) {
-			total += seat.getPrice();
-		}
-		if (promotion != null) {
-			total = total - total * promotion.getDiscount() / 100;
-		}
-		String vnpTransactionId = DateUtils.getNowDate().getTime() + "_"
-				+ (promotion != null ? promotion.getId() : "00");
-		Long algoarenaId = showtimeService.queryById(seats.get(0).getShowtimeId()).getAlgoArenaId();
-		return getPaymentUrl(vnpTransactionId, seatIdsStr, total, "Thanh toan ve xem phim", algoarenaId);
-	}
-
-	public void validBeforePayment(List<SeatVo> seats) throws Exception {
-		for (SeatVo seat : seats) {
-			if ("P".equals(seat.getStatus())) {
-				if (seat.getUpdateTime() != null && seat.getUpdateTime().getTime() > new Date().getTime()) {
-					throw new Exception("Vị trí " + seat.getRowCode() + seat.getColumnCode() + " đang được giữ chỗ!");
-				}
-			}
-			if ("Y".equals(seat.getStatus())) {
-				throw new Exception("Vị trí " + seat.getRowCode() + seat.getColumnCode() + " đã được đặt rồi!");
-			}
-		}
-
 	}
 }

@@ -46,6 +46,8 @@ public class ProblemVo implements Serializable {
 
 	private Integer numberTestcase;
 
+	private String functionDefinitionJava;
+
 	private String remark;
 
 	private Date createTime;

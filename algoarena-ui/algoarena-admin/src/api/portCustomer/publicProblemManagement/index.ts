@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 import { AxiosPromise } from 'axios';
-import { ProblemVO, TestcaseVO, ProblemForm, TestcaseForm, ProblemQuery, TestcaseQuery } from '@/api/portCustomer/problemManagement/types';
+import { ProblemVO, TestcaseVO, FunctionDefinitionVO, ProblemForm, TestcaseForm, FunctionDefinitionForm, ProblemQuery, TestcaseQuery, FunctionDefinitionQuery } from '@/api/portCustomer/problemManagement/types';
 import { parseStrEmpty } from '@/utils/algoarena';
 
 /**
@@ -86,7 +86,7 @@ export const delProblem = (id: string | number | Array<string | number>) => {
 };
 
 /**
- * Query Problem list
+ * Query Testcase list
  * @param query
  * @returns {*}
  */
@@ -99,12 +99,37 @@ export const listTestcase = (query?: TestcaseQuery): AxiosPromise<TestcaseVO[]> 
 };
 
 /**
- * Edit Problem
+ * Query Function definition list
+ * @param query
+ * @returns {*}
+ */
+export const listFunctionDefinition = (query?: FunctionDefinitionQuery): AxiosPromise<FunctionDefinitionVO[]> => {
+  return request({
+    url: '/portCustomer/functionDefinition/list',
+    method: 'get',
+    params: query
+  });
+};
+
+/**
+ * Edit Testcase
  * @param data
  */
 export const updateTestcases = (problemSeats: TestcaseVO[], problemId: string | number) => {
   return request({
     url: '/portCustomer/problem/' + problemId,
+    method: 'put',
+    data: problemSeats
+  });
+};
+
+/**
+ * Edit Function definition
+ * @param data
+ */
+export const updateFunctionDefinition = (problemSeats: FunctionDefinitionVO[], problemId: string | number) => {
+  return request({
+    url: '/portCustomer/problem/functionDefinition/' + problemId,
     method: 'put',
     data: problemSeats
   });

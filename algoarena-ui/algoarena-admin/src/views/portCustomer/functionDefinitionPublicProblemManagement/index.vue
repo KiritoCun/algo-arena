@@ -3,16 +3,16 @@
     ref="layout"
     v-loading="layoutLoading"
     :loadingLeft="problemLoading"
-    :loadingRight="testcaseLoading"
+    :loadingRight="functionDefinitionLoading"
     :queryParamsLeft="problemQueryParams"
-    :queryParamsRight="testcaseQueryParams"
+    :queryParamsRight="functionDefinitionQueryParams"
     :totalLeft="problemTotal"
     :rowDataLeft="problemList"
-    v-model:rowDataRight="testcaseList"
+    v-model:rowDataRight="functionDefinitionList"
     :columnSettingLeft="problemColumns"
-    :columnSettingRight="testcaseColumns"
+    :columnSettingRight="functionDefinitionColumns"
     :rowKeyLeft="problemRowKey"
-    :rowKeyRight="testcaseRowKey"
+    :rowKeyRight="functionDefinitionRowKey"
     :checkboxColLeft="true"
     :checkboxColRight="true"
     @onSelectedRowsLeft="handleSelectProblemRows"
@@ -21,7 +21,7 @@
     @onSearchLeft="handleQuery"
     @onResetLeft="resetQuery"
     @onPagingLeft="getProblemList"
-    @onPagingRight="getTestcaseList"
+    @onPagingRight="getFunctionDefinitionList"
   >
     <template v-slot:search-input>
       <el-form-item :label="$t('problemManagement.searchInput.titleLb')" class="form-item-search">
@@ -73,8 +73,8 @@
         type="secondary"
         :title="$t('problemManagement.headerButton.saveTt')"
         leftIcon="save"
-        @onClick="handleTestcaseUpdate"
-        :disabledFlag="!!!testcaseIds.length"
+        @onClick="handleFunctionDefinitionUpdate"
+        :disabledFlag="!!!functionDefinitionIds.length"
       />
     </template>
     <template v-slot:dialog>
@@ -124,37 +124,6 @@
           <IrButton colorStyle="blue" type="primary" :title="$t('user.dialog.footerSubmitTt')" :width="100" @onClick="submitProblemForm" />
         </template>
       </IrDialog>
-      <IrDialog :dialog="testcaseDialog">
-        <template v-slot:body>
-          <el-form
-            ref="testcaseFormRef"
-            :rules="testcaseFormRules"
-            :model="testcaseForm"
-            label-width="150px"
-            class="common-form"
-            v-loading="layoutTestcaseFormLoading"
-          >
-            <el-form-item label="Ảnh minh họa" prop="illustration" class="form-item-row">
-              <fileUpload
-                ref="fileUploadRef"
-                v-model:ossId="testcaseForm.ossId"
-                v-model:url="testcaseForm.illustration"
-                configKey="public_document"
-                :required="false"
-                :autoUpload="false"
-                :fileSize="50"
-                :limit="1"
-                :loading="buttonLoading"
-                @submitForm="submitTestcaseForm"
-              />
-            </el-form-item>
-          </el-form>
-        </template>
-        <template v-slot:footer>
-          <IrButton colorStyle="gray" type="secondary" title="Đóng" :width="100" @onClick="cancel2" />
-          <IrButton colorStyle="blue" type="primary" :title="$t('user.dialog.footerSubmitTt')" :width="100" @onClick="submitTestcaseForm" />
-        </template>
-      </IrDialog>
     </template>
   </Layout3>
 </template>
@@ -164,9 +133,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 // IMPORT COMPONENT
 // IMPORT API
-import { listProblem, getProblem, getTestcase, delProblem, addProblem, updateProblem, updateTestcase, listTestcase, updateTestcases } from '@/api/portCustomer/publicProblemManagement';
+import { listProblem, getProblem, delProblem, addProblem, updateProblem, updateFunctionDefinition, listFunctionDefinition } from '@/api/portCustomer/publicProblemManagement';
 // IMPORT TYPE
-import { ProblemVO, TestcaseVO, ProblemQuery, TestcaseQuery, ProblemForm, TestcaseForm } from '@/api/portCustomer/publicProblemManagement/types';
+import { ProblemVO, FunctionDefinitionVO, ProblemQuery, FunctionDefinitionQuery, ProblemForm, FunctionDefinitionForm } from '@/api/portCustomer/publicProblemManagement/types';
 import { ElForm, FormRules } from 'element-plus';
 // IMPORT GLOBAL TOOL (PROXY)
 import { ComponentInternalInstance, reactive } from "vue";
@@ -177,12 +146,10 @@ const { sys_show_hide } = toRefs<any>(proxy?.useDict("sys_show_hide"))
 ///////////////////////////////////////////////////////////////////////////////
 // VARIABLE SECTION
 ///////////////////////////////////////////////////////////////////////////////
-const buttonLoading = ref(false);
 const problemId = ref<any>('');
 const problemSelected = ref<any>({});
 const layoutLoading = ref(false);
 const layoutProblemFormLoading = ref(false);
-const layoutTestcaseFormLoading = ref(false);
 const fileUploadRef = ref();
 const problemList = ref<ProblemVO[]>([]);
 const problemIds = ref(<any>[]);
@@ -198,14 +165,14 @@ const problemColumns = ref<GridColumn[]>([
   { prop: "createTime", name: 'problemManagement.columns.createTimeLb', sortable: true, size: 160, readonly: true, formatter: 'datetime' },
   { prop: "remark", name: 'problemManagement.columns.remarkLb', sortable: true, size: 120, readonly: true, align: 'left' },
 ]);
-const testcaseIds = ref(<any>[]);
-const testcaseList = ref<any[]>([]);
-const testcaseLoading = ref(false);
-const testcaseRowKey = ref("id");
-const testcaseColumns = ref<GridColumn[]>([
-  { prop: "testcaseJson", name: 'problemManagement.testcaseColumns.testcaseJsonLb', sortable: true, size: 380, align: 'left' },
-  { prop: "isHidden", name: 'problemManagement.testcaseColumns.isHiddenLb', sortable: true, size: 80, align: 'center', dictData: sys_show_hide },
-  { prop: "remark", name: 'problemManagement.testcaseColumns.remarkLb', size: 120, align: 'left' }
+const functionDefinitionIds = ref(<any>[]);
+const functionDefinitionList = ref<any[]>([]);
+const functionDefinitionLoading = ref(false);
+const functionDefinitionRowKey = ref("id");
+const functionDefinitionColumns = ref<GridColumn[]>([
+  { prop: "language", name: 'problemManagement.functionDefinitionColumns.languageLb', sortable: true, size: 140, align: 'left' },
+  { prop: "functionSignature", name: 'problemManagement.functionDefinitionColumns.functionDefinitionLb', sortable: true, size: 420, align: 'left' },
+  { prop: "remark", name: 'problemManagement.functionDefinitionColumns.remarkLb', size: 120, align: 'left' }
 ]);
 const problemQueryParams = reactive<ProblemQuery>({
   pageNum: 1,
@@ -217,7 +184,7 @@ const problemQueryParams = reactive<ProblemQuery>({
   orderByColumn: 'createTime',
   isAsc: 'descending',
 });
-const testcaseQueryParams = reactive<TestcaseQuery>({
+const functionDefinitionQueryParams = reactive<FunctionDefinitionQuery>({
   problemId: undefined
 });
 const problemFormRef = ref(ElForm);
@@ -240,20 +207,6 @@ const problemFormRules: FormRules = {
   functionDefinitionJava: [{ required: true, trigger: "blur", message: "Định nghĩa hàm java là bắt buộc" }]
 };
 
-const testcaseFormRef = ref(ElForm);
-const initTestcaseFormData: TestcaseForm = {
-  id: undefined,
-  remark: undefined
-}
-const testcaseDialog = reactive<DialogOption>({
-  visible: false,
-  title: '',
-  width: '600px'
-});
-const testcaseForm = ref<TestcaseForm>({...initTestcaseFormData});
-const testcaseFormRules: FormRules = {
-  problemId: [{required: true, trigger: "blur", message: "Bài toán là bắt buộc", }]
-};
 ///////////////////////////////////////////////////////////////////////////////
 // METHOD SECTION
 ///////////////////////////////////////////////////////////////////////////////
@@ -261,15 +214,15 @@ const handleSelectProblemRows = (selectedIds: { value: (string | number)[]; }) =
   problemIds.value = selectedIds.value;
 }
 const handleSelectContainerRows = (selectedIds: { value: (string | number)[]; }) => {
-  testcaseIds.value = selectedIds.value;
+  functionDefinitionIds.value = selectedIds.value;
 }
 const handleSelectCellProblem = (modal: any) => {
-  testcaseIds.value = [];
-  resetTestcaseList();
-  testcaseQueryParams.problemId = problemList.value[modal.rowIndex].id;
+  functionDefinitionIds.value = [];
+  resetFunctionDefinitionList();
+  functionDefinitionQueryParams.problemId = problemList.value[modal.rowIndex].id;
   problemSelected.value = problemList.value[modal.rowIndex];
   problemId.value = problemList.value[modal.rowIndex].id;
-  getTestcaseList();
+  getFunctionDefinitionList();
 }
 /** Query problem list */
 const getProblemList = async () => {
@@ -278,39 +231,39 @@ const getProblemList = async () => {
   problemList.value = res.rows;
   problemTotal.value = res.total;
   problemLoading.value = false;
-  resetTestcaseList();
+  resetFunctionDefinitionList();
   if (problemList.value.length > 0) {
-    testcaseQueryParams.problemId = problemList.value[0].id;
+    functionDefinitionQueryParams.problemId = problemList.value[0].id;
     problemSelected.value = problemList.value[0];
     problemId.value = problemList.value[0].id;
-    getTestcaseList();
+    getFunctionDefinitionList();
   }
 }
 /** Query problem detail list */
-const getTestcaseList = async () => {
-  testcaseLoading.value = true;
-  const res = await listTestcase(testcaseQueryParams);
-  testcaseList.value = res.rows;
-  const diff = problemSelected.value.rowNumber - testcaseList.value.length;
+const getFunctionDefinitionList = async () => {
+  functionDefinitionLoading.value = true;
+  const res = await listFunctionDefinition(functionDefinitionQueryParams);
+  functionDefinitionList.value = res.rows;
+  const diff = problemSelected.value.rowNumber - functionDefinitionList.value.length;
   if (diff > 0) {
     for (let i = 0; i < diff; i++) {
-      testcaseList.value.push({ key: i });
+      functionDefinitionList.value.push({ key: i });
     }
   }
-  for (let i = 0; i < testcaseList.value.length; i++) {
-    if (testcaseList.value[i].id) {
-      testcaseList.value[i].key = testcaseList.value[i].id;
+  for (let i = 0; i < functionDefinitionList.value.length; i++) {
+    if (functionDefinitionList.value[i].id) {
+      functionDefinitionList.value[i].key = functionDefinitionList.value[i].id;
     }
   }
-  testcaseLoading.value = false;
+  functionDefinitionLoading.value = false;
 }
 /** Reset container list */
-const resetTestcaseList = () => {
+const resetFunctionDefinitionList = () => {
   problemSelected.value = {};
   problemId.value = '';
-  testcaseList.value = [];
+  functionDefinitionList.value = [];
   problemIds.value = [];
-  testcaseQueryParams.problemId = undefined;
+  functionDefinitionQueryParams.problemId = undefined;
 }
 /** Cancel button */
 const cancel = () => {
@@ -318,9 +271,6 @@ const cancel = () => {
   problemDialog.visible = false;
 }
 
-const cancel2 = () => {
-  testcaseDialog.visible = false;
-}
 /** Form reset */
 const reset = () => {
   problemForm.value = {...initProblemFormData};
@@ -375,42 +325,13 @@ const submitProblemForm = () => {
     }
   });
 }
-/** Edit button action */
-const handleTestcaseUpdate2 = (row?: TestcaseForm | TestcaseVO) => {
-  testcaseDialog.visible = true;
-  testcaseDialog.title = 'Cập nhật thông tin ảnh minh họa';
-  nextTick(async () => {
-    resetTestcaseForm();
-    const _id = testcaseIds.value[0]
-    const res = await getTestcase(_id);
-    Object.assign(testcaseForm.value, res.data);
-  })
-}
-/** Form reset */
-const resetTestcaseForm = () => {
-  testcaseForm.value = {...initTestcaseFormData};
-  testcaseFormRef.value.resetFields();
-}
-/** Submit button */
-const submitTestcaseForm = () => {
-  testcaseFormRef.value.validate(async (valid: boolean) => {
-    if (valid && (fileUploadRef.value ? fileUploadRef.value.submitFile() : true)) {
-      layoutTestcaseFormLoading.value = true;
-      if (testcaseForm.value.id) {
-        await updateTestcase(testcaseForm.value).finally(() => layoutTestcaseFormLoading.value = false);
-      }
-      proxy?.$modal.msgSuccess('Lưu thành công');
-      testcaseDialog.visible = false;
-    }
-  });
-}
-/** Save list testcase */
-const handleTestcaseUpdate = async () => {
+/** Save list functionDefinition */
+const handleFunctionDefinitionUpdate = async () => {
   layoutLoading.value = true;
-  //let listTestcaseData = testcaseList.value.filter((testcase) => testcaseIds.value.includes(parseInt(testcase.id + '')))
-  let listTestcaseData = testcaseList.value;
-  await updateTestcases(listTestcaseData, problemSelected.value.id).finally(() => layoutLoading.value = false);
-  getTestcaseList();
+  //let listFunctionDefinitionData = functionDefinitionList.value.filter((functionDefinition) => functionDefinitionIds.value.includes(parseInt(functionDefinition.id + '')))
+  let listFunctionDefinitionData = functionDefinitionList.value;
+  await updateFunctionDefinition(listFunctionDefinitionData, problemSelected.value.id).finally(() => layoutLoading.value = false);
+  getFunctionDefinitionList();
 }
 
 /** Validate delete */

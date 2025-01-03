@@ -113,7 +113,7 @@ public class HomepageSearchService2 {
                     // Print the result
                     System.out.println("Value of 'stdout': " + stdoutValue);
 
-                    if (!"".equals(stdoutValue)) {
+                    if (!"".equals(stdoutValue) &&  stdoutValue.length() < 50) {
                         if ("python".equals(language)) {
                             testcaseResult = Arrays.stream((stdoutValue.trim().toLowerCase().replaceAll(" ", "").replaceAll("\n", "")).split(",")).toList();
                         } else {
@@ -121,6 +121,9 @@ public class HomepageSearchService2 {
                         }
                     } else {
                         String stderr = runObject.getString("stderr");
+                        if (stderr.isBlank() || stderr.isEmpty()) {
+                            stderr = stdoutValue;
+                        }
                         List<String> errList = new ArrayList<>();
                         errList.add(stderr);
                         testcaseResult = errList;
@@ -197,14 +200,12 @@ public class HomepageSearchService2 {
     private static String getJavaScriptCode(List<String> testcaseDeclarations, List<String> methodSignatures, String submittedCode) {
         StringBuilder testcaseDeclarationsCode = new StringBuilder();
         StringBuilder methodSignaturesCode = new StringBuilder();
-        StringBuilder expectResults = new StringBuilder();
         StringBuilder resultComparisonsCode = new StringBuilder();
 
         // Xây dựng động code cho testcase và phương thức
         for (int i = 0; i < testcaseDeclarations.size(); i++) {
             testcaseDeclarationsCode.append(testcaseDeclarations.get(i)).append("\n");
             methodSignaturesCode.append(methodSignatures.get(i)).append("\n");
-            expectResults.append("expect[").append(i).append("] = /* expected result for testcase ").append(i).append(" */;\n");
 
             // Tạo mã so sánh cho mỗi testcase
             resultComparisonsCode.append("console.log(compare(result" + (i + 1) + ", expect" + (i + 1) + "));\n");
@@ -235,24 +236,21 @@ public class HomepageSearchService2 {
                 .replace("${TESTCASE_DECLARATIONS}", testcaseDeclarationsCode.toString())
                 .replace("${METHOD_SIGNATURES}", methodSignaturesCode.toString())
                 .replace("${SOLUTION_METHOD}", submittedCode)
-                .replace("${EXPECT_RESULTS}", expectResults.toString())
                 .replace("${RESULT_COMPARISONS}", resultComparisonsCode.toString());
     }
 
     private static String getPhpCode(List<String> testcaseDeclarations, List<String> methodSignatures, String submittedCode) {
         StringBuilder testcaseDeclarationsCode = new StringBuilder();
         StringBuilder methodSignaturesCode = new StringBuilder();
-        StringBuilder expectResults = new StringBuilder();
         StringBuilder resultComparisonsCode = new StringBuilder();
 
         // Xây dựng động code cho testcase và phương thức
         for (int i = 0; i < testcaseDeclarations.size(); i++) {
             testcaseDeclarationsCode.append(testcaseDeclarations.get(i)).append("\n");
             methodSignaturesCode.append(methodSignatures.get(i)).append("\n");
-            expectResults.append("$expect[").append(i).append("] = /* expected result for testcase ").append(i).append(" */;\n");
 
             // Tạo mã so sánh cho mỗi testcase
-            resultComparisonsCode.append("echo compare($result[" + i + "], $expect[" + i + "]) ? \"true\" : \"false\";\n");
+            resultComparisonsCode.append("echo compare($result" + (i + 1) + ", $expect" + (i + 1) + ") ? \"true\" : \"false\";\n");
             resultComparisonsCode.append("echo \",\";\n");
         }
 
@@ -286,7 +284,6 @@ public class HomepageSearchService2 {
                 .replace("${TESTCASE_DECLARATIONS}", testcaseDeclarationsCode.toString())
                 .replace("${METHOD_SIGNATURES}", methodSignaturesCode.toString())
                 .replace("${SOLUTION_METHOD}", submittedCode)
-                .replace("${EXPECT_RESULTS}", expectResults.toString())
                 .replace("${RESULT_COMPARISONS}", resultComparisonsCode.toString());
     }
 
@@ -301,7 +298,7 @@ public class HomepageSearchService2 {
             methodSignaturesCode.append(methodSignatures.get(i)).append("\n");
 
             // Tạo mã so sánh cho mỗi testcase
-            resultComparisonsCode.append("Console.Write(Compare(result[" + i + "], expect[" + i + "]) ? \"true\" : \"false\");\n");
+            resultComparisonsCode.append("Console.Write(Compare(result" + (i + 1) + ", expect" + (i + 1) + ") ? \"true\" : \"false\");\n");
             resultComparisonsCode.append("Console.Write(\",\");\n");
         }
 
@@ -374,7 +371,7 @@ public class HomepageSearchService2 {
             methodSignaturesCode.append(methodSignatures.get(i)).append("\n");
 
             // Tạo mã so sánh cho mỗi testcase
-            resultComparisonsCode.append("print(compare(result[" + i + "], expect[" + i + "]))\n");
+            resultComparisonsCode.append("print(compare(result" + (i + 1) + ", expect" + (i + 1) + "))\n");
             resultComparisonsCode.append("print(\",\", end=\" \")\n");
         }
 
@@ -419,7 +416,7 @@ public class HomepageSearchService2 {
             methodSignaturesCode.append(methodSignatures.get(i)).append("\n");
 
             // Tạo mã so sánh cho mỗi testcase
-            resultComparisonsCode.append("fmt.Println(compare(result[" + i + "], expect[" + i + "]))\n");
+            resultComparisonsCode.append("fmt.Println(compare(result" + (i + 1) + ", expect" + (i + 1) + "))\n");
             resultComparisonsCode.append("fmt.Println(\",\")\n");
         }
 
@@ -429,6 +426,7 @@ public class HomepageSearchService2 {
             import (
                 "fmt"
                 "reflect"
+                "strconv"
             )
 
             func compare(a, b interface{}) bool {

@@ -15,12 +15,16 @@ import vn.udn.dut.algoarena.common.mybatis.core.page.PageQuery;
 import vn.udn.dut.algoarena.common.mybatis.core.page.TableDataInfo;
 import vn.udn.dut.algoarena.common.web.core.BaseController;
 import vn.udn.dut.algoarena.port.domain.bo.ProblemBo;
+import vn.udn.dut.algoarena.port.domain.bo.ProblemFunctionSignatureBo;
 import vn.udn.dut.algoarena.port.domain.bo.TestcaseBo;
 import vn.udn.dut.algoarena.port.domain.vo.ProblemVo;
+import vn.udn.dut.algoarena.port.service.IProblemFunctionSignatureService;
 import vn.udn.dut.algoarena.port.service.IProblemService;
 import vn.udn.dut.algoarena.port.service.ITestcaseService;
+import vn.udn.dut.algoarena.util.FunctionDefinitionInferer;
 
 import java.util.List;
+import java.util.Map;
 
 @Validated
 @RequiredArgsConstructor
@@ -31,30 +35,44 @@ public class ProblemController extends BaseController{
 
 	private final ITestcaseService testcaseService;
 
+	private final IProblemFunctionSignatureService problemFunctionSignatureService;
+
 	@SaCheckPermission("portCustomer:problem:list")
 	@GetMapping("/public-list")
 	public TableDataInfo<ProblemVo> publicList(ProblemBo bo, PageQuery pageQuery) {
 		return problemService.queryPagePublicList(bo, pageQuery);
 	}
-	
+
 	@SaCheckPermission("portCustomer:problem:list")
 	@GetMapping("/list")
 	public TableDataInfo<ProblemVo> list(ProblemBo bo, PageQuery pageQuery) {
 		return problemService.queryPageList(bo, pageQuery);
 	}
-	
+
 	@SaCheckPermission("portCustomer:problem:query")
 	@GetMapping(value = { "/", "/{id}" })
 	public R<ProblemVo> getInfo(@PathVariable(value = "id", required = false) Long id) {
 		return R.ok(problemService.queryById(id));
 	}
-	
+
 	@SaCheckPermission("portCustomer:problem:add")
 	@Log(title = "Problem", businessType = BusinessType.INSERT)
 	@RepeatSubmit()
 	@PostMapping()
 	public R<Void> add(@Validated(AddGroup.class) @RequestBody ProblemBo bo) {
 		problemService.insertByBo(bo);
+
+		FunctionDefinitionInferer functionDefinitionInferer = new FunctionDefinitionInferer();
+
+		Map<String, String> formattedFunctions = FunctionDefinitionInferer.formatFunctionForLanguages(bo.getFunctionDefinitionJava());
+		formattedFunctions.forEach((language, defineFunction) -> {
+			System.out.println("{language=" + language + ", defineFunction=" + defineFunction + "}");
+			var problemFunctionSignatureBo = new ProblemFunctionSignatureBo();
+			problemFunctionSignatureBo.setProblemId(bo.getId());
+			problemFunctionSignatureBo.setLanguage(language);
+			problemFunctionSignatureBo.setFunctionSignature(defineFunction);
+			problemFunctionSignatureService.insertByBo(problemFunctionSignatureBo);
+		});
 
 		for (int i = 0; i < bo.getNumberTestcase(); i++) {
 			var testcaseBo = new TestcaseBo();
@@ -64,7 +82,7 @@ public class ProblemController extends BaseController{
 
 		return toAjax(true);
 	}
-	
+
 	@SaCheckPermission("portCustomer:problem:edit")
 	@Log(title = "Problem", businessType = BusinessType.UPDATE)
 	@RepeatSubmit()
@@ -74,7 +92,7 @@ public class ProblemController extends BaseController{
 	}
 
 	@SaCheckPermission("portCustomer:problem:edit")
-	@Log(title = "Problem", businessType = BusinessType.UPDATE)
+	@Log(title = "Testcase Problem", businessType = BusinessType.UPDATE)
 	@RepeatSubmit()
 	@PutMapping("/{id}")
 	public R<Void> editTestcase(@PathVariable Long id, @RequestBody List<TestcaseBo> testcaseList) {
@@ -83,7 +101,18 @@ public class ProblemController extends BaseController{
 		}
 		return toAjax(true);
 	}
-	
+
+	@SaCheckPermission("portCustomer:problem:edit")
+	@Log(title = "Function Definition Problem", businessType = BusinessType.UPDATE)
+	@RepeatSubmit()
+	@PutMapping("/functionDefinition/{id}")
+	public R<Void> editFunctionDefinition(@PathVariable Long id, @RequestBody List<ProblemFunctionSignatureBo> funtionSignatureList) {
+		for(ProblemFunctionSignatureBo functionSignature : funtionSignatureList) {
+			problemFunctionSignatureService.updateByBo(functionSignature);
+		}
+		return toAjax(true);
+	}
+
 	@SaCheckPermission("portCustomer:problem:remove")
 	@Log(title = "Problem", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")

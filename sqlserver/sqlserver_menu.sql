@@ -180,6 +180,8 @@ INSERT sys_menu VALUES (113, N'{"vi_VN":"Quản lý kết quả bài làm","en_U
 GO
 INSERT sys_menu VALUES (114, N'{"vi_VN":"Quản lý bài toán chung","en_US":"Management public problem"}', 2, 4, N'publicProblem', N'portCustomer/publicProblemManagement/index', N'', 1, 0, N'C', N'0', N'0', N'portCustomer:publicProblem:list', N'publicProblem', 103, 1, getdate(), NULL, NULL, N'Management public problem menu', N'system')
 GO
+INSERT sys_menu VALUES (115, N'{"vi_VN":"Quản lý định nghĩa hàm bài toán chung","en_US":"Management function definition public problem"}', 2, 4, N'functionDefinitionPublicProblem', N'portCustomer/functionDefinitionPublicProblemManagement/index', N'', 1, 0, N'C', N'0', N'0', N'portCustomer:functionDefinitionPublicProblem:list', N'functionDefinitionPublicProblem', 103, 1, getdate(), NULL, NULL, N'Management function definition public problem menu', N'system')
+GO
 
 -- Staff menu
 INSERT sys_role_menu VALUES (2, 110)
@@ -199,6 +201,14 @@ GO
 INSERT sys_role_menu VALUES (4, 114)
 GO
 INSERT sys_role_menu VALUES (5, 114)
+GO
+INSERT sys_role_menu VALUES (2, 115)
+GO
+INSERT sys_role_menu VALUES (3, 115)
+GO
+INSERT sys_role_menu VALUES (4, 115)
+GO
+INSERT sys_role_menu VALUES (5, 115)
 GO
 INSERT sys_role_menu VALUES (6, 110)
 GO

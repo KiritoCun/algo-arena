@@ -1,4 +1,4 @@
-package vn.udn.dut.algoarena.publicapi.helper;
+package vn.udn.dut.algoarena.util;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -7,7 +7,7 @@ public class FunctionDefinitionInferer {
 
     public static void main(String[] args) {
         // Ví dụ đầu vào
-        String sourceFunction = "public boolean canJump(int[] nums)";
+        String sourceFunction = "public int scoreOfString(String s)";
 
         // Định dạng hàm cho các ngôn ngữ
         Map<String, String> formattedFunctions = formatFunctionForLanguages(sourceFunction);
@@ -18,7 +18,7 @@ public class FunctionDefinitionInferer {
         });
     }
 
-    private static Map<String, String> formatFunctionForLanguages(String sourceFunction) {
+    public static Map<String, String> formatFunctionForLanguages(String sourceFunction) {
         FunctionDetails functionDetails = extractFunctionDetails(sourceFunction);
 
         Map<String, String> result = new LinkedHashMap<>();
@@ -61,7 +61,9 @@ public class FunctionDefinitionInferer {
 
     private static String formatForCSharp(FunctionDetails details) {
         String params = formatParamsForLanguage("C#", details.params);
-        return details.accessModifier + " " + details.returnType + " " + details.name + "(" + params + ")";
+        String nameInPascalCase = toPascalCase(details.name); // Chuyển sang PascalCase
+        String returnType = mapReturnTypeForLanguage("C#", details.returnType);
+        return details.accessModifier + " " + returnType + " " + nameInPascalCase + "(" + params + ")";
     }
 
     private static FunctionDetails extractFunctionDetails(String sourceFunction) {
@@ -137,7 +139,8 @@ public class FunctionDefinitionInferer {
         return "self, " + params.stream()
                 .map(p -> {
                     String[] parts = p.split(":");
-                    return parts[0] + ": " + (parts[1].equals("int[]") ? "List[int]" : "int");
+                    String pythonType = parts[1].equals("String") ? "str" : (parts[1].equals("int[]") ? "List[int]" : parts[1]);
+                    return parts[0] + ": " + pythonType;
                 })
                 .collect(Collectors.joining(", "));
     }
@@ -145,12 +148,30 @@ public class FunctionDefinitionInferer {
     private static String mapReturnTypeForLanguage(String language, String returnType) {
         switch (language) {
             case "Python":
+                if (returnType.equals("boolean")) {
+                    return "bool";
+                } else if (returnType.equals("String")) {
+                    return "str";
+                }
                 return returnType.equals("int[]") ? "List[int]" : returnType;
             case "Go":
-                return returnType.equals("int[]") ? "[]int" : returnType;
+            case "C#":
+                if (returnType.equals("boolean")) {
+                    return "bool";
+                } else if (returnType.equals("String")) {
+                    return "string";
+                }
+                return returnType.equals("int[]") ? "List[int]" : returnType;
             default:
                 return returnType;
         }
+    }
+
+    private static String toPascalCase(String name) {
+        if (name == null || name.isEmpty()) {
+            return name;
+        }
+        return Character.toUpperCase(name.charAt(0)) + name.substring(1);
     }
 
     private static class FunctionDetails {

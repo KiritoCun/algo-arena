@@ -44,5 +44,7 @@ public class Problem extends TenantEntity {
 
 	private Integer numberTestcase;
 
+	private String functionDefinitionJava;
+
 	private String remark;
 }
