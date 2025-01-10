@@ -2,9 +2,9 @@ import React, { useState, useContext } from "react";
 import { LanguageContext } from "../LanguageContext";
 
 const LanguageDropdown = () => {
-  const { setLanguage } = useContext(LanguageContext);
+  const { language, setLanguage } = useContext(LanguageContext);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState("JavaScript");
+  const [selectedLanguage, setSelectedLanguage] = useState(language ? language : "JavaScript");
   const languages = ["JavaScript", "Java", "PHP", "C#", "Python" , "Go"];
 
   const handleSelectLanguage = (language: string) => {

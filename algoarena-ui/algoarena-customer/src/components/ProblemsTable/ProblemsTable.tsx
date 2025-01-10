@@ -135,7 +135,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
           return (
             <tr className={`${idx % 2 == 1 ? "bg-dark-layer-1" : ""}`} key={problem.id}>
               <th className="px-2 py-4 font-medium whitespace-nowrap text-dark-green-s">
-                {problem.id}
+                {problem.tag}
               </th>
               <td className="px-6 py-4">
                 {problem.link ? (

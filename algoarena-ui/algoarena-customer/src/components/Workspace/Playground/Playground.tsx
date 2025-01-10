@@ -16,7 +16,7 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import { AuthContext } from '../../Modals/AuthContext';
 import { LanguageContext } from "../LanguageContext";
 import { LANGUAGE_CONFIG } from "@/constants";
-import { fetchTestcases, fetchProblemFunctionSignatures } from "@/pages/api/api";
+import { fetchTestcases, fetchProblemFunctionSignatures, getNewestPassedSubmission } from "@/pages/api/api";
 
 type PlaygroundProps = {
 	problem: Problem;
@@ -31,38 +31,18 @@ export interface ISettings {
 }
 
 const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved }) => {
-	const { language } = useContext(LanguageContext);
+	const { language, setLanguage  } = useContext(LanguageContext);
 	// Biến state để lưu trữ giá trị lọc
     const [testcases, setStateTestcases] = useState<Object[] | []>([]);
 	const [resultTestcases, setStateResultTestcases] = useState<Object[] | []>([]);
 	const [functionSignatures, setFunctionSignatures] = useState([]);
+	const [newestPassedSubmission, setNewestPassedSubmission] = useState<Object>();
 	const [errorMessage, setErrorMessage] = useState('You must run your code first');
-	const testcases3 = [
-		{
-		  id: 1,
-		  inputText: "Input data 1",
-		  outputText: "Output data 1",
-		  success: true,
-		},
-		{
-		  id: 2,
-		  inputText: "Input data 2",
-		  outputText: "Output data 2",
-		  success: false,
-		},
-		{
-		  id: 3,
-		  inputText: "Input data 3",
-		  outputText: "Output data 3",
-		  success: true,
-		},
-	  ];
 
 	// Hàm gọi API để cập nhật problem
 	useEffect(() => {
 		setActiveTestCaseId(0)
 		const setTestcases = async () => {
-			console.log(problem)
 			const res = await fetchTestcases(problem.id);
 			// Xử lý danh sách
 			const tcs = res
@@ -102,8 +82,14 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 
 	// Hàm khởi tạo functionSignatures từ API
 	const initializeFunctionSignatures = async (problemId: string) => {
+		const userId = (user && user.userId) ? user.userId : 0;
 		const fetchedSignatures = await fetchProblemFunctionSignatures(problemId);
 		setFunctionSignatures(fetchedSignatures);
+	  };
+
+	  const passedSubmission = async (problemId: string, userId: string) => {
+		const newestPassedSubmission = await getNewestPassedSubmission(problemId, userId);
+		setNewestPassedSubmission(newestPassedSubmission);
 	  };
 	
 	  // Hàm generateCodeSample đã sửa lại cho phù hợp với async
@@ -134,17 +120,45 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 		return codeSampleTemplate.replace('ARGUMENTS', functionSignature);
 	  };
 	
-	  // useEffect để tải functionSignatures khi component mount
+	  // useEffect để tạo userCode khi functionSignatures đã được tải
 	  useEffect(() => {
 		initializeFunctionSignatures(problem.id);
-	  }, [problem.id]); // Chạy khi `problemId` thay đổi
-	
-	  // useEffect để tạo userCode khi functionSignatures đã được tải
+		// if (user != null && user != undefined && user.userId) {
+		// 	console.log(user)
+		// 	passedSubmission(problem.id, user.userId);
+		// }
+		// console.log(newestPassedSubmission)
+		// if (newestPassedSubmission) {
+		// 	setUserCode(newestPassedSubmission.code);
+
+		// 	const newestSubmissionLanguage = newestPassedSubmission.programingLanguage;
+
+		// 	if (newestSubmissionLanguage == "java") {
+		// 		setLanguage("Java");
+		// 	} else if (newestSubmissionLanguage == "javascript") {
+		// 		setLanguage("JavaScript");
+		// 	} else if (newestSubmissionLanguage == "python") {
+		// 		setLanguage("Python");
+		// 	} else if (newestSubmissionLanguage == "c#") {
+		// 		setLanguage("C#");
+		// 	} else if (newestSubmissionLanguage == "go") {
+		// 		setLanguage("Go");
+		// 	} else if (newestSubmissionLanguage == "php") {
+		// 		setLanguage("PHP");
+		// 	}
+			
+		// 	return;
+		// }
+		if (functionSignatures.length > 0) {
+		  setUserCode(generateCodeSample(language, problem.id, problem.id));
+		}
+	  }, [problem.id]); // Chạy khi problemId thay đổi
+
 	  useEffect(() => {
 		if (functionSignatures.length > 0) {
 		  setUserCode(generateCodeSample(language, problem.id, problem.id));
 		}
-	  }, [functionSignatures, language, problem.id]); // Chạy khi functionSignatures hoặc language thay đổi
+	  }, [functionSignatures, language]); // Chạy khi functionSignatures hoặc language thay đổi
 
 	const [activeTestCaseId, setActiveTestCaseId] = useState<number>(0);
 	let [userCode, setUserCode] = useState<string>(problem.starterCode);
@@ -210,7 +224,6 @@ public:
 }`,
 	};
 
-	//const [user] = useAuthState(auth);
 	const { user } = useContext(AuthContext);
 	const {
 		query: { pid },
@@ -228,48 +241,48 @@ public:
 		try {
 			console.log(userCode)
 			toast.loading("Running solution", { position: "top-center", toastId: "loadingToast" });
-					const configCompile = languageVersions.find(
-						(item) => item.language.toLowerCase() === language.toLowerCase()
-					);
-					const response = await fetch("http://localhost:8082/customer/homepage/search/run-solution", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						submittedCode: userCode,
-						problemId: pid,
-						language: language.toLowerCase(),
-						version: configCompile.version
-					}),
-					});
-				
-					const data = await response.json();
-				
-					console.log("data back from piston:", data);
+			const configCompile = languageVersions.find(
+				(item) => item.language.toLowerCase() === language.toLowerCase()
+			);
+			const response = await fetch("http://localhost:8082/customer/homepage/search/run-solution", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				submittedCode: userCode,
+				problemId: pid,
+				language: language.toLowerCase(),
+				version: configCompile.version
+			}),
+			});
+		
+			const data = await response.json();
+		
+			console.log("data back from piston:", data);
 
-					if (data.length === 1) {
-						toast.dismiss("loadingToast");
-						setStateResultTestcases([])
-						setErrorMessage(`${data[0]}`)
-						setActiveTab("Test Result")
-					} else if (Array.isArray(data) && data.every(result => result === "true")) {
-						toast.dismiss("loadingToast");
-						const resultTestcases = testcases.map((testcase, index) => ({
-							...testcase, // Sao chép toàn bộ thuộc tính từ testcase
-							success: data[index], // Thêm thuộc tính success từ mảng res
-						}));
-						setStateResultTestcases(resultTestcases)
-						setActiveTab("Test Result")
-					} else {
-						toast.dismiss("loadingToast");
-						const resultTestcases = testcases.map((testcase, index) => ({
-							...testcase, // Sao chép toàn bộ thuộc tính từ testcase
-							success: data[index], // Thêm thuộc tính success từ mảng res
-						}));
-						setStateResultTestcases(resultTestcases)
-						setActiveTab("Test Result")
-					}
+			if (data.length === 1) {
+				toast.dismiss("loadingToast");
+				setStateResultTestcases([])
+				setErrorMessage(`${data[0]}`)
+				setActiveTab("Test Result")
+			} else if (Array.isArray(data) && data.every(result => result === "true")) {
+				toast.dismiss("loadingToast");
+				const resultTestcases = testcases.map((testcase, index) => ({
+					...testcase, // Sao chép toàn bộ thuộc tính từ testcase
+					success: data[index], // Thêm thuộc tính success từ mảng res
+				}));
+				setStateResultTestcases(resultTestcases)
+				setActiveTab("Test Result")
+			} else {
+				toast.dismiss("loadingToast");
+				const resultTestcases = testcases.map((testcase, index) => ({
+					...testcase, // Sao chép toàn bộ thuộc tính từ testcase
+					success: data[index], // Thêm thuộc tính success từ mảng res
+				}));
+				setStateResultTestcases(resultTestcases)
+				setActiveTab("Test Result")
+			}
 
 		} catch (error: any) {
 			console.log(error);
@@ -297,99 +310,60 @@ public:
 			return;
 		}
 		try {
-			console.log(userCode)
 			toast.loading("Checking solution", { position: "top-center", toastId: "loadingToast" });
-			//userCode = userCode.slice(userCode.indexOf(problem.starterFunctionName));
-			// const cb = new Function(`return ${userCode}`)();
-			// const handler = problems[pid as string].handlerFunction;
+			const configCompile = languageVersions.find(
+				(item) => item.language.toLowerCase() === language.toLowerCase()
+			);
+			const response = await fetch("http://localhost:8082/customer/homepage/search/submit-solution", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				submittedCode: userCode,
+				problemId: pid,
+				language: language.toLowerCase(),
+				version: configCompile.version,
+				userId: user.userId
+			}),
+			});
+		
+			const data = await response.json();
+		
+			console.log("data back from piston:", data);
 
-			// if (typeof handler === "function") {
-			// 	const success = handler(cb);
-			// 	if (success) {
-			// 		toast.success("Congrats! All tests passed!", {
-			// 			position: "top-center",
-			// 			autoClose: 3000,
-			// 			theme: "dark",
-			// 		});
-			// 		setSuccess(true);
-			// 		setTimeout(() => {
-			// 			setSuccess(false);
-			// 		}, 4000);
+			if (data.length === 1) {
+				toast.dismiss("loadingToast");
+				toast.error(`Error: ${data[0]}`, {
+					position: "top-center",
+					autoClose: 3000,
+					theme: "dark",
+				});
+			} else if (Array.isArray(data) && data.every(result => result === "true")) {
+				toast.dismiss("loadingToast");
+				toast.success("Congrats! All tests passed!", {
+					position: "top-center",
+					autoClose: 3000,
+					theme: "dark",
+				});
+				setSuccess(true);
+				setTimeout(() => {
+					setSuccess(false);
+				}, 4000);
 
-			// 		const userRef = doc(firestore, "users", user.uid);
-			// 		await updateDoc(userRef, {
-			// 			solvedProblems: arrayUnion(pid),
-			// 		});
-			// 		setSolved(true);
-			// 	}
-			// }
-
-			const code = `class Solution {
-	public int[] twoSum(int[] nums, int target) {
-		Map<Integer, Integer> map = new HashMap<>();
-		for (int i = 0; i < nums.length; i++) {
-			int complement = target - nums[i];
-			if (map.containsKey(complement)) {
-				return new int[]{map.get(complement), i};
+				const userRef = doc(firestore, "users", user.uid);
+				await updateDoc(userRef, {
+					solvedProblems: arrayUnion(pid),
+				});
+				setSolved(true);
+			} else {
+				toast.dismiss("loadingToast");
+				toast.error("Oops! One or more test cases failed", {
+					position: "top-center",
+					autoClose: 3000,
+					theme: "dark",
+				});
 			}
-			map.put(nums[i], i);
-		}
-		throw new IllegalArgumentException("No two sum solution");
-	}
-}
-`;
-					const configCompile = languageVersions.find(
-						(item) => item.language.toLowerCase() === language.toLowerCase()
-					);
-					const response = await fetch("http://localhost:8082/customer/homepage/search/submit-solution", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						submittedCode: userCode,
-						problemId: pid,
-						language: language.toLowerCase(),
-						version: configCompile.version
-					}),
-					});
-				
-					const data = await response.json();
-				
-					console.log("data back from piston:", data);
-
-					if (data.length === 1) {
-						toast.dismiss("loadingToast");
-						toast.error(`Error: ${data[0]}`, {
-							position: "top-center",
-							autoClose: 3000,
-							theme: "dark",
-						});
-					} else if (Array.isArray(data) && data.every(result => result === "true")) {
-						toast.dismiss("loadingToast");
-						toast.success("Congrats! All tests passed!", {
-							position: "top-center",
-							autoClose: 3000,
-							theme: "dark",
-						});
-						setSuccess(true);
-						setTimeout(() => {
-							setSuccess(false);
-						}, 4000);
-
-						const userRef = doc(firestore, "users", user.uid);
-						await updateDoc(userRef, {
-							solvedProblems: arrayUnion(pid),
-						});
-						setSolved(true);
-					} else {
-						toast.dismiss("loadingToast");
-						toast.error("Oops! One or more test cases failed", {
-							position: "top-center",
-							autoClose: 3000,
-							theme: "dark",
-						});
-					}
 
 		} catch (error: any) {
 			console.log(error);
@@ -403,14 +377,7 @@ public:
 					autoClose: 3000,
 					theme: "dark",
 				});
-			} 
-			// else {
-			// 	toast.error(error.message, {
-			// 		position: "top-center",
-			// 		autoClose: 3000,
-			// 		theme: "dark",
-			// 	});
-			// }
+			}
 		}
 	};
 
@@ -441,7 +408,6 @@ public:
 				<div className='w-full overflow-auto'>
 					<CodeMirror
 						value={userCode}
-						//value={generateCodeSample(language, pid)}
 						theme={vscodeDark}
 						onChange={onChange}
 						extensions={[javascript()]}

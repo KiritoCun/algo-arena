@@ -44,7 +44,6 @@
         colorStyle="blue"
         type="primary"
         :title="$t('problemManagement.headerButton.addTt')"
-        v-hasPermi="['portCustomer:problemManagement:add']"
         leftIcon="plus"
         @onClick="handleProblemAdd"
       />
@@ -54,7 +53,6 @@
         :disabledFlag="problemIds.length !== 1 ? true : false"
         :title="$t('problemManagement.headerButton.editTt')"
         leftIcon="edit"
-        v-hasPermi="['portCustomer:problemManagement:edit']"
         @onClick="handleProblemUpdate"
       />
       <IrButton
@@ -63,7 +61,6 @@
         :disabledFlag="!!!problemIds.length"
         :title="$t('problemManagement.headerButton.deleteTt')"
         leftIcon="delete"
-        v-hasPermi="['portCustomer:problemManagement:edit']"
         @onClick="handleDeleteProblem"
       />
     </template>

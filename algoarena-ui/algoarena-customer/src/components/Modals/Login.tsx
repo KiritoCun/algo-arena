@@ -133,12 +133,6 @@ const Login: React.FC<LoginProps> = () => {
 					Quên mật khẩu?
 				</a>
 			</button>
-			<div className='text-sm font-medium text-gray-300'>
-				Chưa có tài khoản?{" "}
-				<a href='#' className='text-blue-700 hover:underline' onClick={() => handleClick("register")}>
-					Đăng ký
-				</a>
-			</div>
 		</form>
 	);
 };

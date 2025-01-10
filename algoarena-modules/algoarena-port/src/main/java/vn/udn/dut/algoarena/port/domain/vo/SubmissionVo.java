@@ -34,6 +34,8 @@ public class SubmissionVo implements Serializable {
 
 	private Long userId;
 
+	private String programingLanguage;
+
 	private String code;
 
 	private Integer status;

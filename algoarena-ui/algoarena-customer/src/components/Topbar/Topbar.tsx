@@ -93,7 +93,7 @@ const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 							href='/auth'
 							onClick={() => setAuthModalState((prev) => ({ ...prev, isOpen: true, type: "login" }))}
 						>
-							<button className='bg-dark-fill-3 py-1 px-2 cursor-pointer rounded '>Sign In</button>
+							<button className='bg-dark-fill-3 py-1 px-2 cursor-pointer rounded '>Đăng nhập</button>
 						</Link>
 					)}
 					{user && problemPage && <Timer />}

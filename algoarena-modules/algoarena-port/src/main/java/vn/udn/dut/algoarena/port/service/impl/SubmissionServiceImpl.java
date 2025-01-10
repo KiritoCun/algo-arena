@@ -60,6 +60,9 @@ public class SubmissionServiceImpl implements ISubmissionService {
 	private LambdaQueryWrapper<Submission> buildQueryWrapper(SubmissionBo bo) {
 //        Map<String, Object> params = bo.getParams();
 		LambdaQueryWrapper<Submission> lqw = Wrappers.lambdaQuery();
+		lqw.eq(bo.getProblemId() != null, Submission::getProblemId, bo.getProblemId());
+		lqw.eq(bo.getProgramingLanguage() != null, Submission::getProgramingLanguage, bo.getProgramingLanguage());
+		lqw.eq(bo.getUserId() != null, Submission::getUserId, bo.getUserId());
 		lqw.like(StringUtils.isNotBlank(bo.getCode()), Submission::getCode, bo.getCode());
 		
 		return lqw;

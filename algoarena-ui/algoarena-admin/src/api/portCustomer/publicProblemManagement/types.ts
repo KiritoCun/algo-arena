@@ -84,6 +84,11 @@ export interface ProblemForm extends BaseEntity {
   id?: string | number;
 
   /**
+   * Problem tag
+   */
+  tag?: string | number;
+
+  /**
    * Title
    */
   title?: string;

@@ -51,6 +51,17 @@ export const fetchProblemFunctionSignatures = async (keyPath: string) => {
     }
 };
 
+export const getNewestPassedSubmission = async (keyPath: string, userId: string) => {
+    try {
+        const response = await apiClient.get('/homepage/search/submission/' + keyPath + "/" + userId);
+        if (response.status === 200) {
+        return response.data
+        } else {
+        }
+    } catch (error) {
+    }
+};
+
 // Hàm lấy danh sách bài toán đã giải
 export const fetchSolvedProblems = async (userId: string) => {
   const response = await api.get(`/users/${userId}/solved-problems`);

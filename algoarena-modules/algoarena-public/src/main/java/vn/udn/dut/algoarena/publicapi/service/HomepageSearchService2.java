@@ -367,12 +367,12 @@ public class HomepageSearchService2 {
 
         // Xây dựng động code cho testcase và phương thức
         for (int i = 0; i < testcaseDeclarations.size(); i++) {
-            testcaseDeclarationsCode.append(testcaseDeclarations.get(i)).append("\n");
-            methodSignaturesCode.append(methodSignatures.get(i)).append("\n");
+            testcaseDeclarationsCode.append("        ").append(testcaseDeclarations.get(i)).append("\n");
+            methodSignaturesCode.append("        ").append(methodSignatures.get(i)).append("\n");
 
             // Tạo mã so sánh cho mỗi testcase
-            resultComparisonsCode.append("print(compare(result" + (i + 1) + ", expect" + (i + 1) + "))\n");
-            resultComparisonsCode.append("print(\",\", end=\" \")\n");
+            resultComparisonsCode.append("        ").append("print(compare(result" + (i + 1) + ", expect" + (i + 1) + "))\n");
+            resultComparisonsCode.append("        ").append("print(\",\", end=\" \")\n");
         }
 
         return """
@@ -387,11 +387,11 @@ public class HomepageSearchService2 {
 
             def main():
                 try:
-                    ${TESTCASE_DECLARATIONS}
-                    ${METHOD_SIGNATURES}
+            ${TESTCASE_DECLARATIONS}
+            ${METHOD_SIGNATURES}
 
                     # In kết quả so sánh cho tất cả các testcase
-                    ${RESULT_COMPARISONS}
+            ${RESULT_COMPARISONS}
 
                 except Exception as e:
                     print(str(e))
@@ -426,7 +426,6 @@ public class HomepageSearchService2 {
             import (
                 "fmt"
                 "reflect"
-                "strconv"
             )
 
             func compare(a, b interface{}) bool {

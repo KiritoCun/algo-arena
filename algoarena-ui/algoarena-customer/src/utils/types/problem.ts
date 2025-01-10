@@ -9,6 +9,7 @@ export type Example = {
 // local problem data
 export type Problem = {
 	id: string;
+	tag: string;
 	title: string;
 	problemStatement: string;
 	examples: Example[];
@@ -21,6 +22,7 @@ export type Problem = {
 
 export type DBProblem = {
 	id: string;
+	tag: string;
 	title: string;
 	category: string;
 	difficulty: string;

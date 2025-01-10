@@ -37,25 +37,21 @@ public class ProblemController extends BaseController{
 
 	private final IProblemFunctionSignatureService problemFunctionSignatureService;
 
-	@SaCheckPermission("portCustomer:problem:list")
 	@GetMapping("/public-list")
 	public TableDataInfo<ProblemVo> publicList(ProblemBo bo, PageQuery pageQuery) {
 		return problemService.queryPagePublicList(bo, pageQuery);
 	}
 
-	@SaCheckPermission("portCustomer:problem:list")
 	@GetMapping("/list")
 	public TableDataInfo<ProblemVo> list(ProblemBo bo, PageQuery pageQuery) {
 		return problemService.queryPageList(bo, pageQuery);
 	}
 
-	@SaCheckPermission("portCustomer:problem:query")
 	@GetMapping(value = { "/", "/{id}" })
 	public R<ProblemVo> getInfo(@PathVariable(value = "id", required = false) Long id) {
 		return R.ok(problemService.queryById(id));
 	}
 
-	@SaCheckPermission("portCustomer:problem:add")
 	@Log(title = "Problem", businessType = BusinessType.INSERT)
 	@RepeatSubmit()
 	@PostMapping()
@@ -83,7 +79,6 @@ public class ProblemController extends BaseController{
 		return toAjax(true);
 	}
 
-	@SaCheckPermission("portCustomer:problem:edit")
 	@Log(title = "Problem", businessType = BusinessType.UPDATE)
 	@RepeatSubmit()
 	@PutMapping()
@@ -91,7 +86,6 @@ public class ProblemController extends BaseController{
 		return toAjax(problemService.updateByBo(bo));
 	}
 
-	@SaCheckPermission("portCustomer:problem:edit")
 	@Log(title = "Testcase Problem", businessType = BusinessType.UPDATE)
 	@RepeatSubmit()
 	@PutMapping("/{id}")
@@ -102,7 +96,6 @@ public class ProblemController extends BaseController{
 		return toAjax(true);
 	}
 
-	@SaCheckPermission("portCustomer:problem:edit")
 	@Log(title = "Function Definition Problem", businessType = BusinessType.UPDATE)
 	@RepeatSubmit()
 	@PutMapping("/functionDefinition/{id}")
@@ -113,7 +106,6 @@ public class ProblemController extends BaseController{
 		return toAjax(true);
 	}
 
-	@SaCheckPermission("portCustomer:problem:remove")
 	@Log(title = "Problem", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
 	public R<Void> remove(@NotEmpty(message = "Primary key cannot be empty") @PathVariable Long[] ids) {

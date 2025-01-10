@@ -37,7 +37,7 @@ INSERT sys_role VALUES (4, N'000000', N'Quản lý bài làm', N'submission_mana
 GO
 INSERT sys_role VALUES (5, N'000000', N'Quản lý doanh thu', N'money_manager', 5, N'1', 1, 1, N'0', N'0', 103, 1, getdate(), NULL, NULL, N'Money management role', N'system')
 GO
-INSERT sys_role VALUES (6, N'000000', N'Giảng viên', N'money_manager', 6, N'1', 1, 1, N'0', N'0', 103, 1, getdate(), NULL, NULL, N'Teacher role', N'system')
+INSERT sys_role VALUES (6, N'000000', N'Giảng viên', N'teacher', 6, N'1', 1, 1, N'0', N'0', 103, 1, getdate(), NULL, NULL, N'Teacher role', N'system')
 GO
 
 IF OBJECT_ID('sys_role_dept', 'U') IS NOT NULL
@@ -218,7 +218,10 @@ INSERT sys_role_menu VALUES (6, 112)
 GO
 INSERT sys_role_menu VALUES (6, 113)
 GO
-
+INSERT sys_role_menu VALUES (6, 114)
+GO
+INSERT sys_role_menu VALUES (6, 115)
+GO
 -- Management customer menu
 INSERT sys_menu VALUES (120, N'{"vi_VN":"Quản lý tài khoản","en_US":"Management customer account"}', 3, 1, N'account', N'customer/account/index', N'', 1, 0, N'C', N'0', N'0', N'customer:account:list', N'account', 103, 1, getdate(), NULL, NULL, N'', N'system')
 GO

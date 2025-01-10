@@ -477,6 +477,7 @@ CREATE TABLE problem
   id                  bigint                              NOT NULL,
   tenant_id           nvarchar(20)    DEFAULT ('000000')  NULL,
   exam_id             bigint                              NULL,
+  tag                 nvarchar(50)                        NOT NULL,
   title               nvarchar(255)                       NOT NULL,
   description         nvarchar(max)                       NOT NULL,
   difficulty          tinyint                             NOT NULL,
@@ -588,8 +589,9 @@ CREATE TABLE submission
   exam_id             bigint                              NULL,
   problem_id          bigint                              NOT NULL,
   user_id             bigint                              NOT NULL,
+  programing_language varchar(20)                         NOT NULL,
   code                ntext                               NOT NULL,
-  status              tinyint                             NOT NULL,
+  status              tinyint                             NULL,
   score               tinyint                             NULL,
   create_dept         bigint                              NULL,
   create_by           bigint                              NULL,
@@ -745,9 +747,10 @@ GO
 CREATE NONCLUSTERED INDEX idx_sys_oper_log_ot ON sys_oper_log (oper_time)
 GO
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (1,
+'1',
 'Two Sum',
 '<div class="problem-content">
   <h1>Two Sum</h1>
@@ -775,7 +778,7 @@ VALUES
 1,
 'two-sum',
 'Array',
-'8-k1C6ehKuw',
+'KLlXCFG5TnA',
 5,
 SYSDATETIME());
 
@@ -787,9 +790,10 @@ VALUES
 (4, 1, '{ "nums": [1, 5, 3, 6, 7], "target": 10, "expect": [2, 4] }', NULL, NULL, 1, SYSDATETIME()),
 (5, 1, '{ "nums": [0, 4, 3, 0], "target": 0, "expect": [0, 3] }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (2,
+'2',
 'Reverse Linked List',
 '<div class="problem-content">
   <h1>Reverse Linked List</h1>
@@ -824,9 +828,10 @@ VALUES
 (9, 2, '{ "head": [1, 2, 3], "expect": [3, 2, 1] }', NULL, NULL, 1, SYSDATETIME()),
 (10, 2, '{ "head": [5, 4, 3, 2, 1], "expect": [1, 2, 3, 4, 5] }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (3,
+'3',
 'Jump Game',
 '<div class="problem-content">
   <h1>Jump Game</h1>
@@ -860,9 +865,10 @@ VALUES
 (14, 3, '{ "nums": [1, 2, 3], "expect": true }', NULL, NULL, 1, SYSDATETIME()),
 (15, 3, '{ "nums": [1, 0, 0], "expect": false }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (4,
+'4',
 'Valid Parentheses',
 '<div class="problem-content">
   <h1>Valid Parentheses</h1>
@@ -894,7 +900,7 @@ VALUES
 1,
 'valid-parentheses',
 'Stack',
-'xty7fr-k0TU',
+'WTzjTskDFMg',
 5,
 SYSDATETIME());
 
@@ -906,9 +912,10 @@ VALUES
 (19, 4, '{ "s": "([)]", "expect": false }', NULL, NULL, 1, SYSDATETIME()),
 (20, 4, '{ "s": "{[]}", "expect": true }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (5,
+'5',
 'Search a 2D Matrix',
 '<div class="problem-content">
   <h1>Search a 2D Matrix</h1>
@@ -938,7 +945,7 @@ VALUES
 2,
 'search-a-2d-matrix',
 'Binary Search',
-'ZfFl4torNg4',
+'Ber2pi2C0j0',
 5,
 SYSDATETIME());
 
@@ -950,9 +957,10 @@ VALUES
 (24, 5, '{ "matrix": [[-5]], "target": -5, "expect": true }', NULL, NULL, 1, SYSDATETIME()),
 (25, 5, '{ "matrix": [[1]], "target": 0, "expect": false }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (6,
+'6',
 'Longest Palindromic Substring',
 '<div class="problem-content">
   <h1>Longest Palindromic Substring</h1>
@@ -982,9 +990,10 @@ VALUES
 (29, 6, '{ "s": "ac", "expect": ["a", "c"] }', NULL, NULL, 1, SYSDATETIME()),
 (30, 6, '{ "s": "abb", "expect": ["bb"] }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (7,
+'7',
 'Zigzag Conversion',
 '<div class="problem-content">
   <h1>Zigzag Conversion</h1>
@@ -1016,9 +1025,10 @@ VALUES
 (34, 7, '{ "s": "HELLO", "numRows": 2, "expect": "HLOEL" }', NULL, NULL, 1, SYSDATETIME()),
 (35, 7, '{ "s": "ABCD", "numRows": 3, "expect": "ABDC" }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (8,
+'8',
 'Reverse Integer',
 '<div class="problem-content">
   <h1>Reverse Integer</h1>
@@ -1052,9 +1062,10 @@ VALUES
 (39, 8, '{ "x": 0, "expect": 0 }', NULL, NULL, 1, SYSDATETIME()),
 (40, 8, '{ "x": 1534236469, "expect": 0 }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (9,
+'9',
 'String to Integer (myAtoi)',
 '<div class="problem-content">
   <h1>String to Integer (myAtoi)</h1>
@@ -1089,9 +1100,10 @@ VALUES
 (44, 9, '{ "s": "words and 987", "expect": 0 }', NULL, NULL, 1, SYSDATETIME()),
 (45, 9, '{ "s": "-91283472332", "expect": -2147483648 }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (10,
+'10',
 'Palindrome Number',
 '<div class="problem-content">
   <h1>Palindrome Number</h1>
@@ -1125,9 +1137,10 @@ VALUES
 (49, 10, '{ "x": 12321, "expect": true }', NULL, NULL, 1, SYSDATETIME()),
 (50, 10, '{ "x": 0, "expect": true }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (11,
+'11',
 'Regular Expression Matching',
 '<div class="problem-content">
   <h1>Regular Expression Matching</h1>
@@ -1162,9 +1175,10 @@ VALUES
 (54, 11, '{ "s": "aab", "p": "c*a*b", "expect": true }', NULL, NULL, 1, SYSDATETIME()),
 (55, 11, '{ "s": "mississippi", "p": "mis*is*p*.", "expect": false }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (12,
+'12',
 'Container With Most Water',
 '<div class="problem-content">
   <h1>Container With Most Water</h1>
@@ -1196,9 +1210,10 @@ VALUES
 (59, 12, '{ "height": [1, 8, 6, 2, 5, 4, 8, 3, 7], "expect": 49 }', NULL, NULL, 1, SYSDATETIME()),
 (60, 12, '{ "height": [1, 3, 2, 5, 25, 24, 5], "expect": 24 }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (13,
+'13',
 'Integer to Roman',
 '<div class="problem-content">
   <h1>Integer to Roman</h1>
@@ -1232,9 +1247,10 @@ VALUES
 (64, 13, '{ "num": 58, "expect": "LVIII" }', NULL, NULL, 1, SYSDATETIME()),
 (65, 13, '{ "num": 1994, "expect": "MCMXCIV" }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (14,
+'14',
 'Roman to Integer',
 '<div class="problem-content">
   <h1>Roman to Integer</h1>
@@ -1269,9 +1285,10 @@ VALUES
 (69, 14, '{ "roman": "LVIII", "expect": 58 }', NULL, NULL, 1, SYSDATETIME()),
 (70, 14, '{ "roman": "MCMXCIV", "expect": 1994 }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (15,
+'15',
 'Longest Common Prefix',
 '<div class="problem-content">
   <h1>Longest Common Prefix</h1>
@@ -1304,9 +1321,10 @@ VALUES
 (74, 15, '{ "strs": ["throne", "throne"], "expect": "throne" }', NULL, NULL, 1, SYSDATETIME()),
 (75, 15, '{ "strs": ["a"], "expect": "a" }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (16,
+'16',
 '3Sum',
 '<div class="problem-content">
   <h1>3Sum</h1>
@@ -1341,9 +1359,10 @@ VALUES
 (79, 16, '{ "nums": [1, 2, -2, -1], "expect": [] }', NULL, NULL, 1, SYSDATETIME()),
 (80, 16, '{ "nums": [-1, -1, 2, 2], "expect": [[-1, -1, 2]] }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (17,
+'17',
 '3Sum Closest',
 '<div class="problem-content">
   <h1>3Sum Closest</h1>
@@ -1376,9 +1395,10 @@ VALUES
 (84, 17, '{ "nums": [-1, 0, 1, 1], "target": 0, "expect": 0 }', NULL, NULL, 1, SYSDATETIME()),
 (85, 17, '{ "nums": [1, 2, 3], "target": 6, "expect": 6 }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (18,
+'18',
 'Letter Combinations of a Phone Number',
 '<div class="problem-content">
   <h1>Letter Combinations of a Phone Number</h1>
@@ -1413,9 +1433,10 @@ VALUES
 (89, 18, '{ "digits": "", "expect": [] }', NULL, NULL, 1, SYSDATETIME()),
 (90, 18, '{ "digits": "7", "expect": ["p", "q", "r", "s"] }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (19,
+'19',
 '4Sum',
 '<div class="problem-content">
   <h1>4Sum</h1>
@@ -1448,9 +1469,10 @@ VALUES
 (94, 19, '{ "nums": [1, 2, 3, 4, 5, 6, 7, 8, 9], "target": 10, "expect": [[1, 2, 3, 4], [1, 2, 2, 5], [1, 3, 2, 4]] }', NULL, NULL, 1, SYSDATETIME()),
 (95, 19, '{ "nums": [1, 0, -1, 0, -2, 2], "target": 8, "expect": [] }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (20,
+'20',
 'Remove Nth Node From End of List',
 '<div class="problem-content">
   <h1>Remove Nth Node From End of List</h1>
@@ -1484,9 +1506,10 @@ VALUES
 (99, 20, '{ "head": [1, 2, 3, 4, 5], "n": 1, "expect": [1, 2, 3, 4] }', NULL, NULL, 1, SYSDATETIME()),
 (100, 20, '{ "head": [1, 2, 3, 4, 5], "n": 5, "expect": [2, 3, 4, 5] }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (21,
+'21',
 'Merge Two Sorted Lists',
 '<div class="problem-content">
   <h1>Merge Two Sorted Lists</h1>
@@ -1518,9 +1541,10 @@ VALUES
 (104, 21, '{ "list1": [], "list2": [], "expect": [] }', NULL, NULL, 1, SYSDATETIME()),
 (105, 21, '{ "list1": [1, 2, 3, 5], "list2": [4, 6, 7], "expect": [1, 2, 3, 4, 5, 6, 7] }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (22,
+'22',
 'Generate Parentheses',
 '<div class="problem-content">
   <h1>Generate Parentheses</h1>
@@ -1551,9 +1575,10 @@ VALUES
 (109, 22, '{ "n": 4, "expect": ["(((())))", "((()()))", "((())())", "((()))()", "(()(()))", "(()()())", "(()())()", "(())(())", "(())()()", "()((()))", "()(()())", "()(())()", "()()(())", "()()()()"] }', NULL, NULL, 1, SYSDATETIME()),
 (110, 22, '{ "n": 0, "expect": [] }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (23,
+'23',
 'Reverse Linked List',
 '<div class="problem-content">
   <h1>Reverse Linked List</h1>
@@ -1588,9 +1613,10 @@ VALUES
 (114, 23, '{ "lists": [[-10,-5,0],[-5,0,5],[-10,10]], "expect": [-10,-10,-5,-5,0,0,5,10,10] }', NULL, NULL, 1, SYSDATETIME()),
 (115, 23, '{ "lists": [[2,5,7],[],[3,6]], "expect": [2,3,5,6,7] }', NULL, NULL, 1, SYSDATETIME());
 
-INSERT INTO problem(id, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
+INSERT INTO problem(id, tag, title, description, difficulty, key_path, category, video_id, number_testcase, create_time)
 VALUES
 (24,
+'24',
 'Merge Intervals',
 '<div class="problem-content">
   <h1>Merge Intervals</h1>

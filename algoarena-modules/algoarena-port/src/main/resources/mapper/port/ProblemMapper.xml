@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<sql id="selectPublicProblemVo">
 		select p.id,
 		p.tenant_id,
+		p.tag,
 		p.title,
 		p.description,
 		p.difficulty,

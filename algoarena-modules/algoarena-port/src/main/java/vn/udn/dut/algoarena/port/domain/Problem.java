@@ -28,6 +28,8 @@ public class Problem extends TenantEntity {
 
 	private Long examId;
 
+	private String tag;
+
 	private String title;
 
 	private String description;

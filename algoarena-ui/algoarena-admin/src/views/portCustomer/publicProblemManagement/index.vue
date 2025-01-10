@@ -44,7 +44,6 @@
         colorStyle="blue"
         type="primary"
         :title="$t('problemManagement.headerButton.addTt')"
-        v-hasPermi="['portCustomer:problemManagement:add']"
         leftIcon="plus"
         @onClick="handleProblemAdd"
       />
@@ -54,7 +53,6 @@
         :disabledFlag="problemIds.length !== 1 ? true : false"
         :title="$t('problemManagement.headerButton.editTt')"
         leftIcon="edit"
-        v-hasPermi="['portCustomer:problemManagement:edit']"
         @onClick="handleProblemUpdate"
       />
       <IrButton
@@ -63,7 +61,6 @@
         :disabledFlag="!!!problemIds.length"
         :title="$t('problemManagement.headerButton.deleteTt')"
         leftIcon="delete"
-        v-hasPermi="['portCustomer:problemManagement:edit']"
         @onClick="handleDeleteProblem"
       />
     </template>
@@ -88,6 +85,9 @@
             class="common-form"
             v-loading="layoutProblemFormLoading"
           >
+            <el-form-item label="Mã số bài toán" prop="tag" class="form-item-row">
+              <el-input v-model="problemForm.tag" placeholder="Nhập" />
+            </el-form-item>
             <el-form-item label="Tên bài toán" prop="title" class="form-item-row">
               <el-input v-model="problemForm.title" placeholder="Nhập" />
             </el-form-item>
@@ -232,6 +232,7 @@ const problemDialog = reactive<DialogOption>({
 });
 const problemForm = ref<ProblemForm>({...initProblemFormData});
 const problemFormRules: FormRules = {
+  tag: [{required: true, trigger: "blur", message: "Mã số bài toán không được trống", }],
   title: [{required: true, trigger: "blur", message: "Tên bài toán không được trống", }],
   description: [{ required: true, trigger: "blur", message: "Mô tả bài toán không được trống" }],
   difficulty: [{ required: true, trigger: "blur", message: "Độ khó là bắt buộc" }],

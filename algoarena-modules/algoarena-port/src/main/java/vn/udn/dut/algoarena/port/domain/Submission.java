@@ -31,6 +31,8 @@ public class Submission extends TenantEntity {
 
 	private Long userId;
 
+	private String programingLanguage;
+
 	private String code;
 
 	private Integer status;
