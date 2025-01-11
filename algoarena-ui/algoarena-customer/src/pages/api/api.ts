@@ -40,9 +40,9 @@ export const fetchTestcases = async (keyPath: string) => {
     }
 };
 
-export const fetchProblemFunctionSignatures = async (keyPath: string) => {
+export const fetchProblemFunctionSignatures = async (keyPath: string, userId: number) => {
     try {
-        const response = await apiClient.get('/homepage/search/problem-function-signature/' + keyPath);
+        const response = await apiClient.get('/homepage/search/problem-function-signature/' + keyPath + "/" + userId);
         if (response.status === 200) {
         return response.data
         } else {

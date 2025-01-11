@@ -19,7 +19,6 @@ public class HomepageSearchService2 {
 
     public static List<String> submitSolution(String submittedCode, String language, String version, List<TestcaseVo> testcaseVoList) {
         List<String> testcaseResult = new ArrayList<>();
-
         // List to hold dynamic declarations and method signatures for all testcases
         List<String> testcaseDeclarations = new ArrayList<>();
         List<String> methodSignatures = new ArrayList<>();

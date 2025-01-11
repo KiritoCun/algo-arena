@@ -6,16 +6,13 @@ import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { javascript } from "@codemirror/lang-javascript";
 import EditorFooter from "./EditorFooter";
 import { Problem } from "@/utils/types/problem";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, firestore } from "@/firebase/firebase";
+import { firestore } from "@/firebase/firebase";
 import { toast } from "react-toastify";
-import { problems } from "@/utils/problems";
 import { useRouter } from "next/router";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { AuthContext } from '../../Modals/AuthContext';
 import { LanguageContext } from "../LanguageContext";
-import { LANGUAGE_CONFIG } from "@/constants";
 import { fetchTestcases, fetchProblemFunctionSignatures, getNewestPassedSubmission } from "@/pages/api/api";
 
 type PlaygroundProps = {
@@ -36,7 +33,6 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
     const [testcases, setStateTestcases] = useState<Object[] | []>([]);
 	const [resultTestcases, setStateResultTestcases] = useState<Object[] | []>([]);
 	const [functionSignatures, setFunctionSignatures] = useState([]);
-	const [newestPassedSubmission, setNewestPassedSubmission] = useState<Object>();
 	const [errorMessage, setErrorMessage] = useState('You must run your code first');
 
 	// Hàm gọi API để cập nhật problem
@@ -83,13 +79,8 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 	// Hàm khởi tạo functionSignatures từ API
 	const initializeFunctionSignatures = async (problemId: string) => {
 		const userId = (user && user.userId) ? user.userId : 0;
-		const fetchedSignatures = await fetchProblemFunctionSignatures(problemId);
+		const fetchedSignatures = await fetchProblemFunctionSignatures(problemId, userId);
 		setFunctionSignatures(fetchedSignatures);
-	  };
-
-	  const passedSubmission = async (problemId: string, userId: string) => {
-		const newestPassedSubmission = await getNewestPassedSubmission(problemId, userId);
-		setNewestPassedSubmission(newestPassedSubmission);
 	  };
 	
 	  // Hàm generateCodeSample đã sửa lại cho phù hợp với async
@@ -109,7 +100,10 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 		  }
 		  return `// Language "${language}" not supported for problem "${keyPath}".`;
 		}
-	
+		const code = signatureEntry.code;
+		if (code) {
+			return code;
+		}
 		const functionSignature = signatureEntry.functionSignature;
 		const codeSampleTemplate = codeSamples[language];
 	
@@ -122,43 +116,15 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 	
 	  // useEffect để tạo userCode khi functionSignatures đã được tải
 	  useEffect(() => {
+		console.log(problem.id)
 		initializeFunctionSignatures(problem.id);
-		// if (user != null && user != undefined && user.userId) {
-		// 	console.log(user)
-		// 	passedSubmission(problem.id, user.userId);
-		// }
-		// console.log(newestPassedSubmission)
-		// if (newestPassedSubmission) {
-		// 	setUserCode(newestPassedSubmission.code);
-
-		// 	const newestSubmissionLanguage = newestPassedSubmission.programingLanguage;
-
-		// 	if (newestSubmissionLanguage == "java") {
-		// 		setLanguage("Java");
-		// 	} else if (newestSubmissionLanguage == "javascript") {
-		// 		setLanguage("JavaScript");
-		// 	} else if (newestSubmissionLanguage == "python") {
-		// 		setLanguage("Python");
-		// 	} else if (newestSubmissionLanguage == "c#") {
-		// 		setLanguage("C#");
-		// 	} else if (newestSubmissionLanguage == "go") {
-		// 		setLanguage("Go");
-		// 	} else if (newestSubmissionLanguage == "php") {
-		// 		setLanguage("PHP");
-		// 	}
-			
-		// 	return;
-		// }
-		if (functionSignatures.length > 0) {
-		  setUserCode(generateCodeSample(language, problem.id, problem.id));
-		}
 	  }, [problem.id]); // Chạy khi problemId thay đổi
 
 	  useEffect(() => {
-		if (functionSignatures.length > 0) {
+		if (functionSignatures && functionSignatures.length > 0) {
 		  setUserCode(generateCodeSample(language, problem.id, problem.id));
 		}
-	  }, [functionSignatures, language]); // Chạy khi functionSignatures hoặc language thay đổi
+	  }, [functionSignatures]); // Chạy khi functionSignatures hoặc language thay đổi
 
 	const [activeTestCaseId, setActiveTestCaseId] = useState<number>(0);
 	let [userCode, setUserCode] = useState<string>(problem.starterCode);

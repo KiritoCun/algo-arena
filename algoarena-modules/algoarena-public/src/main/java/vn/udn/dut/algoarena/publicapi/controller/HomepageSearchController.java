@@ -56,24 +56,13 @@ public class HomepageSearchController extends BaseController {
         return testcaseService.queryList(bo);
     }
 
-    @GetMapping("/problem-function-signature/{keyPath}")
-    public List<ProblemFunctionSignatureVo> publicProblemFunctionSignatureList(@PathVariable String keyPath) {
+    @GetMapping("/problem-function-signature/{keyPath}/{userId}")
+    public List<ProblemFunctionSignatureVo> publicProblemFunctionSignatureList(
+            @PathVariable String keyPath, @PathVariable Long userId) {
         ProblemFunctionSignatureBo bo = new ProblemFunctionSignatureBo();
         bo.setKeyPath(keyPath);
+
         return problemFunctionSignatureService.queryList(bo);
-    }
-
-    @GetMapping("/submission/{keyPath}/{userId}")
-    public SubmissionVo getNewestSubmission(@PathVariable String keyPath, @PathVariable Long userId) {
-        ProblemBo problemBo = new ProblemBo();
-        problemBo.setKeyPath(keyPath);
-
-        ProblemVo problemVo = problemService.queryPublicList(problemBo).get(0);
-
-        SubmissionBo submissionBo = new SubmissionBo();
-        submissionBo.setProblemId(problemVo.getId());
-        submissionBo.setUserId(userId);
-        return submissionService.queryList(submissionBo).get(0);
     }
 
     @PostMapping("/submit-solution")

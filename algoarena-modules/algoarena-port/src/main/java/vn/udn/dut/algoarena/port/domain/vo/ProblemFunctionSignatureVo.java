@@ -39,4 +39,6 @@ public class ProblemFunctionSignatureVo implements Serializable {
 	private String remark;
 
 	private Date createTime;
+
+	private String code;
 }
