@@ -1,7 +1,5 @@
-import { auth } from "@/firebase/firebase";
 import Link from "next/link";
 import React from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import Logout from "../Buttons/Logout";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "@/atoms/authModalAtom";
@@ -93,7 +91,7 @@ const Topbar: React.FC<TopbarProps> = ({ problemPage }) => {
 							href='/auth'
 							onClick={() => setAuthModalState((prev) => ({ ...prev, isOpen: true, type: "login" }))}
 						>
-							<button className='bg-dark-fill-3 py-1 px-2 cursor-pointer rounded '>Đăng nhập</button>
+							<button className='bg-dark-fill-3 py-1 px-2 cursor-pointer rounded '>Login</button>
 						</Link>
 					)}
 					{user && problemPage && <Timer />}

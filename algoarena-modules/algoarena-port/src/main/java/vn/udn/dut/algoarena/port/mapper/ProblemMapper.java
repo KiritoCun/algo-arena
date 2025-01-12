@@ -37,6 +37,13 @@ public interface ProblemMapper extends BaseMapperPlus<Problem, ProblemVo> {
 			@Param(Constants.WRAPPER) Wrapper<Problem> queryWrapper);
 
 	/**
+	 *
+	 * @param queryWrapper
+	 * @return
+	 */
+	Page<ProblemVo> selectPagePublicProblemListWithUserId(@Param(Constants.WRAPPER) Wrapper<Problem> queryWrapper);
+
+	/**
 	 * 
 	 * @param wrapper
 	 * @return
@@ -49,5 +56,12 @@ public interface ProblemMapper extends BaseMapperPlus<Problem, ProblemVo> {
 	 * @return
 	 */
 	List<ProblemVo> selectPublicProblemList(@Param(Constants.WRAPPER) Wrapper<Problem> wrapper);
+
+	/**
+	 *
+	 * @param wrapper
+	 * @return
+	 */
+	List<ProblemVo> selectPublicProblemListWithUserId(@Param(Constants.WRAPPER) Wrapper<Problem> wrapper);
 
 }

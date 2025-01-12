@@ -18,6 +18,7 @@ export type Problem = {
 	starterCode: string;
 	handlerFunction: ((fn: any) => boolean) | string;
 	starterFunctionName: string;
+	resolved: boolean;
 };
 
 export type DBProblem = {
@@ -33,4 +34,5 @@ export type DBProblem = {
 	link?: string;
 	keyPath?: string;
 	description?: string;
+	resolved?: boolean
 };

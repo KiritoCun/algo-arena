@@ -23,7 +23,7 @@ const Signup: React.FC<SignupProps> = () => {
 
 	const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (!inputs.username || !inputs.password || !inputs.displayName) return alert("Hãy điền thông tin các trường!");
+		if (!inputs.username || !inputs.password || !inputs.displayName) return alert("Please fill in the fields!");
 		try {
 			toast.loading("Creating your account", { position: "top-center", toastId: "loadingToast" });
 			const newUser = await createUserWithEmailAndPassword(inputs.username, inputs.password);
@@ -54,10 +54,10 @@ const Signup: React.FC<SignupProps> = () => {
 
 	return (
 		<form className='space-y-6 px-6 pb-4' onSubmit={handleRegister}>
-			<h3 className='text-xl font-medium text-white'>Đăng ký tài khoản Algorithm Arena</h3>
+			<h3 className='text-xl font-medium text-white'>Register Algorithm Arena account</h3>
 			<div>
 				<label htmlFor='nickName' className='text-sm font-medium block mb-2 text-gray-300'>
-					Họ và tên
+					Full Name
 				</label>
 				<input
 					onChange={handleChangeInput}
@@ -72,7 +72,7 @@ const Signup: React.FC<SignupProps> = () => {
 			</div>
 			<div>
 				<label htmlFor='username' className='text-sm font-medium block mb-2 text-gray-300'>
-					Tên đăng nhập
+					Username
 				</label>
 				<input
 					onChange={handleChangeInput}
@@ -87,7 +87,7 @@ const Signup: React.FC<SignupProps> = () => {
 			</div>
 			<div>
 				<label htmlFor='password' className='text-sm font-medium block mb-2 text-gray-300'>
-					Mật khẩu
+					Password
 				</label>
 				<input
 					onChange={handleChangeInput}
@@ -112,9 +112,9 @@ const Signup: React.FC<SignupProps> = () => {
 			</button>
 
 			<div className='text-sm font-medium text-gray-300'>
-				Đã có tài khoản?{" "}
+				Already have an account?{" "}
 				<a href='#' className='text-blue-700 hover:underline' onClick={handleClick}>
-					Đăng nhập
+					Login
 				</a>
 			</div>
 		</form>

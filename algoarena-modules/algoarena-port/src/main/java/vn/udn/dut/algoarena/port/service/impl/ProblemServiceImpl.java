@@ -52,7 +52,7 @@ public class ProblemServiceImpl implements IProblemService {
 	 */
 	@Override
 	public TableDataInfo<ProblemVo> queryPagePublicListWithUserId(ProblemBo bo, PageQuery pageQuery, Long userId) {
-		Page<ProblemVo> page = baseMapper.selectPagePublicProblemList(pageQuery.build(), this.buildPublicQueryWrapper(bo));
+		Page<ProblemVo> page = baseMapper.selectPagePublicProblemListWithUserId(this.buildPublicWithUserIdQueryWrapper(userId));
 		return TableDataInfo.build(page);
 	}
 
@@ -83,6 +83,15 @@ public class ProblemServiceImpl implements IProblemService {
 		return baseMapper.selectPublicProblemList(this.buildPublicQueryWrapper(bo));
 	}
 
+	/**
+	 * Query Problem list
+	 */
+	@Override
+	public List<ProblemVo> queryPublicListWithUserId(Long userId) {
+//		LambdaQueryWrapper<Problem> lqw = buildQueryWrapper(bo);
+		return baseMapper.selectPublicProblemListWithUserId(this.buildPublicWithUserIdQueryWrapper(userId));
+	}
+
 	private Wrapper<Problem> buildQueryWrapper(ProblemBo bo) {
 //        Map<String, Object> params = bo.getParams();
 		QueryWrapper<Problem> wrapper = Wrappers.query();
@@ -104,6 +113,13 @@ public class ProblemServiceImpl implements IProblemService {
 				.like(bo.getDescription() != null, "p.description", bo.getDescription())
 				.eq(bo.getDifficulty() != null, "p.difficulty", bo.getDifficulty())
 				.like(bo.getRemark() != null, "p.remark", bo.getRemark());
+		return wrapper;
+	}
+
+	private Wrapper<Problem> buildPublicWithUserIdQueryWrapper(Long userId) {
+//        Map<String, Object> params = bo.getParams();
+		QueryWrapper<Problem> wrapper = Wrappers.query();
+		wrapper.eq(userId != null, "s.user_id", userId);
 		return wrapper;
 	}
 

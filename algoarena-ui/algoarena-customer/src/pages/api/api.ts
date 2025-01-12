@@ -52,9 +52,9 @@ export const getUserInfo = async (token: string) => {
 export const fetchProblems = async (userId: number) => {
     try {
         const response = await apiClient.get('/homepage/search/problem?'+'userId='+userId);
-        
-        if (response.data.code === 200) {
-        return response.data.rows
+        console.log(response)
+        if (response.status === 200) {
+        return response.data
         } else {
         }
     } catch (error) {

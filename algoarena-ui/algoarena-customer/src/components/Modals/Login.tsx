@@ -62,10 +62,10 @@ const Login: React.FC<LoginProps> = () => {
 	}, [error]);
 	return (
 		<form className='space-y-6 px-6 pb-4' onSubmit={handleLogin}>
-			<h3 className='text-xl font-medium text-white'>Đăng nhập hệ thống Algorithm Arena</h3>
+			<h3 className='text-xl font-medium text-white'>Login Algorithm Arena system</h3>
 			<div>
 				<label htmlFor='username' className='text-sm font-medium block mb-2 text-gray-300'>
-					Tên đăng nhập
+					Username
 				</label>
 				<input
 					onChange={handleInputChange}
@@ -81,7 +81,7 @@ const Login: React.FC<LoginProps> = () => {
 			</div>
 			<div>
 				<label htmlFor='password' className='text-sm font-medium block mb-2 text-gray-300'>
-					Mật khẩu
+					Password
 				</label>
 				<input
 					onChange={handleInputChange}
@@ -102,11 +102,11 @@ const Login: React.FC<LoginProps> = () => {
                 text-sm px-5 py-2.5 text-center bg-brand-orange hover:bg-brand-orange-s
             '
 			>
-				{loading ? "Loading..." : "Đăng nhập"}
+				{loading ? "Loading..." : "Login"}
 			</button>
 			<button className='flex w-full justify-end' onClick={() => handleClick("forgotPassword")}>
 				<a href='#' className='text-sm block text-brand-orange hover:underline w-full text-right'>
-					Quên mật khẩu?
+					Forgot password
 				</a>
 			</button>
 		</form>

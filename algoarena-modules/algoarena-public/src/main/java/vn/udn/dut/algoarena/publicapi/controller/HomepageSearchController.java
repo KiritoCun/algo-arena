@@ -3,8 +3,6 @@ package vn.udn.dut.algoarena.publicapi.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import vn.udn.dut.algoarena.common.mybatis.core.page.PageQuery;
-import vn.udn.dut.algoarena.common.mybatis.core.page.TableDataInfo;
 import vn.udn.dut.algoarena.common.web.core.BaseController;
 import vn.udn.dut.algoarena.port.domain.bo.ProblemBo;
 import vn.udn.dut.algoarena.port.domain.bo.ProblemFunctionSignatureBo;
@@ -43,11 +41,11 @@ public class HomepageSearchController extends BaseController {
     private final ISysConfigService sysConfigService;
 
     @GetMapping("/problem")
-    public TableDataInfo<ProblemVo> publicProblemList(ProblemBo bo, PageQuery pageQuery, @RequestParam Long userId) {
+    public List<ProblemVo> publicProblemList(@RequestParam Long userId) {
         if (userId == 0) {
-            return problemService.queryPagePublicList(bo, pageQuery);
+            return problemService.queryPublicList(new ProblemBo());
         } else {
-            return problemService.queryPagePublicListWithUserId(bo, pageQuery, userId);
+            return problemService.queryPublicListWithUserId(userId);
         }
     }
 
@@ -93,8 +91,9 @@ public class HomepageSearchController extends BaseController {
         // Handle save solution
         boolean passedSolution = true;
         for (String result : testcaseResult) {
-            if ("false".equals(result.toLowerCase())) {
+            if (!"true".equalsIgnoreCase(result)) {
                 passedSolution = false;
+                break;
             }
         }
 

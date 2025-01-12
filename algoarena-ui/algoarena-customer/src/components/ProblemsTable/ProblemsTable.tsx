@@ -1,14 +1,11 @@
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { BsCheckCircle } from "react-icons/bs";
+import React, { useEffect, useState, useContext } from "react";
 import { AiFillYoutube } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import YouTube from "react-youtube";
-import { collection, doc, getDoc, orderBy, query } from "firebase/firestore";
-import { auth, firestore } from "@/firebase/firebase";
 import { DBProblem } from "@/utils/types/problem";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { fetchProblems } from "@/pages/api/api";
+import { AuthContext } from '../Modals/AuthContext';
 
 type ProblemsTableProps = {
   setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,7 +18,6 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
   });
 
   const problems = useGetProblems(setLoadingProblems);
-  const solvedProblems = useGetSolvedProblems();
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -108,6 +104,9 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
 				<th scope='col' className='px-1 py-3 w-0 font-medium'>
 					NO
 				</th>
+        <th scope='col' className='px-6 py-3 w-0 font-medium'>
+          Status
+        </th>
 				<th scope='col' className='px-6 py-3 w-0 font-medium'>
 					Title
 				</th>
@@ -137,6 +136,13 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({ setLoadingProblems }) => 
               <th className="px-2 py-4 font-medium whitespace-nowrap text-dark-green-s">
                 {problem.tag}
               </th>
+              <td className="px-6 py-4">
+                {problem.resolved ? (
+                  <span className="text-green-500 font-medium">Resolved</span>
+                ) : (
+                  <span className="text-red-500 font-medium">Unresolved</span>
+                )}
+              </td>
               <td className="px-6 py-4">
                 {problem.link ? (
                   <Link
@@ -245,11 +251,13 @@ export default ProblemsTable;
 
 function useGetProblems(setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>) {
   const [problems, setProblems] = useState<DBProblem[]>([]);
+  const { user } = useContext(AuthContext);
+  const userId = (user && user.userId) ? user.userId : 0;
 
   useEffect(() => {
     const getProblems = async () => {
       setLoadingProblems(true);
-      const querySnapshot = await fetchProblems(0);
+      const querySnapshot = await fetchProblems(userId);
       const tmp: DBProblem[] = [];
       if (querySnapshot) {
         querySnapshot.forEach((doc) => {
@@ -271,25 +279,4 @@ function useGetProblems(setLoadingProblems: React.Dispatch<React.SetStateAction<
     getProblems();
   }, [setLoadingProblems]);
   return problems;
-}
-
-function useGetSolvedProblems() {
-  const [solvedProblems, setSolvedProblems] = useState<string[]>([]);
-  const [user] = useAuthState(auth);
-
-  useEffect(() => {
-    const getSolvedProblems = async () => {
-      const userRef = doc(firestore, "users", user!.uid);
-      const userDoc = await getDoc(userRef);
-
-      if (userDoc.exists()) {
-        setSolvedProblems(userDoc.data().solvedProblems);
-      }
-    };
-
-    if (user) getSolvedProblems();
-    if (!user) setSolvedProblems([]);
-  }, [user]);
-
-  return solvedProblems;
 }

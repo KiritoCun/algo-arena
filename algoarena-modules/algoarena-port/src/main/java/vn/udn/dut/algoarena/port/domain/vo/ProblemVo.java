@@ -53,4 +53,6 @@ public class ProblemVo implements Serializable {
 	private String remark;
 
 	private Date createTime;
+
+	private boolean resolved;
 }

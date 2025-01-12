@@ -73,4 +73,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		${ew.getCustomSqlSegment}
 		) a
 	</select>
+
+	<select id="selectPublicProblemListWithUserId" resultMap="ProblemResult">
+		WITH LatestSubmission AS (
+			SELECT
+				s.problem_id,
+				ROW_NUMBER() OVER (
+					PARTITION BY s.problem_id
+					ORDER BY s.create_time DESC
+				) AS row_num
+			FROM
+				submission s
+			${ew.getCustomSqlSegment}
+		)
+		SELECT
+			p.id,
+			p.tenant_id,
+			p.tag,
+			p.title,
+			p.description,
+			p.difficulty,
+			p.key_path,
+			p.category,
+			p.video_id,
+			p.create_dept,
+			p.create_by,
+			p.create_time,
+			p.update_by,
+			p.update_time,
+			p.remark,
+			CASE
+				WHEN ls.problem_id IS NOT NULL THEN 1
+				ELSE 0
+			END AS resolved
+		FROM
+			problem p
+		LEFT JOIN
+			LatestSubmission ls
+		ON
+			p.id = ls.problem_id AND ls.row_num = 1;
+	</select>
 </mapper>

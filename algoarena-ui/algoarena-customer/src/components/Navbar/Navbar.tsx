@@ -23,7 +23,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                 '
 					onClick={handleClick}
 				>
-					Đăng nhập
+					Login
 				</button>
 			</div>
 		</div>
