@@ -6,6 +6,12 @@ public class Message {
 
     private String content;
 
+    private String refusal;
+
+    // Constructor mặc định
+    public Message() {
+    }
+
     public Message(String role, String content) {
         this.role = role;
         this.content = content;
@@ -26,5 +32,13 @@ public class Message {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getRefusal() {
+        return refusal;
+    }
+
+    public void setRefusal(String refusal) {
+        this.refusal = refusal;
     }
 }

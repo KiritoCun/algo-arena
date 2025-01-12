@@ -1,9 +1,11 @@
 package vn.udn.dut.algoarena.publicapi.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import vn.udn.dut.algoarena.publicapi.dto.Message;
 
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true) // Bỏ qua các trường không cần thiết
 public class GPTResponse {
 
     private List<Choice> choices;
@@ -16,6 +18,7 @@ public class GPTResponse {
         this.choices = choices;
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Choice {
         private Message message;
 

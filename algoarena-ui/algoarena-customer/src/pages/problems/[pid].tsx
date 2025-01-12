@@ -36,7 +36,7 @@ export async function getStaticPaths() {
   let problems: Problem[] = [];
   try {
     // Gọi API để lấy danh sách bài toán
-    const rawProblems = await fetchProblems();
+    const rawProblems = await fetchProblems(0);
 
     // Chuyển đổi dữ liệu trả về
     problems = rawProblems.map((item: any) => ({
@@ -67,7 +67,7 @@ export async function getStaticProps({ params }: { params: { pid: string } }) {
   let problems: Problem[] = [];
   try {
     // Gọi API để lấy danh sách bài toán
-    const rawProblems = await fetchProblems();
+    const rawProblems = await fetchProblems(0);
 
     // Chuyển đổi dữ liệu trả về
     problems = rawProblems.map((item: any) => ({

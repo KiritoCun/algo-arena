@@ -249,7 +249,7 @@ function useGetProblems(setLoadingProblems: React.Dispatch<React.SetStateAction<
   useEffect(() => {
     const getProblems = async () => {
       setLoadingProblems(true);
-      const querySnapshot = await fetchProblems();
+      const querySnapshot = await fetchProblems(0);
       const tmp: DBProblem[] = [];
       if (querySnapshot) {
         querySnapshot.forEach((doc) => {

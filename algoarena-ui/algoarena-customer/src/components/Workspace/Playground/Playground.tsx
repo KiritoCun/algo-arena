@@ -13,7 +13,7 @@ import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { AuthContext } from '../../Modals/AuthContext';
 import { LanguageContext } from "../LanguageContext";
-import { fetchTestcases, fetchProblemFunctionSignatures, getNewestPassedSubmission } from "@/pages/api/api";
+import { fetchTestcases, fetchProblemFunctionSignatures, fetchGptResponse, runSolution, submitSolution } from "@/pages/api/api";
 
 type PlaygroundProps = {
 	problem: Problem;
@@ -34,6 +34,11 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 	const [resultTestcases, setStateResultTestcases] = useState<Object[] | []>([]);
 	const [functionSignatures, setFunctionSignatures] = useState([]);
 	const [errorMessage, setErrorMessage] = useState('You must run your code first');
+
+	// Biến cho feature integrate chat GPT
+	const [userInput, setUserInput] = useState('');
+	const [gptResponses, setGptResponses] = useState([]);
+	const [isChatGptVisible, setIsChatGptVisible] = useState(false); // Hiển thị/ẩn tab Chat GPT
 
 	// Hàm gọi API để cập nhật problem
 	useEffect(() => {
@@ -83,48 +88,48 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 		setFunctionSignatures(fetchedSignatures);
 	  };
 	
-	  // Hàm generateCodeSample đã sửa lại cho phù hợp với async
-	  const generateCodeSample = (language: string, keyPath: string) => {
-		// Kiểm tra nếu chưa có functionSignatures, tránh lỗi
-		if (functionSignatures.length === 0) {
-		  return '// Function signatures not loaded yet';
-		}
-	
-		const signatureEntry = functionSignatures.find(
-		  (entry) => entry.keyPath === keyPath && entry.language === language
-		);
-	
-		if (!signatureEntry) {
-		  if (!functionSignatures.some((entry) => entry.keyPath === keyPath)) {
-			return `// Problem "${keyPath}" not found.`;
-		  }
-		  return `// Language "${language}" not supported for problem "${keyPath}".`;
-		}
-		const code = signatureEntry.code;
-		if (code) {
-			return code;
-		}
-		const functionSignature = signatureEntry.functionSignature;
-		const codeSampleTemplate = codeSamples[language];
-	
-		if (!codeSampleTemplate) {
-		  return `// Language "${language}" does not have a code sample template.`;
-		}
-	
-		return codeSampleTemplate.replace('ARGUMENTS', functionSignature);
-	  };
-	
-	  // useEffect để tạo userCode khi functionSignatures đã được tải
-	  useEffect(() => {
-		console.log(problem.id)
-		initializeFunctionSignatures(problem.id);
-	  }, [problem.id]); // Chạy khi problemId thay đổi
+	// Hàm generateCodeSample đã sửa lại cho phù hợp với async
+	const generateCodeSample = (language: string, keyPath: string) => {
+	// Kiểm tra nếu chưa có functionSignatures, tránh lỗi
+	if (functionSignatures.length === 0) {
+		return '// Function signatures not loaded yet';
+	}
 
-	  useEffect(() => {
-		if (functionSignatures && functionSignatures.length > 0) {
-		  setUserCode(generateCodeSample(language, problem.id, problem.id));
+	const signatureEntry = functionSignatures.find(
+		(entry) => entry.keyPath === keyPath && entry.language === language
+	);
+
+	if (!signatureEntry) {
+		if (!functionSignatures.some((entry) => entry.keyPath === keyPath)) {
+		return `// Problem "${keyPath}" not found.`;
 		}
-	  }, [functionSignatures]); // Chạy khi functionSignatures hoặc language thay đổi
+		return `// Language "${language}" not supported for problem "${keyPath}".`;
+	}
+	const code = signatureEntry.code;
+	if (code) {
+		return code;
+	}
+	const functionSignature = signatureEntry.functionSignature;
+	const codeSampleTemplate = codeSamples[language];
+
+	if (!codeSampleTemplate) {
+		return `// Language "${language}" does not have a code sample template.`;
+	}
+
+	return codeSampleTemplate.replace('ARGUMENTS', functionSignature);
+	};
+
+	// useEffect để tạo userCode khi functionSignatures đã được tải
+	useEffect(() => {
+	console.log(problem.id)
+	initializeFunctionSignatures(problem.id);
+	}, [problem.id]); // Chạy khi problemId thay đổi
+
+	useEffect(() => {
+	if (functionSignatures && functionSignatures.length > 0) {
+		setUserCode(generateCodeSample(language, problem.id, problem.id));
+	}
+	}, [functionSignatures]); // Chạy khi functionSignatures hoặc language thay đổi
 
 	const [activeTestCaseId, setActiveTestCaseId] = useState<number>(0);
 	let [userCode, setUserCode] = useState<string>(problem.starterCode);
@@ -137,7 +142,7 @@ const Playground: React.FC<PlaygroundProps> = ({ problem, setSuccess, setSolved 
 		dropdownIsOpen: false,
 	});
 
-	const [activeTab, setActiveTab] = useState<"Testcases" | "Test Result">(
+	const [activeTab, setActiveTab] = useState<"Testcases" | "Test Result" | "Chat GPT">(
 		"Testcases"
 	  );
 
@@ -195,6 +200,35 @@ public:
 		query: { pid },
 	} = useRouter();
 
+	const toggleShowHideChatGptTab = () => {
+		if (isChatGptVisible) {
+			// Nếu tab Chat GPT đang hiển thị
+			setIsChatGptVisible(false); // Ẩn tab Chat GPT
+			setActiveTab("Testcases"); // Chuyển active sang Testcases
+		} else {
+			// Nếu tab Chat GPT đang ẩn
+			setIsChatGptVisible(true); // Hiển thị tab Chat GPT
+			setActiveTab("Chat GPT"); // Active tab Chat GPT
+		}
+	};
+
+	const handleSendMessage = async () => {
+		if (userInput.trim() === '') return;  // Không gửi nếu không có nội dung
+		
+		// Gửi yêu cầu tới API GPT (có thể thay thế bằng API GPT của bạn)
+		try {
+			toast.loading("Asking Chat GPT", { position: "top-center", toastId: "loadingToast" });
+			const gptMessage = await fetchGptResponse(userInput);
+			setGptResponses((prevResponses) => [...prevResponses, gptMessage]);
+		
+			// Sau khi gửi, bạn có thể xóa nội dung đã nhập trong textarea
+			setUserInput('');
+			toast.dismiss("loadingToast");
+		} catch (error) {
+			console.error('Error while sending message to GPT:', error);
+		}
+	};	
+
 	const handleRun = async () => {
 		if (!user) {
 			toast.error("Please login to run your code", {
@@ -210,20 +244,12 @@ public:
 			const configCompile = languageVersions.find(
 				(item) => item.language.toLowerCase() === language.toLowerCase()
 			);
-			const response = await fetch("http://localhost:8082/customer/homepage/search/run-solution", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				submittedCode: userCode,
-				problemId: pid,
-				language: language.toLowerCase(),
-				version: configCompile.version
-			}),
-			});
-		
-			const data = await response.json();
+			const data = await runSolution(
+				userCode,         // Mã code do người dùng nhập
+				pid,              // ID của bài toán
+				language.toLowerCase(), // Ngôn ngữ lập trình (viết thường)
+				configCompile.version    // Phiên bản trình biên dịch
+			);
 		
 			console.log("data back from piston:", data);
 
@@ -280,21 +306,13 @@ public:
 			const configCompile = languageVersions.find(
 				(item) => item.language.toLowerCase() === language.toLowerCase()
 			);
-			const response = await fetch("http://localhost:8082/customer/homepage/search/submit-solution", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				submittedCode: userCode,
-				problemId: pid,
-				language: language.toLowerCase(),
-				version: configCompile.version,
-				userId: user.userId
-			}),
-			});
-		
-			const data = await response.json();
+			const data = await submitSolution(
+				userCode,              // Mã code người dùng nhập
+				pid,                   // ID của bài toán
+				language.toLowerCase(), // Ngôn ngữ lập trình (viết thường)
+				configCompile.version, // Phiên bản trình biên dịch
+				user.userId            // ID người dùng
+			);
 		
 			console.log("data back from piston:", data);
 
@@ -367,147 +385,192 @@ public:
 	};
 
 	return (
-		<div className='flex flex-col bg-dark-layer-1 relative overflow-x-hidden'>
-			<PreferenceNav settings={settings} setSettings={setSettings} />
-
-			<Split className='h-[calc(100vh-94px)]' direction='vertical' sizes={[60, 40]} minSize={60}>
-				<div className='w-full overflow-auto'>
-					<CodeMirror
-						value={userCode}
-						theme={vscodeDark}
-						onChange={onChange}
-						extensions={[javascript()]}
-						style={{ fontSize: settings.fontSize }}
-					/>
+		<div className="flex flex-col bg-dark-layer-1 relative overflow-x-hidden">
+		  <PreferenceNav settings={settings} setSettings={setSettings} />
+	  
+		  <Split className="h-[calc(100vh-146px)]" direction="vertical" sizes={[60, 40]} minSize={60}>
+			<div className="w-full overflow-auto">
+			  <CodeMirror
+				value={userCode}
+				theme={vscodeDark}
+				onChange={onChange}
+				extensions={[javascript()]}
+				style={{ fontSize: settings.fontSize }}
+			  />
+			</div>
+			<div className="w-full px-5 overflow-hidden">
+			  {/* Tabs Heading */}
+			  <div className="flex h-10 items-center space-x-6">
+				<div
+				  className={`relative flex h-full flex-col justify-center cursor-pointer ${
+					activeTab === "Testcases" ? "" : "text-gray-500"
+				  }`}
+				  onClick={() => setActiveTab("Testcases")}
+				>
+				  <div className="text-sm font-medium leading-5 text-white">Testcases</div>
+				  {activeTab === "Testcases" && (
+					<hr className="absolute bottom-0 h-0.5 w-full rounded-full border-none bg-white" />
+				  )}
 				</div>
-				<div className="w-full px-5 overflow-auto">
-					{/* Tabs Heading */}
-					<div className="flex h-10 items-center space-x-6">
-						<div
-						className={`relative flex h-full flex-col justify-center cursor-pointer ${
-							activeTab === "Testcases" ? "" : "text-gray-500"
-						}`}
-						onClick={() => setActiveTab("Testcases")}
-						>
-						<div className="text-sm font-medium leading-5 text-white">
-							Testcases
-						</div>
-						{activeTab === "Testcases" && (
-							<hr className="absolute bottom-0 h-0.5 w-full rounded-full border-none bg-white" />
-						)}
-						</div>
-						<div
-						className={`relative flex h-full flex-col justify-center cursor-pointer ${
-							activeTab === "Test Result" ? "" : "text-gray-500"
-						}`}
-						onClick={() => setActiveTab("Test Result")}
-						>
-						<div className="text-sm font-medium leading-5 text-white">
-							Test Results
-						</div>
-						{activeTab === "Test Result" && (
-							<hr className="absolute bottom-0 h-0.5 w-full rounded-full border-none bg-white" />
-						)}
-						</div>
-					</div>
-
-					{/* Nội dung của tab */}
-					{activeTab === "Testcases" && (
-						<div>
-						<div className="flex">
-							{testcases.map((example, index) => (
-							<div
-								className="mr-2 items-start mt-2"
-								key={example.id}
-								onClick={() => setActiveTestCaseId(index)}
-							>
-								<div className="flex flex-wrap items-center gap-y-4">
-								<div
-									className={`font-medium items-center transition-all focus:outline-none inline-flex bg-dark-fill-3 hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap ${
-									activeTestCaseId === index
-										? "text-white"
-										: "text-gray-500"
-									}`}
-								>
-									Case {index + 1}
-								</div>
-								</div>
-							</div>
-							))}
-						</div>
-
-						<div className="font-semibold my-4">
-							<p className="text-sm font-medium mt-4 text-white">Input:</p>
-							<div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
-							{testcases[activeTestCaseId]?.inputText}
-							</div>
-							<p className="text-sm font-medium mt-4 text-white">Output:</p>
-							<div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
-							{testcases[activeTestCaseId]?.outputText}
-							</div>
-						</div>
-						</div>
+				<div
+				  className={`relative flex h-full flex-col justify-center cursor-pointer ${
+					activeTab === "Test Result" ? "" : "text-gray-500"
+				  }`}
+				  onClick={() => setActiveTab("Test Result")}
+				>
+				  <div className="text-sm font-medium leading-5 text-white">Test Results</div>
+				  {activeTab === "Test Result" && (
+					<hr className="absolute bottom-0 h-0.5 w-full rounded-full border-none bg-white" />
+				  )}
+				</div>
+				{/* New Tab for Chat GPT */}
+				{isChatGptVisible && ( // Chỉ hiển thị tab Chat GPT nếu isChatGptVisible là true
+					<div
+					className={`relative flex h-full flex-col justify-center cursor-pointer ${
+						activeTab === "Chat GPT" ? "" : "text-gray-500"
+					}`}
+					onClick={() => setActiveTab("Chat GPT")}
+					>
+					<div className="text-sm font-medium leading-5 text-white">Chat GPT</div>
+					{activeTab === "Chat GPT" && (
+						<hr className="absolute bottom-0 h-0.5 w-full rounded-full border-none bg-white" />
 					)}
-
-					{activeTab === "Test Result" && (
-						<div>
-						<div className="flex">
-							{resultTestcases.map((example, index) => (
-							<div
-								className="mr-2 items-start mt-2"
-								key={example.id}
-								onClick={() => setActiveTestCaseId(index)}
-							>
-								<div className="flex items-center gap-x-2">
-								{activeTab === "Test Result" && (
-									<span
-									className={`h-3 w-3 rounded-full ${
-										example.success === "true" || example.success === "True"
-										? "bg-green-500"
-										: "bg-red-500"
-									}`}
-									></span>
-								)}
-								<div
-									className={`font-medium items-center transition-all focus:outline-none inline-flex bg-dark-fill-3 hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap ${
-									activeTestCaseId === index
-										? "text-white"
-										: "text-gray-500"
-									}`}
-								>
-									Case {index + 1}
-								</div>
-								</div>
-							</div>
-							))}
-						</div>
-						{resultTestcases.length != 0 && (
-							<div className="font-semibold my-4">
-								<p className="text-sm font-medium mt-4 text-white">Input:</p>
-								<div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
-								{resultTestcases[activeTestCaseId]?.inputText}
-								</div>
-								<p className="text-sm font-medium mt-4 text-white">Output:</p>
-								<div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
-								{resultTestcases[activeTestCaseId]?.outputText}
-								</div>
-							</div>
-						)}
-						{(resultTestcases.length == 0) && (
-							<p
-							className={`text-sm font-medium mt-4 ${
-							  errorMessage === 'You must run your code first' ? 'text-white' : 'text-red-500'
+					</div>
+				)}
+			  </div>
+	  
+			  {/* Nội dung của từng tab */}
+			  {activeTab === "Testcases" && (
+				<div>
+				  <div className="flex">
+					{testcases.map((example, index) => (
+					  <div
+						className="mr-2 items-start mt-2"
+						key={example.id}
+						onClick={() => setActiveTestCaseId(index)}
+					  >
+						<div className="flex flex-wrap items-center gap-y-4">
+						  <div
+							className={`font-medium items-center transition-all focus:outline-none inline-flex bg-dark-fill-3 hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap ${
+							  activeTestCaseId === index ? "text-white" : "text-gray-500"
 							}`}
 						  >
-							{errorMessage}
-						  </p>
-						)}
+							Case {index + 1}
+						  </div>
 						</div>
-					)}
+					  </div>
+					))}
+				  </div>
+	  
+				  <div className="font-semibold my-4">
+					<p className="text-sm font-medium mt-4 text-white">Input:</p>
+					<div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
+					  {testcases[activeTestCaseId]?.inputText}
 					</div>
-			</Split>
-			<EditorFooter handleRun={handleRun} handleSubmit={handleSubmit} />
+					<p className="text-sm font-medium mt-4 text-white">Output:</p>
+					<div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
+					  {testcases[activeTestCaseId]?.outputText}
+					</div>
+				  </div>
+				</div>
+			  )}
+	  
+	  			{activeTab === "Test Result" && (
+				<div>
+				<div className="flex">
+					{resultTestcases.map((example, index) => (
+					<div
+						className="mr-2 items-start mt-2"
+						key={example.id}
+						onClick={() => setActiveTestCaseId(index)}
+					>
+						<div className="flex items-center gap-x-2">
+						{activeTab === "Test Result" && (
+							<span
+							className={`h-3 w-3 rounded-full ${
+								example.success === "true" || example.success === "True"
+								? "bg-green-500"
+								: "bg-red-500"
+							}`}
+							></span>
+						)}
+						<div
+							className={`font-medium items-center transition-all focus:outline-none inline-flex bg-dark-fill-3 hover:bg-dark-fill-2 relative rounded-lg px-4 py-1 cursor-pointer whitespace-nowrap ${
+							activeTestCaseId === index
+								? "text-white"
+								: "text-gray-500"
+							}`}
+						>
+							Case {index + 1}
+						</div>
+						</div>
+					</div>
+					))}
+				</div>
+				{resultTestcases.length != 0 && (
+					<div className="font-semibold my-4">
+						<p className="text-sm font-medium mt-4 text-white">Input:</p>
+						<div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
+						{resultTestcases[activeTestCaseId]?.inputText}
+						</div>
+						<p className="text-sm font-medium mt-4 text-white">Output:</p>
+						<div className="w-full cursor-text rounded-lg border px-3 py-[10px] bg-dark-fill-3 border-transparent text-white mt-2">
+						{resultTestcases[activeTestCaseId]?.outputText}
+						</div>
+					</div>
+				)}
+				{(resultTestcases.length == 0) && (
+					<p
+					className={`text-sm font-medium mt-4 ${
+						errorMessage === 'You must run your code first' ? 'text-white' : 'text-red-500'
+					}`}
+					>
+					{errorMessage}
+					</p>
+				)}
+				</div>
+			)}
+	  
+			  {/* Nội dung của tab Chat GPT */}
+			  {isChatGptVisible && activeTab === "Chat GPT" && (
+				<div className="flex flex-col h-full">
+				  {/* Input gửi câu hỏi */}
+				  <div className="flex items-center space-x-2 mb-2">
+					<textarea
+					  className="flex-1 p-2 bg-dark-fill-3 text-white rounded-lg border border-transparent focus:outline-none"
+					  rows={3}
+					  placeholder="Type your question..."
+					  value={userInput}
+					  onChange={(e) => setUserInput(e.target.value)}
+					/>
+					<button
+					  className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+					  onClick={handleSendMessage}
+					  disabled={userInput.trim() === ""}
+					>
+					  Send
+					</button>
+				  </div>
+				  {/* Phản hồi từ GPT */}
+				  <div className="flex-grow overflow-auto pl-2 pr-2 pb-2 mb-12 bg-dark-fill-3 rounded-lg">
+					{gptResponses.map((response, index) => (
+					  <div 
+					  key={index}
+					  className="p-2 bg-dark-fill-4 text-white rounded-lg my-4 border border-gray-600">
+						<pre className="whitespace-pre-wrap">{response}</pre>
+					  </div>
+					))}
+				  </div>
+				</div>
+			  )}
+			</div>
+		  </Split>
+		  <EditorFooter 
+		  handleRun={handleRun} 
+		  handleSubmit={handleSubmit} 
+		  toggleShowHideChatGptTab={toggleShowHideChatGptTab} 
+		  isChatGptVisible={isChatGptVisible}/>
 		</div>
-	);
+	  );	  
 };
 export default Playground;

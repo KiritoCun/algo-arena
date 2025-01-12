@@ -5,8 +5,8 @@ import React, { useEffect, useState, createContext, useContext } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useSetRecoilState } from "recoil";
 import { toast } from "react-toastify";
-import axios from 'axios';
 import { AuthContext } from './AuthContext';
+import { customerLogin, getUserInfo } from "@/pages/api/api";
 type LoginProps = {};
 
 const Login: React.FC<LoginProps> = () => {
@@ -25,11 +25,7 @@ const Login: React.FC<LoginProps> = () => {
 
 	const login = async (username: string, password: string) => {
 		try {
-			const response = await axios.post('http://localhost:8082/customer/auth/login', {
-			username,
-			password,
-			});
-			console.log(response)
+			const response = await customerLogin(username, password);
 			if (response.data.code === 500) {
 				throw new Error(response.data.msg);
 			}
@@ -37,29 +33,9 @@ const Login: React.FC<LoginProps> = () => {
 		
 			// Lưu token vào localStorage hoặc sessionStorage
 			localStorage.setItem('authToken', token);
-
-			// Tạo một instance axios với header mặc định
-			const apiClient = axios.create({
-				baseURL: 'http://localhost:8082/customer/system',
-				headers: {
-					Authorization: `Customer-Bearer ${token}`,
-				},
-			});
-
-			const getUserInfo = async () => {
-				try {
-				  const response = await apiClient.get('/user/getInfo');
-				  
-				  if (response.data.code === 200) {
-					return response.data.data.user
-				  } else {
-				  }
-				} catch (error) {
-				}
-			  };
 		
 			// Trả về dữ liệu người dùng (nếu API trả về)
-			const user = await getUserInfo()
+			const user = await getUserInfo(token)
 			setUser(user)
 			return user;
 		} catch (error) {

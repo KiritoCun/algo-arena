@@ -14,7 +14,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solve
 	// Hàm gọi API để cập nhật problem
 	useEffect(() => {
 		const setProblem = async () => {
-			const problems = await fetchProblems();
+			const problems = await fetchProblems(0);
 			const foundProblem = problems.find(p => p.keyPath === problem.id); // Tìm vấn đề theo keyPath
 			if (foundProblem) {
 				setCurrentProblem(foundProblem); // Cập nhật trạng thái problem
@@ -41,7 +41,7 @@ const ProblemDescription: React.FC<ProblemDescriptionProps> = ({ problem, _solve
 				<div className='px-5'>
 					{/* Problem heading */}
 					<div className='w-full'>
-						<div dangerouslySetInnerHTML={{ __html: currentProblem.description }} />
+						<div dangerouslySetInnerHTML={{ __html: currentProblem.description.replace('<h1>','<h1>' + currentProblem.tag + '. ') }} />
 					</div>
 				</div>
 			</div>

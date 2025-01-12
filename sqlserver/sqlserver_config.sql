@@ -28,3 +28,9 @@ INSERT sys_config VALUES (2, N'000000', N'Config firebase secret key', N'sys.fir
 GO
 INSERT sys_config VALUES (3, N'000000', N'Config firebase database', N'sys.firebase.db', N'algo-arena-50656.firebaseapp.com', N'Y', 103, 1, getdate(), NULL, NULL, N'Config firebase database')
 GO
+INSERT sys_config VALUES (4, N'000000', N'Config Piston api url', N'sys.piston.url', N'https://emkc.org/api/v2/piston/execute', N'Y', 103, 1, getdate(), NULL, NULL, N'Config Piston api url')
+GO
+INSERT sys_config VALUES (5, N'000000', N'Config OpenAI API url', N'sys.openai.url', N'https://api.openai.com/v1/chat/completions', N'Y', 103, 1, getdate(), NULL, NULL, N'Config OpenAI API url')
+GO
+INSERT sys_config VALUES (6, N'000000', N'Config OpenAI key', N'sys.openai.key', N'openai-api-key', N'Y', 103, 1, getdate(), NULL, NULL, N'Config OpenAI key')
+GO

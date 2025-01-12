@@ -48,6 +48,15 @@ public class ProblemServiceImpl implements IProblemService {
 	}
 
 	/**
+	 * Query Problem public list with userId
+	 */
+	@Override
+	public TableDataInfo<ProblemVo> queryPagePublicListWithUserId(ProblemBo bo, PageQuery pageQuery, Long userId) {
+		Page<ProblemVo> page = baseMapper.selectPagePublicProblemList(pageQuery.build(), this.buildPublicQueryWrapper(bo));
+		return TableDataInfo.build(page);
+	}
+
+	/**
 	 * Query Problem list
 	 */
 	@Override
