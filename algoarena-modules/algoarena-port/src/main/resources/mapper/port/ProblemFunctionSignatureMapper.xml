@@ -19,35 +19,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			pfs.create_time,
 			pfs.update_by,
 			pfs.update_time,
-			pfs.remark,
-		    ls.code
+			pfs.remark
 		FROM
 			problem_function_signature pfs
 		LEFT JOIN
 			problem p ON pfs.problem_id = p.id
+	</sql>
+
+	<sql id="selectProblemFunctionSignatureVoWithUserId">
+		SELECT
+		pfs.id,
+		pfs.tenant_id,
+		pfs.problem_id,
+		p.key_path,
+		pfs.language,
+		pfs.function_signature,
+		pfs.create_by,
+		pfs.create_time,
+		pfs.update_by,
+		pfs.update_time,
+		pfs.remark,
+		ls.code
+		FROM
+		problem_function_signature pfs
 		LEFT JOIN
-			LatestSubmission ls
-			ON pfs.problem_id = ls.problem_id
-			AND LOWER(pfs.language) = ls.programing_language
-			AND ls.row_num = 1
+		problem p ON pfs.problem_id = p.id
+		LEFT JOIN
+		LatestSubmission ls
+		ON pfs.problem_id = ls.problem_id
+		AND LOWER(pfs.language) = ls.programing_language
+		AND ls.row_num = 1
 	</sql>
     
-    
     <select id="selectPageProblemFunctionSignatureList" resultMap="ProblemFunctionSignatureResult">
-		WITH LatestSubmission AS (
-			SELECT
-				s.id AS submission_id,
-				s.problem_id,
-				s.programing_language,
-				s.create_time,
-				s.code,
-				ROW_NUMBER() OVER (
-					PARTITION BY s.problem_id, s.programing_language
-					ORDER BY s.create_time DESC
-				) AS row_num
-			FROM
-				submission s
-		)
     	select * from (
     		<include refid="selectProblemFunctionSignatureVo"/>
     		${ew.getCustomSqlSegment}
@@ -55,8 +59,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     
     <select id="selectProblemFunctionSignatureList" resultMap="ProblemFunctionSignatureResult">
+    	select * from (
+    		<include refid="selectProblemFunctionSignatureVo"/>
+    		${ew.getCustomSqlSegment}
+    	) a
+    </select>
+
+	<select id="selectProblemFunctionSignatureListWithUserId" resultMap="ProblemFunctionSignatureResult">
 		WITH LatestSubmission AS (
 			SELECT
+				s.user_id,
 				s.id AS submission_id,
 				s.problem_id,
 				s.programing_language,
@@ -66,12 +78,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					PARTITION BY s.problem_id, s.programing_language
 					ORDER BY s.create_time DESC
 				) AS row_num
-			FROM
-				submission s
+		FROM
+			submission s
 		)
-    	select * from (
-    		<include refid="selectProblemFunctionSignatureVo"/>
-    		${ew.getCustomSqlSegment}
-    	) a
-    </select>
+			select * from (
+				<include refid="selectProblemFunctionSignatureVoWithUserId"/>
+				${ew.getCustomSqlSegment}
+		) a
+	</select>
 </mapper>

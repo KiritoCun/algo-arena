@@ -166,7 +166,6 @@ public class HomepageSearchService2 {
                         try {
                             ${TESTCASE_DECLARATIONS}
                             ${METHOD_SIGNATURES}
-                            // You can add result comparisons for each testcase dynamically
                             ${RESULT_COMPARISONS}
                         } catch (Exception e) {
                             System.out.print(e.getMessage());

@@ -32,6 +32,11 @@ public interface IProblemFunctionSignatureService {
 	List<ProblemFunctionSignatureVo> queryList(ProblemFunctionSignatureBo bo);
 
 	/**
+	 * Query ProblemFunctionSignature list with user id
+	 */
+	List<ProblemFunctionSignatureVo> queryListWithUserId(ProblemFunctionSignatureBo bo);
+
+	/**
 	 * Add ProblemFunctionSignature
 	 */
 	Boolean insertByBo(ProblemFunctionSignatureBo bo);

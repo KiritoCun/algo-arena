@@ -32,4 +32,6 @@ public class ProblemFunctionSignatureBo {
 	private String remark;
 
 	private Date createTime;
+
+	private Long userId;
 }

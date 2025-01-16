@@ -19,6 +19,8 @@ import vn.udn.dut.algoarena.publicapi.service.GPTService;
 import vn.udn.dut.algoarena.publicapi.service.HomepageSearchService2;
 import vn.udn.dut.algoarena.system.service.ISysConfigService;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -66,8 +68,27 @@ public class HomepageSearchController extends BaseController {
             @PathVariable String keyPath, @PathVariable Long userId) {
         ProblemFunctionSignatureBo bo = new ProblemFunctionSignatureBo();
         bo.setKeyPath(keyPath);
+        bo.setUserId(userId);
 
-        return problemFunctionSignatureService.queryList(bo);
+        List<ProblemFunctionSignatureVo> result;
+        List<ProblemFunctionSignatureVo> result2 = new ArrayList<>();
+
+        if (userId != 0) {
+            result2 = problemFunctionSignatureService.queryListWithUserId(bo);
+        }
+        result = problemFunctionSignatureService.queryList(bo);
+
+        if (!result2.isEmpty()) {
+            for(ProblemFunctionSignatureVo element2 : result2) {
+                for(ProblemFunctionSignatureVo element : result) {
+                    if (element2.getId().equals(element.getId())) {
+                        element.setCode(element2.getCode());
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
     @PostMapping("/submit-solution")

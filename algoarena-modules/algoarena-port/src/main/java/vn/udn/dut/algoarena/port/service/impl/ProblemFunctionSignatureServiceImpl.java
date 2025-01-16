@@ -55,10 +55,28 @@ public class ProblemFunctionSignatureServiceImpl implements IProblemFunctionSign
         return baseMapper.selectProblemFunctionSignatureList(this.buildQueryWrapper(bo));
     }
 
+    /**
+     * Query ProblemFunctionSignature list
+     */
+    @Override
+    public List<ProblemFunctionSignatureVo> queryListWithUserId(ProblemFunctionSignatureBo bo) {
+        return baseMapper.selectProblemFunctionSignatureListWithUserId(this.buildQueryWrapperWithUserId(bo));
+    }
+
     private Wrapper<ProblemFunctionSignature> buildQueryWrapper(ProblemFunctionSignatureBo bo) {
 //      Map<String, Object> params = bo.getParams();
         QueryWrapper<ProblemFunctionSignature> wrapper = Wrappers.query();
         wrapper.eq(bo.getProblemId() != null, "pfs.problem_id", bo.getProblemId())
+                .eq(bo.getKeyPath() != null, "p.key_path", bo.getKeyPath())
+                .like(bo.getRemark() != null, "pfs.remark", bo.getRemark());
+        return wrapper;
+    }
+
+    private Wrapper<ProblemFunctionSignature> buildQueryWrapperWithUserId(ProblemFunctionSignatureBo bo) {
+//      Map<String, Object> params = bo.getParams();
+        QueryWrapper<ProblemFunctionSignature> wrapper = Wrappers.query();
+        wrapper.eq(bo.getProblemId() != null, "pfs.problem_id", bo.getProblemId())
+                .eq(bo.getUserId() != null, "ls.user_id", bo.getUserId())
                 .eq(bo.getKeyPath() != null, "p.key_path", bo.getKeyPath())
                 .like(bo.getRemark() != null, "pfs.remark", bo.getRemark());
         return wrapper;

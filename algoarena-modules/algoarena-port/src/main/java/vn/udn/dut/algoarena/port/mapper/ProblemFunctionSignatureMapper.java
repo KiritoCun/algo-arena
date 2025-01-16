@@ -34,4 +34,11 @@ public interface ProblemFunctionSignatureMapper extends BaseMapperPlus<ProblemFu
 	 */
 	List<ProblemFunctionSignatureVo> selectProblemFunctionSignatureList(@Param(Constants.WRAPPER) Wrapper<ProblemFunctionSignature> queryWrapper);
 
+	/**
+	 *
+	 * @param queryWrapper
+	 * @return
+	 */
+	List<ProblemFunctionSignatureVo> selectProblemFunctionSignatureListWithUserId(@Param(Constants.WRAPPER) Wrapper<ProblemFunctionSignature> queryWrapper);
+
 }
